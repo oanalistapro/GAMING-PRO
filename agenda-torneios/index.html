@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Agenda de Torneios PRO | Gaming Pro</title>
+<style>
+:root{--bg:#0b0b0f;--panel:#17171f;--field:#25252e;--line:#393943;--orange:#ff791b;--text:#fafafa;--muted:#aaaab8;--green:#69d9a0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,Arial}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1320px;margin:auto;padding:12px}
+header{background:#141419;border-bottom:1px solid var(--line);padding:20px 0}
+h1{font-size:clamp(26px,5vw,40px);margin:8px 0}
+h2{font-size:19px;margin:0 0 15px}
+h3{margin:0 0 7px}
+p{line-height:1.5}
+.muted{color:var(--muted)}
+.orange{color:var(--orange)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:6px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{width:100%;min-width:0;background:var(--field);color:white;border:1px solid var(--line);border-radius:10px;padding:11px}
+textarea{resize:vertical;min-height:75px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{border:0;background:var(--orange);color:#111;border-radius:10px;padding:11px 14px;font-weight:850}
+.btn.alt{background:var(--field);color:white;border:1px solid var(--line)}
+.btn.red{background:#702929;color:white}
+.btn.small{padding:7px 9px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--field);border-radius:12px;padding:15px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{font-size:23px;color:var(--orange);display:block;overflow-wrap:anywhere}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.weekday{text-align:center;color:var(--orange);font-weight:800;padding:9px 0}
+.day{min-height:100px;background:#202028;border:1px solid var(--line);border-radius:9px;padding:7px;overflow:hidden}
+.day.outside{opacity:.28}
+.day.today{border-color:var(--orange)}
+.day.selected{background:#422a1b}
+.day button{width:100%;background:none;border:0;color:white;text-align:left;padding:0}
+.day-number{font-weight:800}
+.dot{display:block;margin-top:5px;background:#633519;color:#ffd3a8;padding:4px;border-radius:5px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.event{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:15px;min-width:0}
+.event-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.event-title{font-size:18px;font-weight:900;overflow-wrap:anywhere}
+.pill{display:inline-block;border-radius:30px;background:#422918;color:#ffb978;padding:5px 9px;font-size:11px;font-weight:800}
+.info{color:var(--muted);font-size:13px;margin:7px 0;overflow-wrap:anywhere}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:630px}
+td,th{border-bottom:1px solid var(--line);padding:10px;text-align:left}
+th{color:var(--orange)}
+.notice{padding:11px;background:#372516;border:1px solid #86501c;border-radius:10px;color:#ffd4ac}
+.progress{height:8px;background:#393943;border-radius:8px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:var(--orange)}
+.empty{color:var(--muted);text-align:center;padding:20px}
+.hidden{display:none!important}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ .grid,.events{grid-template-columns:1fr}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .panel{padding:12px}
+ .calendar{gap:2px}
+ .day{min-height:67px;padding:4px;border-radius:5px}
+ .day-number{font-size:12px}
+ .dot{font-size:9px;padding:3px}
+ .weekday{font-size:10px}
+}
+@media print{
+ body{background:#fff;color:#111}
+ header,.editor,.actions,.calendar-head button,.btn{display:none!important}
+ .panel,.event,.stat{background:white;color:black;border-color:#aaa;break-inside:avoid}
+ .info,.muted{color:#444}
+ .stat strong,.weekday{color:#111}
+ .day{background:white;color:#111}
+ .day button{color:#111}
+ .dot{background:#eee;color:#111}
+ @page{size:A4;margin:10mm}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<strong class="orange">🎮 GAMING PRO</strong>
+<h1>📅 AGENDA DE TORNEIOS PRO</h1>
+<p class="muted">Organize campeonatos, inscrições, partidas, etapas e horários de qualquer jogo.</p>
+</div></header>
+
+<main class="wrap">
+<section class="panel">
+<h2>📊 Resumo da agenda</h2>
+<div class="stats" id="stats"></div>
+</section>
+
+<section class="panel editor" id="formPanel">
+<h2 id="formTitle">🏆 Criar torneio</h2>
+<div class="grid">
+<div class="field"><label>Nome do torneio</label><input id="name" maxlength="100" placeholder="CAMPEONATO GAMING PRO"></div>
+<div class="field"><label>Jogo / Modalidade</label>
+<select id="game">
+<option>Free Fire</option><option>Valorant</option>
+<option>Counter-Strike 2</option><option>Fortnite</option>
+<option>PUBG</option><option>Call of Duty</option>
+<option>League of Legends</option><option>Mobile Legends</option>
+<option>Rocket League</option><option>EA Sports FC</option>
+<option>eFootball</option><option>Mortal Kombat</option>
+<option>Street Fighter</option><option>Chess</option>
+<option value="Outro">Outro jogo</option>
+</select></div>
+<div class="field" id="customBox" hidden><label>Nome do jogo</label><input id="customGame" maxlength="70"></div>
+<div class="field"><label>Organizador</label><input id="organizer" maxlength="80"></div>
+<div class="field"><label>Data de início</label><input id="startDate" type="date"></div>
+<div class="field"><label>Hora de início</label><input id="startTime" type="time" value="20:00"></div>
+<div class="field"><label>Data de término</label><input id="endDate" type="date"></div>
+<div class="field"><label>Hora de término</label><input id="endTime" type="time" value="22:00"></div>
+<div class="field"><label>Inscrições até</label><input id="registrationDate" type="date"></div>
+<div class="field"><label>Horário do check-in</label><input id="checkinTime" type="time" value="19:30"></div>
+<div class="field"><label>Máximo de participantes</label><input id="capacity" type="number" min="1" max="100000" value="12"></div>
+<div class="field"><label>Tipo</label>
+<select id="mode"><option>Online</option><option>Presencial</option><option>Híbrido</option></select>
+</div>
+<div class="field"><label>Formato</label>
+<select id="format">
+<option>Pontos corridos</option><option>Eliminação simples</option>
+<option>Eliminação dupla</option><option>Grupos</option>
+<option>Todos contra todos</option><option>Suíço</option>
+<option>Personalizado</option>
+</select></div>
+<div class="field"><label>Status</label>
+<select id="status">
+<option>Inscrições abertas</option><option>Inscrições encerradas</option>
+<option>Confirmado</option><option>Em andamento</option>
+<option>Concluído</option><option>Cancelado</option>
+</select></div>
+<div class="field"><label>Link do torneio (opcional)</label><input id="link" type="url" maxlength="500" placeholder="https://..."></div>
+<div class="field"><label>Local / Servidor</label><input id="location" maxlength="120" placeholder="Servidor BR"></div>
+</div>
+<div class="field" style="margin-top:12px">
+<label>Descrição e regras</label>
+<textarea id="description" maxlength="3000" placeholder="Informações, premiação e regras do campeonato"></textarea>
+</div>
+<div class="actions">
+<button class="btn" id="saveEvent">➕ Criar torneio</button>
+<button class="btn alt hidden" id="cancelEdit">Cancelar edição</button>
+</div>
+<p class="notice hidden" id="notice" role="status"></p>
+</section>
+
+<section class="panel">
+<div class="calendar-head">
+<h2 id="monthLabel" style="margin:0">📅 Calendário</h2>
+<div class="actions editor" style="margin:0">
+<button class="btn alt small" id="previous">◀</button>
+<button class="btn alt small" id="today">Hoje</button>
+<button class="btn alt small" id="next">▶</button>
+</div>
+</div>
+<div class="calendar" id="calendar"></div>
+</section>
+
+<section class="panel editor">
+<h2>🔎 Filtrar agenda</h2>
+<div class="grid">
+<div class="field"><label>Pesquisar</label><input id="search" type="search" placeholder="Torneio, jogo, organizador"></div>
+<div class="field"><label>Jogo</label><select id="filterGame"><option value="">Todos</option></select></div>
+<div class="field"><label>Status</label>
+<select id="filterStatus"><option value="">Todos</option>
+<option>Inscrições abertas</option><option>Inscrições encerradas</option>
+<option>Confirmado</option><option>Em andamento</option>
+<option>Concluído</option><option>Cancelado</option>
+</select></div>
+<div class="field"><label>Período</label>
+<select id="period"><option value="all">Todos</option>
+<option value="upcoming">Próximos</option><option value="past">Passados</option>
+<option value="selected">Dia selecionado</option>
+</select></div>
+</div>
+<div class="actions">
+<button class="btn alt" id="clearFilters">Limpar filtros</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>🎮 Torneios cadastrados</h2>
+<div id="events" class="events"></div>
+<p class="muted" id="counter"></p>
+</section>
+
+<section class="panel editor" id="participantsPanel">
+<h2>👥 Inscrições e check-in</h2>
+<div class="grid">
+<div class="field"><label>Torneio</label><select id="participantEvent"></select></div>
+<div class="field"><label>Jogador / Equipe</label><input id="participantName" maxlength="80"></div>
+<div class="field"><label>ID / TAG</label><input id="participantTag" maxlength="50"></div>
+<div class="field"><label>Contato (opcional)</label><input id="participantContact" maxlength="120"></div>
+</div>
+<div class="actions">
+<button class="btn" id="addParticipant">➕ Inscrever participante</button>
+</div>
+<div class="tablewrap" style="margin-top:14px">
+<table>
+<thead><tr><th>Participante</th><th>ID / TAG</th><th>Contato</th><th>Check-in</th><th>Ações</th></tr></thead>
+<tbody id="participants"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel editor">
+<h2>⏱️ Etapas e partidas</h2>
+<div class="grid">
+<div class="field"><label>Torneio</label><select id="stageEvent"></select></div>
+<div class="field"><label>Etapa / Partida</label><input id="stageName" maxlength="100" placeholder="Rodada 1, semifinal, final..."></div>
+<div class="field"><label>Data</label><input id="stageDate" type="date"></div>
+<div class="field"><label>Hora</label><input id="stageTime" type="time" value="20:00"></div>
+</div>
+<div class="actions"><button class="btn" id="addStage">➕ Adicionar etapa</button></div>
+<div class="tablewrap" style="margin-top:14px">
+<table>
+<thead><tr><th>Etapa</th><th>Data</th><th>Hora</th><th>Ação</th></tr></thead>
+<tbody id="stages"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel">
+<h2>📥 Exportação e backup</h2>
+<div class="actions">
+<button class="btn" id="csv">📊 Exportar CSV</button>
+<button class="btn alt" id="ics">📅 Exportar calendário ICS</button>
+<button class="btn alt" id="backup">💾 Backup JSON</button>
+<button class="btn alt" id="print">🖨️ Imprimir / PDF</button>
+</div>
+<div class="field editor" style="margin-top:14px">
+<label>Importar backup JSON</label>
+<input id="import" type="file" accept=".json,application/json">
+</div>
+<p class="muted">Os dados são salvos neste navegador. O arquivo ICS pode ser importado para aplicativos de calendário. Alertas visuais aparecem ao abrir a agenda; notificações automáticas em segundo plano exigem integração adicional.</p>
+</section>
+</main>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_agenda_torneios_v1";
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2);
+const pad=n=>String(n).padStart(2,"0");
+const localDate=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const now=()=>new Date();
+const today=()=>localDate(now());
+const dateTime=(date,time)=>new Date(date+"T"+(time||"00:00")+":00");
+const displayDate=s=>s?s.split("-").reverse().join("/"):"—";
+const validDate=s=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!Number.isNaN(new Date(s+"T12:00").getTime());
+const validTime=s=>typeof s==="string"&&/^([01]\d|2[0-3]):[0-5]\d$/.test(s);
+let db={version:1,events:[]};
+let editing=null;
+let month=new Date(now().getFullYear(),now().getMonth(),1);
+let selectedDay="";
+
+function notify(s){
+ $("notice").textContent=s;
+ $("notice").classList.toggle("hidden",!s);
+}
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(db))}
+ catch{notify("Falha ao salvar. Exporte o backup JSON.")}
+}
+function option(el,value,label){
+ const o=document.createElement("option");
+ o.value=value;o.textContent=label;el.append(o);
+}
+function btn(text,fn,style="alt"){
+ const b=document.createElement("button");
+ b.className="btn "+style+" small";b.textContent=text;b.onclick=fn;return b;
+}
+function stat(label,value){
+ const box=document.createElement("div");box.className="stat";
+ const small=document.createElement("small");small.textContent=label;
+ const strong=document.createElement("strong");strong.textContent=value;
+ box.append(small,strong);return box;
+}
+function resetForm(){
+ editing=null;
+ ["name","organizer","customGame","link","location","description"].forEach(id=>$(id).value="");
+ $("game").value="Free Fire";$("customBox").hidden=true;
+ $("startDate").value=today();$("endDate").value=today();
+ $("registrationDate").value=today();
+ $("startTime").value="20:00";$("endTime").value="22:00";
+ $("checkinTime").value="19:30";$("capacity").value="12";
+ $("mode").value="Online";$("format").value="Pontos corridos";
+ $("status").value="Inscrições abertas";
+ $("saveEvent").textContent="➕ Criar torneio";
+ $("formTitle").textContent="🏆 Criar torneio";
+ $("cancelEdit").classList.add("hidden");
+}
+$("game").onchange=()=>$("customBox").hidden=$("game").value!=="Outro";
+
+function eventForm(){
+ const game=$("game").value==="Outro"?$("customGame").value.trim():$("game").value;
+ const e={
+  id:editing||uid(),
+  name:$("name").value.trim(),game,
+  organizer:$("organizer").value.trim(),
+  startDate:$("startDate").value,
+  startTime:$("startTime").value,
+  endDate:$("endDate").value,
+  endTime:$("endTime").value,
+  registrationDate:$("registrationDate").value,
+  checkinTime:$("checkinTime").value,
+  capacity:Number($("capacity").value),
+  mode:$("mode").value,format:$("format").value,
+  status:$("status").value,link:$("link").value.trim(),
+  location:$("location").value.trim(),
+  description:$("description").value.trim(),
+  participants:[],stages:[],
+  createdAt:new Date().toISOString()
+ };
+ if(!e.name||!e.game)throw Error("Informe nome e jogo.");
+ if(!validDate(e.startDate)||!validDate(e.endDate)||
+    !validDate(e.registrationDate)||
+    !validTime(e.startTime)||!validTime(e.endTime)||!validTime(e.checkinTime))
+  throw Error("Datas ou horários inválidos.");
+ if(dateTime(e.endDate,e.endTime)<dateTime(e.startDate,e.startTime))
+  throw Error("O término não pode ser anterior ao início.");
+ if(!Number.isInteger(e.capacity)||e.capacity<1||e.capacity>100000)
+  throw Error("Capacidade deve ficar entre 1 e 100.000.");
+ if(e.link){
+  const u=new URL(e.link);
+  if(!["https:","http:"].includes(u.protocol))throw Error("Link inválido.");
+ }
+ return e;
+}
+$("saveEvent").onclick=()=>{
+ try{
+  const e=eventForm();
+  const old=db.events.find(x=>x.id===editing);
+  if(old){
+   e.participants=old.participants;
+   e.stages=old.stages;
+   e.createdAt=old.createdAt;
+   if(e.capacity<e.participants.length)throw Error("Capacidade menor que as inscrições.");
+   db.events=db.events.map(x=>x.id===editing?e:x);
+  }else{
+   if(db.events.length>=2000)throw Error("Limite de 2.000 torneios.");
+   db.events.push(e);
+  }
+  resetForm();save();render();notify("Torneio salvo com sucesso.");
+ }catch(err){notify(err.message)}
+};
+
+function editEvent(id){
+ const e=db.events.find(x=>x.id===id);if(!e)return;
+ editing=id;
+ const known=[...$("game").options].some(o=>o.value===e.game);
+ $("game").value=known?e.game:"Outro";
+ $("customBox").hidden=known;
+ $("customGame").value=known?"":e.game;
+ for(const key of ["name","organizer","startDate","startTime","endDate","endTime","registrationDate","checkinTime","capacity","mode","format","status","link","location","description"]){
+  $(key).value=e[key];
+ }
+ $("formTitle").textContent="✏️ Editar torneio";
+ $("saveEvent").textContent="💾 Salvar alterações";
+ $("cancelEdit").classList.remove("hidden");
+ $("formPanel").scrollIntoView({behavior:"smooth"});
+}
+$("cancelEdit").onclick=resetForm;
+
+function deleteEvent(id){
+ const e=db.events.find(x=>x.id===id);if(!e)return;
+ if(!confirm("Excluir "+e.name+" e todas as inscrições e etapas?"))return;
+ db.events=db.events.filter(x=>x.id!==id);
+ if(editing===id)resetForm();
+ save();render();
+}
+function duplicateEvent(id){
+ const e=db.events.find(x=>x.id===id);if(!e)return;
+ if(db.events.length>=2000)return notify("Limite de torneios atingido.");
+ db.events.push({...structuredClone(e),id:uid(),name:e.name+" (CÓPIA)",participants:[],stages:[],createdAt:new Date().toISOString()});
+ save();render();notify("Torneio duplicado sem inscrições.");
+}
+function filtered(){
+ const q=$("search").value.toLowerCase();
+ const game=$("filterGame").value;
+ const status=$("filterStatus").value;
+ const period=$("period").value;
+ const current=now();
+ return db.events.filter(e=>{
+  if(game&&e.game!==game)return false;
+  if(status&&e.status!==status)return false;
+  if(!(e.name+" "+e.game+" "+e.organizer).toLowerCase().includes(q))return false;
+  const start=dateTime(e.startDate,e.startTime);
+  const end=dateTime(e.endDate,e.endTime);
+  if(period==="upcoming"&&end<current)return false;
+  if(period==="past"&&end>=current)return false;
+  if(period==="selected"&&(!selectedDay||selectedDay<e.startDate||selectedDay>e.endDate))return false;
+  return true;
+ }).sort((a,b)=>dateTime(a.startDate,a.startTime)-dateTime(b.startDate,b.startTime));
+}
+function renderStats(){
+ const current=now();
+ $("stats").replaceChildren(
+  stat("Torneios",db.events.length),
+  stat("Próximos",db.events.filter(e=>dateTime(e.startDate,e.startTime)>current&&e.status!=="Cancelado").length),
+  stat("Em andamento",db.events.filter(e=>e.status==="Em andamento").length),
+  stat("Inscrições",db.events.reduce((s,e)=>s+e.participants.length,0))
+ );
+}
+function renderCalendar(){
+ const root=$("calendar");root.replaceChildren();
+ $("monthLabel").textContent="📅 "+month.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+ ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"].forEach(s=>{
+  const el=document.createElement("div");el.className="weekday";el.textContent=s;root.append(el);
+ });
+ const first=new Date(month.getFullYear(),month.getMonth(),1);
+ const start=new Date(first);
+ start.setDate(start.getDate()-first.getDay());
+ for(let i=0;i<42;i++){
+  const d=new Date(start);d.setDate(start.getDate()+i);
+  const key=localDate(d);
+  const cell=document.createElement("div");
+  cell.className="day"+(d.getMonth()!==month.getMonth()?" outside":"")+(key===today()?" today":"")+(key===selectedDay?" selected":"");
+  const pick=document.createElement("button");
+  pick.className="day-number";pick.textContent=d.getDate();
+  pick.onclick=()=>{
+   selectedDay=key;$("period").value="selected";
+   renderCalendar();renderEvents();
+  };
+  cell.append(pick);
+  const matches=db.events.filter(e=>key>=e.startDate&&key<=e.endDate).slice(0,3);
+  matches.forEach(e=>{
+   const dot=document.createElement("span");dot.className="dot";
+   dot.textContent=e.startDate===key?e.startTime+" "+e.name:e.name;
+   dot.title=e.name;cell.append(dot);
+  });
+  root.append(cell);
+ }
+}
+$("previous").onclick=()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1);renderCalendar()};
+$("next").onclick=()=>{month=new Date(month.getFullYear(),month.getMonth()+1,1);renderCalendar()};
+$("today").onclick=()=>{month=new Date(now().getFullYear(),now().getMonth(),1);selectedDay="";$("period").value="all";renderCalendar();renderEvents()};
+
+function renderEvents(){
+ const root=$("events");root.replaceChildren();
+ const list=filtered();
+ $("counter").textContent=list.length+" torneios exibidos.";
+ if(!list.length){
+  const p=document.createElement("p");p.className="empty";p.textContent="Nenhum torneio encontrado.";root.append(p);
+ }
+ list.forEach(e=>{
+  const card=document.createElement("article");card.className="event";
+  const top=document.createElement("div");top.className="event-top";
+  const title=document.createElement("div");title.className="event-title";title.textContent=e.name;
+  const status=document.createElement("span");status.className="pill";status.textContent=e.status;
+  top.append(title,status);card.append(top);
+  const nowMs=Date.now(),start=dateTime(e.startDate,e.startTime).getTime();
+  const hours=(start-nowMs)/3600000;
+  const details=[
+   "🎮 "+e.game+" • "+e.format,
+   "📅 "+displayDate(e.startDate)+" "+e.startTime+" até "+displayDate(e.endDate)+" "+e.endTime,
+   "🌐 "+e.mode+" • "+(e.location||"Local não informado"),
+   "👤 Organizador: "+(e.organizer||"Não informado"),
+   "👥 "+e.participants.length+" / "+e.capacity+" inscritos",
+   "🕒 Check-in: "+e.checkinTime
+  ];
+  if(hours>=0&&hours<=24&&e.status!=="Cancelado")
+   details.unshift("⏰ Começa em menos de 24 horas!");
+  details.forEach(s=>{
+   const p=document.createElement("p");p.className="info";p.textContent=s;card.append(p);
+  });
+  const bar=document.createElement("div");bar.className="progress";
+  const fill=document.createElement("span");fill.style.width=Math.min(100,e.participants.length/e.capacity*100)+"%";
+  bar.append(fill);card.append(bar);
+  if(e.description){
+   const p=document.createElement("p");p.className="info";p.textContent=e.description;card.append(p);
+  }
+  const actions=document.createElement("div");actions.className="actions editor";
+  actions.append(btn("✏️ Editar",()=>editEvent(e.id)),
+                 btn("📋 Duplicar",()=>duplicateEvent(e.id)),
+                 btn("🗑️ Excluir",()=>deleteEvent(e.id),"red"));
+  if(e.link){
+   const link=btn("🔗 Abrir link",()=>window.open(e.link,"_blank","noopener,noreferrer"));
+   actions.append(link);
+  }
+  const icsButton=btn("📅 ICS",()=>exportICS([e]));
+  actions.append(icsButton);
+  card.append(actions);root.append(card);
+ });
+}
+function renderSelects(){
+ const game=$("filterGame"),oldGame=game.value;
+ game.replaceChildren();option(game,"","Todos");
+ [...new Set(db.events.map(e=>e.game))].sort().forEach(g=>option(game,g,g));
+ game.value=oldGame;
+ for(const id of ["participantEvent","stageEvent"]){
+  const el=$(id),old=el.value;el.replaceChildren();
+  db.events.forEach(e=>option(el,e.id,e.name));
+  if(db.events.some(e=>e.id===old))el.value=old;
+ }
+ renderParticipants();renderStages();
+}
+function render(){
+ renderStats();renderSelects();renderCalendar();renderEvents();
+}
+["search","filterGame","filterStatus","period"].forEach(id=>$(id).addEventListener("input",renderEvents));
+$("clearFilters").onclick=()=>{
+ $("search").value="";$("filterGame").value="";$("filterStatus").value="";
+ $("period").value="all";selectedDay="";
+ renderCalendar();renderEvents();
+};
+
+function activeEvent(id){
+ return db.events.find(e=>e.id===$(id).value);
+}
+$("addParticipant").onclick=()=>{
+ const e=activeEvent("participantEvent");
+ if(!e)return notify("Cadastre um torneio primeiro.");
+ const name=$("participantName").value.trim();
+ const tag=$("participantTag").value.trim();
+ if(!name)return notify("Informe o nome do participante.");
+ if(e.participants.length>=e.capacity)return notify("Limite de inscrições atingido.");
+ if(e.participants.some(p=>p.name.toLowerCase()===name.toLowerCase()))
+  return notify("Participante já inscrito.");
+ e.participants.push({
+  id:uid(),name,tag,contact:$("participantContact").value.trim(),checkin:false
+ });
+ ["participantName","participantTag","participantContact"].forEach(id=>$(id).value="");
+ save();render();notify("Inscrição registrada.");
+};
+function renderParticipants(){
+ const root=$("participants");root.replaceChildren();
+ const e=activeEvent("participantEvent");if(!e)return;
+ e.participants.forEach(p=>{
+  const tr=document.createElement("tr");
+  [p.name,p.tag,p.contact,p.checkin?"Confirmado":"Pendente"].forEach(v=>{
+   const td=document.createElement("td");td.textContent=v;tr.append(td);
+  });
+  const actions=document.createElement("td");
+  actions.append(
+   btn(p.checkin?"Desfazer check-in":"Check-in",()=>{
+    p.checkin=!p.checkin;save();renderParticipants();
+   }),
+   btn("Excluir",()=>{
+    if(!confirm("Remover inscrição?"))return;
+    e.participants=e.participants.filter(x=>x.id!==p.id);
+    save();render();
+   },"red")
+  );
+  tr.append(actions);root.append(tr);
+ });
+}
+$("participantEvent").onchange=renderParticipants;
+
+$("addStage").onclick=()=>{
+ const e=activeEvent("stageEvent");
+ if(!e)return notify("Selecione um torneio.");
+ const name=$("stageName").value.trim(),date=$("stageDate").value,time=$("stageTime").value;
+ if(!name||!validDate(date)||!validTime(time))return notify("Informe etapa, data e hora válidas.");
+ if(e.stages.length>=500)return notify("Limite de 500 etapas por torneio.");
+ e.stages.push({id:uid(),name,date,time});
+ e.stages.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+ $("stageName").value="";save();renderStages();notify("Etapa adicionada.");
+};
+function renderStages(){
+ const root=$("stages");root.replaceChildren();
+ const e=activeEvent("stageEvent");if(!e)return;
+ e.stages.forEach(s=>{
+  const tr=document.createElement("tr");
+  [s.name,displayDate(s.date),s.time].forEach(v=>{
+   const td=document.createElement("td");td.textContent=v;tr.append(td);
+  });
+  const td=document.createElement("td");
+  td.append(btn("Excluir",()=>{
+   if(!confirm("Excluir etapa?"))return;
+   e.stages=e.stages.filter(x=>x.id!==s.id);
+   save();renderStages();
+  },"red"));
+  tr.append(td);root.append(tr);
+ });
+}
+$("stageEvent").onchange=renderStages;
+
+function download(filename,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=filename;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+const csvCell=v=>'"'+String(v??"").replaceAll('"','""')+'"';
+$("csv").onclick=()=>{
+ const rows=[["Torneio","Jogo","Início","Hora","Término","Hora","Status","Formato","Inscritos","Capacidade","Organizador","Local"]];
+ db.events.forEach(e=>rows.push([e.name,e.game,e.startDate,e.startTime,e.endDate,e.endTime,e.status,e.format,e.participants.length,e.capacity,e.organizer,e.location]));
+ download("gaming-pro-agenda.csv","\uFEFF"+rows.map(r=>r.map(csvCell).join(";")).join("\r\n"),"text/csv;charset=utf-8");
+};
+const icsEscape=s=>String(s||"").replaceAll("\\","\\\\").replaceAll("\n","\\n").replaceAll(",","\\,").replaceAll(";","\\;");
+const icsDate=(d,t)=>(d+"T"+t.replace(":","")+"00").replaceAll("-","");
+function exportICS(events){
+ const lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Gaming Pro//Agenda Torneios//PT-BR","CALSCALE:GREGORIAN"];
+ events.forEach(e=>{
+  lines.push("BEGIN:VEVENT",
+   "UID:"+e.id+"@gaming-pro.local",
+   "DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,""),
+   "DTSTART:"+icsDate(e.startDate,e.startTime),
+   "DTEND:"+icsDate(e.endDate,e.endTime),
+   "SUMMARY:"+icsEscape(e.name),
+   "DESCRIPTION:"+icsEscape(e.game+" | "+e.description),
+   "LOCATION:"+icsEscape(e.location),
+   "END:VEVENT");
+  e.stages.forEach(s=>{
+   lines.push("BEGIN:VEVENT",
+    "UID:"+s.id+"@gaming-pro.local",
+    "DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,""),
+    "DTSTART:"+icsDate(s.date,s.time),
+    "DTEND:"+icsDate(s.date,s.time),
+    "SUMMARY:"+icsEscape(e.name+" — "+s.name),
+    "END:VEVENT");
+  });
+ });
+ lines.push("END:VCALENDAR");
+ download("gaming-pro-agenda.ics",lines.join("\r\n"),"text/calendar;charset=utf-8");
+}
+$("ics").onclick=()=>exportICS(db.events);
+$("backup").onclick=()=>download("gaming-pro-agenda-backup.json",JSON.stringify(db,null,2),"application/json");
+$("print").onclick=()=>window.print();
+
+function validate(data){
+ if(!data||data.version!==1||!Array.isArray(data.events)||data.events.length>2000)
+  throw Error("Backup inválido.");
+ const ids=new Set();
+ for(const e of data.events){
+  if(!e||typeof e.id!=="string"||!e.id||ids.has(e.id)||
+   typeof e.name!=="string"||!e.name.trim()||e.name.length>100||
+   typeof e.game!=="string"||!e.game.trim()||e.game.length>70||
+   typeof e.organizer!=="string"||e.organizer.length>80||
+   !validDate(e.startDate)||!validDate(e.endDate)||!validDate(e.registrationDate)||
+   !validTime(e.startTime)||!validTime(e.endTime)||!validTime(e.checkinTime)||
+   dateTime(e.endDate,e.endTime)<dateTime(e.startDate,e.startTime)||
+   !Number.isInteger(e.capacity)||e.capacity<1||e.capacity>100000||
+   !["Online","Presencial","Híbrido"].includes(e.mode)||
+   !["Pontos corridos","Eliminação simples","Eliminação dupla","Grupos","Todos contra todos","Suíço","Personalizado"].includes(e.format)||
+   !["Inscrições abertas","Inscrições encerradas","Confirmado","Em andamento","Concluído","Cancelado"].includes(e.status)||
+   typeof e.link!=="string"||e.link.length>500||
+   typeof e.location!=="string"||e.location.length>120||
+   typeof e.description!=="string"||e.description.length>3000||
+   typeof e.createdAt!=="string"||
+   !Array.isArray(e.participants)||!Array.isArray(e.stages)||
+   e.participants.length>e.capacity||e.stages.length>500)
+   throw Error("Torneio inválido.");
+  if(e.link){
+   let u;
+   try{u=new URL(e.link)}catch{throw Error("Link inválido no backup.");}
+   if(!["https:","http:"].includes(u.protocol))throw Error("Link inválido.");
+  }
+  ids.add(e.id);
+  const childIds=new Set();
+  for(const p of e.participants){
+   if(!p||typeof p.id!=="string"||!p.id||childIds.has(p.id)||
+    typeof p.name!=="string"||!p.name.trim()||p.name.length>80||
+    typeof p.tag!=="string"||p.tag.length>50||
+    typeof p.contact!=="string"||p.contact.length>120||
+    typeof p.checkin!=="boolean")throw Error("Inscrição inválida.");
+   childIds.add(p.id);
+  }
+  for(const s of e.stages){
+   if(!s||typeof s.id!=="string"||!s.id||childIds.has(s.id)||
+    typeof s.name!=="string"||!s.name.trim()||s.name.length>100||
+    !validDate(s.date)||!validTime(s.time))throw Error("Etapa inválida.");
+   childIds.add(s.id);
+  }
+ }
+ return data;
+}
+$("import").onchange=async ev=>{
+ const file=ev.target.files[0];if(!file)return;
+ try{
+  if(file.size>12000000)throw Error("Arquivo muito grande.");
+  const data=validate(JSON.parse(await file.text()));
+  if(!confirm("Substituir todos os torneios pelo backup?"))return;
+  db=data;resetForm();save();render();notify("Backup restaurado.");
+ }catch(err){notify(err.message)}
+ finally{ev.target.value=""}
+};
+try{
+ const raw=localStorage.getItem(KEY);
+ if(raw)db=validate(JSON.parse(raw));
+}catch(err){
+ console.warn(err);notify("Dados salvos inválidos. Verifique seu backup.");
+}
+resetForm();
+$("stageDate").value=today();
+render();
+</script>
+</body>
+</html>
