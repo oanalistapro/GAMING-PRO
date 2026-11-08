@@ -1,17 +1,29 @@
+
 {
   "nome": "GAMING PRO",
-  "versao": "1.0.0",
+  "versao": "2.0.0",
   "tema": {
     "principal": "#ff791b",
     "fundo": "#0b0b0f",
-    "texto": "#ffffff"
+    "texto": "#ffffff",
+    "destaque": "#ffb347"
   },
   "aplicativos": [
+    {
+      "id": "analista-pro",
+      "nome": "ANALISTA PRO",
+      "categoria": "Campeonatos",
+      "icone": "📊",
+      "descricao": "Gestão de campeonatos, tabelas e análise de jogadores.",
+      "url": "https://oanalistapro.github.io/ANALISTA-PRO.github.io/",
+      "ativo": true
+    },
     {
       "id": "simulador-premiacao",
       "nome": "SIMULADOR DE PREMIAÇÃO PRO",
       "categoria": "Simuladores",
       "icone": "🏆",
+      "descricao": "Até 200 colocações, patrocínios, inscrições, taxas, distribuição personalizada e exportação.",
       "pasta": "simulador-premiacao",
       "url": "./simulador-premiacao/index.html",
       "ativo": true
@@ -21,90 +33,100 @@
       "nome": "SIMULADOR DE CAMPEONATO",
       "categoria": "Simuladores",
       "icone": "🎯",
+      "descricao": "Planeje formatos, equipes, rodadas e confrontos.",
       "pasta": "simulador-campeonato",
       "url": "./simulador-campeonato/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "gerador-chaves",
       "nome": "GERADOR DE CHAVES",
       "categoria": "Campeonatos",
       "icone": "🗂️",
+      "descricao": "Monte chaves eliminatórias para torneios.",
       "pasta": "gerador-chaves",
       "url": "./gerador-chaves/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "ranking-jogadores",
       "nome": "RANKING DE JOGADORES",
       "categoria": "Jogadores",
       "icone": "🥇",
+      "descricao": "Organize classificações e desempenho individual.",
       "pasta": "ranking-jogadores",
       "url": "./ranking-jogadores/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "gerador-cards",
       "nome": "GERADOR DE CARDS",
       "categoria": "Criatividade",
       "icone": "🎨",
+      "descricao": "Crie artes para jogadores, equipes e campeonatos.",
       "pasta": "gerador-cards",
       "url": "./gerador-cards/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "gestor-equipes",
       "nome": "GESTOR DE EQUIPES",
       "categoria": "Equipes",
       "icone": "👥",
+      "descricao": "Cadastre equipes e acompanhe seus integrantes.",
       "pasta": "gestor-equipes",
       "url": "./gestor-equipes/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "tabela-pontos",
       "nome": "TABELA DE PONTOS",
       "categoria": "Campeonatos",
       "icone": "📋",
+      "descricao": "Organize posições, eliminações e pontuações.",
       "pasta": "tabela-pontos",
       "url": "./tabela-pontos/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "estatisticas-esports",
       "nome": "ESTATÍSTICAS ESPORTS",
       "categoria": "Jogadores",
       "icone": "📈",
+      "descricao": "Analise resultados e histórico de desempenho em diferentes jogos.",
       "pasta": "estatisticas-esports",
       "url": "./estatisticas-esports/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "agenda-torneios",
       "nome": "AGENDA DE TORNEIOS PRO",
       "categoria": "Campeonatos",
       "icone": "📅",
+      "descricao": "Organize datas, horários e eventos competitivos.",
       "pasta": "agenda-torneios",
       "url": "./agenda-torneios/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "gestor-inscricoes",
       "nome": "GESTOR DE INSCRIÇÕES PRO",
       "categoria": "Equipes",
       "icone": "📝",
+      "descricao": "Organize inscrições, participantes e check-in.",
       "pasta": "gestor-inscricoes",
       "url": "./gestor-inscricoes/index.html",
-      "ativo": true
+      "ativo": false
     },
     {
       "id": "simulador-pontuacao",
       "nome": "SIMULADOR DE PONTUAÇÃO PRO",
       "categoria": "Simuladores",
       "icone": "⚡",
+      "descricao": "Teste regras e sistemas de pontos para diferentes jogos.",
       "pasta": "simulador-pontuacao",
       "url": "./simulador-pontuacao/index.html",
-      "ativo": true
+      "ativo": false
     }
   ]
 }
