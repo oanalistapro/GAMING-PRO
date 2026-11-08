@@ -1,0 +1,111 @@
+
+{
+  "nome": "GAMING PRO",
+  "versao": "1.0.0",
+  "tema": {
+    "principal": "#ff791b",
+    "fundo": "#0b0b0f",
+    "texto": "#ffffff"
+  },
+  "aplicativos": [
+    {
+      "id": "simulador-premiacao",
+      "nome": "SIMULADOR DE PREMIAÇÃO PRO",
+      "categoria": "Simuladores",
+      "icone": "🏆",
+      "pasta": "simulador-premiacao",
+      "url": "./simulador-premiacao/index.html",
+      "ativo": true
+    },
+    {
+      "id": "simulador-campeonato",
+      "nome": "SIMULADOR DE CAMPEONATO",
+      "categoria": "Simuladores",
+      "icone": "🎯",
+      "pasta": "simulador-campeonato",
+      "url": "./simulador-campeonato/index.html",
+      "ativo": true
+    },
+    {
+      "id": "gerador-chaves",
+      "nome": "GERADOR DE CHAVES",
+      "categoria": "Campeonatos",
+      "icone": "🗂️",
+      "pasta": "gerador-chaves",
+      "url": "./gerador-chaves/index.html",
+      "ativo": true
+    },
+    {
+      "id": "ranking-jogadores",
+      "nome": "RANKING DE JOGADORES",
+      "categoria": "Jogadores",
+      "icone": "🥇",
+      "pasta": "ranking-jogadores",
+      "url": "./ranking-jogadores/index.html",
+      "ativo": true
+    },
+    {
+      "id": "gerador-cards",
+      "nome": "GERADOR DE CARDS",
+      "categoria": "Criatividade",
+      "icone": "🎨",
+      "pasta": "gerador-cards",
+      "url": "./gerador-cards/index.html",
+      "ativo": true
+    },
+    {
+      "id": "gestor-equipes",
+      "nome": "GESTOR DE EQUIPES",
+      "categoria": "Equipes",
+      "icone": "👥",
+      "pasta": "gestor-equipes",
+      "url": "./gestor-equipes/index.html",
+      "ativo": true
+    },
+    {
+      "id": "tabela-pontos",
+      "nome": "TABELA DE PONTOS",
+      "categoria": "Campeonatos",
+      "icone": "📋",
+      "pasta": "tabela-pontos",
+      "url": "./tabela-pontos/index.html",
+      "ativo": true
+    },
+    {
+      "id": "estatisticas-esports",
+      "nome": "ESTATÍSTICAS ESPORTS",
+      "categoria": "Jogadores",
+      "icone": "📈",
+      "pasta": "estatisticas-esports",
+      "url": "./estatisticas-esports/index.html",
+      "ativo": true
+    },
+    {
+      "id": "agenda-torneios",
+      "nome": "AGENDA DE TORNEIOS PRO",
+      "categoria": "Campeonatos",
+      "icone": "📅",
+      "pasta": "agenda-torneios",
+      "url": "./agenda-torneios/index.html",
+      "ativo": true
+    },
+    {
+      "id": "gestor-inscricoes",
+      "nome": "GESTOR DE INSCRIÇÕES PRO",
+      "categoria": "Equipes",
+      "icone": "📝",
+      "pasta": "gestor-inscricoes",
+      "url": "./gestor-inscricoes/index.html",
+      "ativo": true
+    },
+    {
+      "id": "simulador-pontuacao",
+      "nome": "SIMULADOR DE PONTUAÇÃO PRO",
+      "categoria": "Simuladores",
+      "icone": "⚡",
+      "pasta": "simulador-pontuacao",
+      "url": "./simulador-pontuacao/index.html",
+      "ativo": true
+    }
+  ]
+}
