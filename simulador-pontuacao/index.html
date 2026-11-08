@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Simulador de Pontuação PRO | Gaming Pro</title>
+<style>
+:root{
+ --bg:#0b0b0f;--panel:#17171f;--field:#24242e;
+ --line:#393943;--orange:#ff791b;--text:#f8f8fa;
+ --muted:#aaaab8;--green:#69dca0;--red:#ff7777
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,Arial}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1380px;margin:auto;padding:14px}
+header{background:#141419;border-bottom:1px solid var(--line);padding:22px 0}
+h1{font-size:clamp(26px,5vw,40px);margin:8px 0}
+h2{font-size:19px;margin:0 0 15px}
+h3{font-size:16px}
+.muted{color:var(--muted);line-height:1.5}
+.orange{color:var(--orange)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{
+ width:100%;min-width:0;background:var(--field);
+ color:white;border:1px solid var(--line);
+ border-radius:10px;padding:11px
+}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{border:0;background:var(--orange);color:#111;border-radius:10px;padding:11px 14px;font-weight:850}
+.btn.alt{background:var(--field);color:white;border:1px solid var(--line)}
+.btn.red{background:#702b2b;color:white}
+.btn.small{padding:7px 9px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--field);border-radius:12px;padding:15px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{display:block;color:var(--orange);font-size:24px;margin-top:5px}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:950px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{color:var(--orange)}
+tr:hover td{background:#ffffff08}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.podium article{background:linear-gradient(130deg,#3c281a,#24242e);border:1px solid #684022;border-radius:14px;padding:17px}
+.podium strong{display:block;color:var(--orange);font-size:20px;margin:10px 0;overflow-wrap:anywhere}
+.pill{background:#48301d;color:#ffbd86;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800}
+.notice{background:#382516;border:1px solid #87501f;color:#ffd5af;padding:12px;border-radius:10px;margin-top:12px}
+.hidden{display:none!important}
+.placement{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.bar-area{display:flex;align-items:end;gap:10px;min-height:230px;overflow-x:auto;padding:15px 0}
+.bar-item{flex:1;min-width:70px;text-align:center}
+.bar{background:linear-gradient(0deg,#a8420a,#ff9b3b);border-radius:7px 7px 0 0}
+.bar-item small{display:block;color:var(--muted);margin-top:7px;overflow-wrap:anywhere}
+.compare{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.compare article{background:var(--field);border-radius:13px;padding:14px}
+.compare p{border-bottom:1px solid var(--line);padding-bottom:7px}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.placement{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){
+ .grid,.podium,.compare{grid-template-columns:1fr}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .placement{grid-template-columns:repeat(3,1fr)}
+ .panel{padding:12px}
+}
+@media print{
+ body{background:white;color:black}
+ header,.editor,.actions,footer,.btn{display:none!important}
+ .panel,.stat,.podium article{background:white;color:black;border-color:#aaa;break-inside:avoid}
+ .muted{color:#444}
+ .stat strong,.podium strong{color:#111}
+ .tablewrap{overflow:visible}
+ table{min-width:0}
+ td,th{font-size:9px;padding:5px;color:black}
+ @page{size:A4 landscape;margin:10mm}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<strong class="orange">🎮 GAMING PRO</strong>
+<h1>⚡ SIMULADOR DE PONTUAÇÃO PRO</h1>
+<p class="muted">Crie regras, simule resultados e calcule classificações para qualquer jogo.</p>
+</div>
+</header>
+
+<main class="wrap">
+
+<section class="panel editor">
+<h2>⚙️ Configuração do campeonato</h2>
+<div class="grid">
+<div class="field">
+<label>Nome do campeonato</label>
+<input id="championship" maxlength="100" value="CAMPEONATO GAMING PRO">
+</div>
+<div class="field">
+<label>Jogo / Modalidade</label>
+<input id="game" maxlength="70" value="Free Fire" list="games">
+<datalist id="games">
+<option value="Free Fire">
+<option value="Fortnite">
+<option value="PUBG">
+<option value="Valorant">
+<option value="Counter-Strike 2">
+<option value="Call of Duty">
+<option value="League of Legends">
+<option value="EA Sports FC">
+<option value="Rocket League">
+<option value="eFootball">
+<option value="Mobile Legends">
+<option value="Mortal Kombat">
+<option value="Chess">
+</datalist>
+</div>
+<div class="field">
+<label>Modelo de pontuação</label>
+<select id="preset">
+<option value="br">Battle Royale</option>
+<option value="league">Liga / Confrontos</option>
+<option value="custom">Personalizado</option>
+</select>
+</div>
+<div class="field">
+<label>Critério de desempate</label>
+<select id="tiebreak">
+<option value="kills">Kills → Vitórias → Melhor colocação</option>
+<option value="wins">Vitórias → Kills → Melhor colocação</option>
+<option value="placement">Melhor colocação → Vitórias → Kills</option>
+<option value="manual">Desempate manual → Vitórias → Kills</option>
+</select>
+</div>
+</div>
+<div class="actions">
+<button class="btn" id="applyPreset">Aplicar modelo</button>
+<button class="btn alt" id="saveSettings">💾 Salvar regras</button>
+</div>
+</section>
+
+<section class="panel editor">
+<h2>🎯 Regras de pontuação</h2>
+<div class="grid">
+<div class="field"><label>Pontos por kill</label><input id="killPoints" type="number" min="-1000" max="1000" value="1"></div>
+<div class="field"><label>Pontos por vitória</label><input id="winPoints" type="number" min="-1000" max="1000" value="0"></div>
+<div class="field"><label>Pontos por empate</label><input id="drawPoints" type="number" min="-1000" max="1000" value="0"></div>
+<div class="field"><label>Pontos por derrota</label><input id="lossPoints" type="number" min="-1000" max="1000" value="0"></div>
+</div>
+<h3>🏅 Pontos por colocação — até 200 posições</h3>
+<p class="muted">Defina os pontos das posições que deseja utilizar. As posições não configuradas recebem zero.</p>
+<div id="placementInputs" class="placement"></div>
+<div class="actions">
+<button class="btn alt" id="morePositions">Mostrar mais posições</button>
+<button class="btn alt" id="clearPositions">Zerar colocações</button>
+</div>
+</section>
+
+<section class="panel editor">
+<h2>👥 Participantes</h2>
+<div class="grid">
+<div class="field">
+<label>Nome da equipe / jogador</label>
+<input id="participantName" maxlength="80" placeholder="Digite o nome">
+</div>
+<div class="field">
+<label>Tipo</label>
+<select id="participantType">
+<option>Equipe</option><option>Jogador</option>
+</select>
+</div>
+<div class="field">
+<label>Adicionar vários de uma vez</label>
+<textarea id="bulkNames" maxlength="16000" placeholder="Uma equipe ou jogador por linha"></textarea>
+</div>
+</div>
+<div class="actions">
+<button class="btn" id="addParticipant">➕ Adicionar</button>
+<button class="btn alt" id="addBulk">Adicionar lista</button>
+</div>
+<p class="muted" id="participantCount"></p>
+</section>
+
+<section class="panel editor">
+<h2>🎮 Registrar rodada</h2>
+<div class="grid">
+<div class="field"><label>Rodada / Queda</label><input id="roundName" maxlength="80" placeholder="Queda 1"></div>
+<div class="field"><label>Participante</label><select id="resultParticipant"></select></div>
+<div class="field"><label>Colocação (0 = sem colocação)</label><input id="position" type="number" min="0" max="200" value="0"></div>
+<div class="field"><label>Kills</label><input id="kills" type="number" min="0" max="100000" value="0"></div>
+<div class="field"><label>Resultado</label>
+<select id="outcome">
+<option value="none">Não aplicar</option>
+<option value="win">Vitória</option>
+<option value="draw">Empate</option>
+<option value="loss">Derrota</option>
+</select></div>
+<div class="field"><label>Bônus de pontos</label><input id="bonus" type="number" min="-100000" max="100000" value="0"></div>
+<div class="field"><label>Penalidade de pontos</label><input id="penalty" type="number" min="0" max="100000" value="0"></div>
+<div class="field"><label>Desempate manual</label><input id="manual" type="number" min="-100000" max="100000" value="0"></div>
+</div>
+<div class="actions">
+<button class="btn" id="saveResult">💾 Registrar resultado</button>
+<button class="btn alt" id="newRound">Próxima rodada</button>
+</div>
+<p class="muted">Você pode registrar vários participantes na mesma rodada. Para corrigir um resultado, selecione o mesmo participante e a mesma rodada e salve novamente.</p>
+<p id="notice" class="notice hidden" role="status"></p>
+</section>
+
+<section class="panel">
+<h2>📊 Resumo</h2>
+<div class="stats" id="stats"></div>
+</section>
+
+<section class="panel">
+<h2>🏆 Pódio</h2>
+<div class="podium" id="podium"></div>
+</section>
+
+<section class="panel">
+<h2>🥇 Classificação geral</h2>
+<div class="grid editor">
+<div class="field">
+<label>Pesquisar</label><input id="search" type="search" placeholder="Equipe ou jogador">
+</div>
+<div class="field">
+<label>Rodada</label><select id="roundFilter"><option value="">Todas</option></select>
+</div>
+</div>
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+<th>TOP</th><th>Participante</th><th>Rodadas</th>
+<th>Colocação</th><th>Kills</th><th>Vitórias</th>
+<th>Empates</th><th>Derrotas</th><th>Bônus</th>
+<th>Penalidades</th><th>Pontos</th><th class="editor">Ação</th>
+</tr>
+</thead>
+<tbody id="ranking"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel">
+<h2>📈 Gráfico de pontuação</h2>
+<div id="chart" class="bar-area"></div>
+</section>
+
+<section class="panel editor">
+<h2>⚔️ Comparar participantes</h2>
+<div class="grid">
+<div class="field"><label>Participante A</label><select id="compareA"></select></div>
+<div class="field"><label>Participante B</label><select id="compareB"></select></div>
+</div>
+<div id="comparison" class="compare" style="margin-top:12px"></div>
+</section>
+
+<section class="panel editor">
+<h2>🧪 Simulador de cenário</h2>
+<p class="muted">Teste um resultado hipotético sem alterar a classificação oficial.</p>
+<div class="grid">
+<div class="field"><label>Participante</label><select id="scenarioParticipant"></select></div>
+<div class="field"><label>Colocação</label><input id="scenarioPosition" type="number" min="0" max="200" value="1"></div>
+<div class="field"><label>Kills</label><input id="scenarioKills" type="number" min="0" max="100000" value="5"></div>
+<div class="field"><label>Bônus / Penalidade líquida</label><input id="scenarioBonus" type="number" min="-100000" max="100000" value="0"></div>
+</div>
+<div class="actions">
+<button class="btn" id="simulate">⚡ Simular</button>
+</div>
+<div id="scenarioOutput" class="notice hidden"></div>
+</section>
+
+<section class="panel editor">
+<h2>📜 Histórico de resultados</h2>
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+<th>Rodada</th><th>Participante</th><th>TOP</th>
+<th>Kills</th><th>Resultado</th><th>Pontos</th><th>Ação</th>
+</tr>
+</thead>
+<tbody id="history"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel">
+<h2>📥 Exportar e salvar</h2>
+<div class="actions">
+<button class="btn" id="csv">📊 Exportar CSV</button>
+<button class="btn alt" id="backup">💾 Backup JSON</button>
+<button class="btn alt" id="print">🖨️ PDF / Imprimir</button>
+<button class="btn alt" id="copy">📋 Copiar classificação</button>
+</div>
+<div class="field editor" style="margin-top:15px">
+<label>Restaurar backup JSON</label>
+<input id="import" type="file" accept=".json,application/json">
+</div>
+<p class="muted">Dados armazenados localmente. Alterações nas regras recalculam todos os resultados automaticamente. Faça backups regularmente.</p>
+</section>
+</main>
+
+<footer>🎮 GAMING PRO · SIMULADOR DE PONTUAÇÃO PRO</footer>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_simulador_pontuacao_v1";
+const uid=()=>crypto.randomUUID
+ ?crypto.randomUUID()
+ :Date.now()+"-"+Math.random().toString(36).slice(2);
+const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:2});
+
+const PRESETS={
+ br:{
+  kill:1,win:0,draw:0,loss:0,
+  placements:[12,9,8,7,6,5,4,3,2,1,0,0]
+ },
+ league:{
+  kill:0,win:3,draw:1,loss:0,
+  placements:[]
+ },
+ custom:{
+  kill:1,win:0,draw:0,loss:0,
+  placements:[10,7,5,3,2,1]
+ }
+};
+
+let db={
+ version:1,
+ championship:"CAMPEONATO GAMING PRO",
+ game:"Free Fire",
+ preset:"br",
+ tiebreak:"kills",
+ rules:{
+  kill:1,win:0,draw:0,loss:0,
+  placements:[...PRESETS.br.placements]
+ },
+ participants:[],
+ results:[]
+};
+let visiblePositions=16;
+let roundCounter=1;
+
+function notify(s){
+ $("notice").textContent=s;
+ $("notice").classList.toggle("hidden",!s);
+}
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(db))}
+ catch{notify("Falha ao salvar. Exporte um backup JSON.")}
+}
+function option(el,value,label){
+ const o=document.createElement("option");
+ o.value=value;o.textContent=label;el.append(o);
+}
+function cell(tr,value){
+ const td=document.createElement("td");
+ td.textContent=value;tr.append(td);
+ return td;
+}
+function button(text,fn,style="alt"){
+ const b=document.createElement("button");
+ b.className="btn "+style+" small";
+ b.textContent=text;b.onclick=fn;return b;
+}
+function integer(id,min,max){
+ const n=Number($(id).value);
+ if($(id).value.trim()===""||!Number.isSafeInteger(n)||n<min||n>max)
+  throw Error("Valor inválido: "+id);
+ return n;
+}
+function placementPoints(position,rules=db.rules){
+ return position>0?(rules.placements[position-1]||0):0;
+}
+function calculate(r,rules=db.rules){
+ const outcome={
+  win:rules.win,draw:rules.draw,
+  loss:rules.loss,none:0
+ };
+ return placementPoints(r.position,rules)+
+  r.kills*rules.kill+
+  outcome[r.outcome]+
+  r.bonus-r.penalty;
+}
+function getRules(){
+ return {
+  kill:integer("killPoints",-1000,1000),
+  win:integer("winPoints",-1000,1000),
+  draw:integer("drawPoints",-1000,1000),
+  loss:integer("lossPoints",-1000,1000),
+  placements:Array.from({length:200},(_,i)=>{
+   const el=$("place"+i);
+   if(!el)return db.rules.placements[i]||0;
+   const n=Number(el.value);
+   if(el.value.trim()===""||!Number.isSafeInteger(n)||n< -100000||n>100000)
+    throw Error("Pontos inválidos na colocação "+(i+1));
+   return n;
+  })
+ };
+}
+function renderPlacementInputs(){
+ const root=$("placementInputs");root.replaceChildren();
+ for(let i=0;i<visiblePositions;i++){
+  const field=document.createElement("div");
+  field.className="field";
+  const label=document.createElement("label");
+  label.textContent=(i+1)+"º lugar";
+  const input=document.createElement("input");
+  input.id="place"+i;
+  input.type="number";
+  input.min="-100000";
+  input.max="100000";
+  input.value=db.rules.placements[i]||0;
+  field.append(label,input);root.append(field);
+ }
+ $("morePositions").textContent=visiblePositions>=200
+  ?"Todas as 200 posições":"Mostrar mais posições";
+ $("morePositions").disabled=visiblePositions>=200;
+}
+function readSettings(){
+ const name=$("championship").value.trim();
+ const game=$("game").value.trim();
+ if(!name||!game)throw Error("Informe campeonato e jogo.");
+ const rules=getRules();
+ return {
+  championship:name,game,
+  preset:$("preset").value,
+  tiebreak:$("tiebreak").value,
+  rules
+ };
+}
+function applySettings(){
+ const settings=readSettings();
+ Object.assign(db,settings);
+ save();render();
+}
+$("saveSettings").onclick=()=>{
+ try{applySettings();notify("Regras salvas e pontuação recalculada.")}
+ catch(e){notify(e.message)}
+};
+$("applyPreset").onclick=()=>{
+ const p=PRESETS[$("preset").value];
+ if(!p)return;
+ if(db.results.length&&!confirm("Trocar as regras e recalcular resultados existentes?"))return;
+ db.rules={
+  kill:p.kill,win:p.win,draw:p.draw,loss:p.loss,
+  placements:[...p.placements]
+ };
+ $("killPoints").value=p.kill;
+ $("winPoints").value=p.win;
+ $("drawPoints").value=p.draw;
+ $("lossPoints").value=p.loss;
+ renderPlacementInputs();
+ try{applySettings();notify("Modelo aplicado.")}
+ catch(e){notify(e.message)}
+};
+$("morePositions").onclick=()=>{
+ try{db.rules=getRules()}
+ catch(e){return notify(e.message)}
+ visiblePositions=Math.min(200,visiblePositions+16);
+ renderPlacementInputs();
+};
+$("clearPositions").onclick=()=>{
+ if(!confirm("Zerar pontos de todas as colocações?"))return;
+ db.rules.placements=Array(200).fill(0);
+ renderPlacementInputs();
+ try{applySettings()}catch(e){notify(e.message)}
+};
+
+function addNames(names,type){
+ const existing=new Set(db.participants.map(p=>p.name.toLowerCase()));
+ let added=0;
+ for(const name of names){
+  const n=name.trim();
+  if(!n||n.length>80||existing.has(n.toLowerCase()))continue;
+  if(db.participants.length>=200)break;
+  db.participants.push({id:uid(),name:n,type});
+  existing.add(n.toLowerCase());added++;
+ }
+ save();render();
+ notify(added+" participante(s) adicionado(s). Limite: 200.");
+}
+$("addParticipant").onclick=()=>{
+ addNames([$("participantName").value],$("participantType").value);
+ $("participantName").value="";
+};
+$("addBulk").onclick=()=>{
+ addNames($("bulkNames").value.split(/\r?\n/),$("participantType").value);
+ $("bulkNames").value="";
+};
+
+function selectParticipants(){
+ const ids=["resultParticipant","compareA","compareB","scenarioParticipant"];
+ ids.forEach(id=>{
+  const el=$(id),old=el.value;
+  el.replaceChildren();
+  if(id.startsWith("compare"))option(el,"","Selecionar");
+  db.participants.forEach(p=>option(el,p.id,p.name));
+  if([...el.options].some(o=>o.value===old))el.value=old;
+ });
+ $("participantCount").textContent=db.participants.length+" de 200 participantes cadastrados.";
+}
+function rounds(){
+ return [...new Set(db.results.map(r=>r.round))];
+}
+function selectRounds(){
+ const el=$("roundFilter"),old=el.value;
+ el.replaceChildren();option(el,"","Todas");
+ rounds().forEach(r=>option(el,r,r));
+ el.value=old;
+}
+function aggregate(participant,round=""){
+ const stats={
+  ...participant,rounds:0,positionPoints:0,kills:0,
+  wins:0,draws:0,losses:0,bonus:0,
+  penalties:0,manual:0,total:0,
+  bestPosition:201
+ };
+ db.results.forEach(r=>{
+  if(r.participantId!==participant.id||(round&&r.round!==round))return;
+  stats.rounds++;
+  stats.positionPoints+=placementPoints(r.position);
+  stats.kills+=r.kills;
+  if(r.outcome==="win")stats.wins++;
+  if(r.outcome==="draw")stats.draws++;
+  if(r.outcome==="loss")stats.losses++;
+  stats.bonus+=r.bonus;
+  stats.penalties+=r.penalty;
+  stats.manual+=r.manual;
+  stats.total+=calculate(r);
+  if(r.position>0)stats.bestPosition=Math.min(stats.bestPosition,r.position);
+ });
+ return stats;
+}
+function compareRank(a,b){
+ const primary=b.total-a.total;
+ if(primary)return primary;
+ const criteria={
+  kills:["kills","wins","bestPosition","manual"],
+  wins:["wins","kills","bestPosition","manual"],
+  placement:["bestPosition","wins","kills","manual"],
+  manual:["manual","wins","kills","bestPosition"]
+ }[db.tiebreak]||["kills","wins","bestPosition"];
+ for(const key of criteria){
+  const difference=key==="bestPosition"
+   ?a[key]-b[key]:b[key]-a[key];
+  if(difference)return difference;
+ }
+ return a.name.localeCompare(b.name,"pt-BR");
+}
+function ranked(round=""){
+ return db.participants.map(p=>aggregate(p,round)).sort(compareRank);
+}
+function filteredRanking(){
+ const q=$("search").value.toLowerCase();
+ return ranked($("roundFilter").value).filter(p=>p.name.toLowerCase().includes(q));
+}
+function renderStats(){
+ const all=ranked();
+ const total=all.reduce((s,p)=>s+p.total,0);
+ const values=[
+  ["Participantes",db.participants.length],
+  ["Rodadas",rounds().length],
+  ["Resultados",db.results.length],
+  ["Pontos distribuídos",fmt(total)]
+ ];
+ const root=$("stats");root.replaceChildren();
+ values.forEach(([label,value])=>{
+  const box=document.createElement("div");box.className="stat";
+  const small=document.createElement("small");small.textContent=label;
+  const strong=document.createElement("strong");strong.textContent=value;
+  box.append(small,strong);root.append(box);
+ });
+}
+function renderPodium(){
+ const root=$("podium");root.replaceChildren();
+ const top=ranked().filter(p=>p.rounds>0).slice(0,3);
+ ["🥇 1º LUGAR","🥈 2º LUGAR","🥉 3º LUGAR"].forEach((label,i)=>{
+  const p=top[i],card=document.createElement("article");
+  const title=document.createElement("span");title.className="pill";title.textContent=label;
+  const name=document.createElement("strong");name.textContent=p?.name||"—";
+  const detail=document.createElement("span");
+  detail.textContent=p?fmt(p.total)+" pontos":"Sem resultado";
+  card.append(title,name,detail);root.append(card);
+ });
+}
+function renderRanking(){
+ const root=$("ranking");root.replaceChildren();
+ filteredRanking().forEach((p,i)=>{
+  const tr=document.createElement("tr");
+  [
+   i+1,p.name,p.rounds,p.positionPoints,p.kills,
+   p.wins,p.draws,p.losses,p.bonus,
+   p.penalties,fmt(p.total)
+  ].forEach(v=>cell(tr,v));
+  const td=document.createElement("td");td.className="editor";
+  td.append(button("Excluir",()=>{
+   if(!confirm("Excluir "+p.name+" e seus resultados?"))return;
+   db.participants=db.participants.filter(x=>x.id!==p.id);
+   db.results=db.results.filter(x=>x.participantId!==p.id);
+   save();render();
+  },"red"));
+  tr.append(td);root.append(tr);
+ });
+}
+function renderChart(){
+ const root=$("chart");root.replaceChildren();
+ const list=filteredRanking().slice(0,10);
+ const values=list.map(p=>p.total);
+ const min=Math.min(0,...values),max=Math.max(0,...values);
+ const range=Math.max(1,max-min);
+ list.forEach(p=>{
+  const group=document.createElement("div");group.className="bar-item";
+  const strong=document.createElement("strong");strong.textContent=fmt(p.total);
+  const bar=document.createElement("div");bar.className="bar";
+  bar.style.height=Math.max(4,(p.total-min)/range*170)+"px";
+  const label=document.createElement("small");label.textContent=p.name;
+  group.append(strong,bar,label);root.append(group);
+ });
+ if(!list.length)root.textContent="Adicione participantes para visualizar o gráfico.";
+}
+function renderCompare(){
+ const root=$("comparison");root.replaceChildren();
+ ["compareA","compareB"].forEach(id=>{
+  const p=ranked().find(x=>x.id===$(id).value);
+  const card=document.createElement("article");
+  if(!p){card.textContent="Selecione um participante.";root.append(card);return}
+  const h=document.createElement("h3");h.textContent=p.name;card.append(h);
+  [
+   ["Pontos",fmt(p.total)],["Rodadas",p.rounds],
+   ["Kills",p.kills],["Vitórias",p.wins],
+   ["Pontos de colocação",p.positionPoints],
+   ["Bônus",p.bonus],["Penalidades",p.penalties]
+  ].forEach(([key,value])=>{
+   const row=document.createElement("p");
+   row.textContent=key+": "+value;card.append(row);
+  });
+  root.append(card);
+ });
+}
+function renderHistory(){
+ const root=$("history");root.replaceChildren();
+ [...db.results].reverse().forEach(r=>{
+  const p=db.participants.find(x=>x.id===r.participantId);
+  const tr=document.createElement("tr");
+  [
+   r.round,p?.name||"—",r.position||"—",
+   r.kills,r.outcome,fmt(calculate(r))
+  ].forEach(v=>cell(tr,v));
+  const td=document.createElement("td");
+  td.append(button("Editar",()=>{
+   $("roundName").value=r.round;
+   $("resultParticipant").value=r.participantId;
+   $("position").value=r.position;
+   $("kills").value=r.kills;
+   $("outcome").value=r.outcome;
+   $("bonus").value=r.bonus;
+   $("penalty").value=r.penalty;
+   $("manual").value=r.manual;
+   $("saveResult").scrollIntoView({behavior:"smooth",block:"center"});
+  }));
+  td.append(button("Excluir",()=>{
+   if(!confirm("Excluir este resultado?"))return;
+   db.results=db.results.filter(x=>x.id!==r.id);
+   save();render();
+  },"red"));
+  tr.append(td);root.append(tr);
+ });
+}
+function render(){
+ selectParticipants();
+ selectRounds();
+ renderStats();renderPodium();renderRanking();
+ renderChart();renderCompare();renderHistory();
+}
+$("saveResult").onclick=()=>{
+ try{
+  applySettings();
+  const participantId=$("resultParticipant").value;
+  if(!db.participants.some(p=>p.id===participantId))
+   throw Error("Selecione um participante.");
+  const round=$("roundName").value.trim();
+  if(!round)throw Error("Informe a rodada.");
+  const result={
+   id:uid(),participantId,round,
+   position:integer("position",0,200),
+   kills:integer("kills",0,100000),
+   outcome:$("outcome").value,
+   bonus:integer("bonus",-100000,100000),
+   penalty:integer("penalty",0,100000),
+   manual:integer("manual",-100000,100000)
+  };
+  const old=db.results.find(r=>r.participantId===participantId&&r.round===round);
+  if(old){
+   result.id=old.id;
+   db.results=db.results.map(r=>r.id===old.id?result:r);
+  }else{
+   if(db.results.length>=50000)throw Error("Limite de resultados atingido.");
+   db.results.push(result);
+  }
+  save();render();notify("Resultado salvo: "+fmt(calculate(result))+" pontos.");
+ }catch(e){notify(e.message)}
+};
+$("newRound").onclick=()=>{
+ const names=rounds();
+ roundCounter=Math.max(roundCounter,names.length)+1;
+ $("roundName").value="Rodada "+roundCounter;
+ $("position").value=0;$("kills").value=0;
+ $("bonus").value=0;$("penalty").value=0;$("manual").value=0;
+ $("outcome").value="none";
+};
+["search","roundFilter"].forEach(id=>{
+ $(id).addEventListener("input",()=>{
+  renderRanking();renderChart();
+ });
+});
+["compareA","compareB"].forEach(id=>$(id).onchange=renderCompare);
+
+$("simulate").onclick=()=>{
+ try{
+  applySettings();
+  const id=$("scenarioParticipant").value;
+  const p=db.participants.find(x=>x.id===id);
+  if(!p)throw Error("Selecione um participante.");
+  const position=integer("scenarioPosition",0,200);
+  const kills=integer("scenarioKills",0,100000);
+  const bonus=integer("scenarioBonus",-100000,100000);
+  const extra=calculate({
+   position,kills,bonus,penalty:0,outcome:"none"
+  });
+  const before=ranked();
+  const oldRank=before.findIndex(x=>x.id===id)+1;
+  const simulated=before.map(x=>({...x}));
+  const target=simulated.find(x=>x.id===id);
+  target.total+=extra;target.kills+=kills;
+  target.rounds++;
+  if(position>0)target.bestPosition=Math.min(target.bestPosition,position);
+  simulated.sort(compareRank);
+  const newRank=simulated.findIndex(x=>x.id===id)+1;
+  const output=$("scenarioOutput");
+  output.classList.remove("hidden");
+  output.textContent=p.name+" | Pontos simulados: "+fmt(extra)+
+   " | Total: "+fmt(target.total)+
+   " | Posição atual: "+oldRank+"º | Posição simulada: "+newRank+"º.";
+ }catch(e){notify(e.message)}
+};
+
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+const csvCell=v=>'"'+String(v??"").replaceAll('"','""')+'"';
+$("csv").onclick=()=>{
+ const rows=[
+  ["Posição","Participante","Rodadas","Kills","Vitórias","Empates","Derrotas","Pontos de colocação","Bônus","Penalidades","Total"],
+  ...filteredRanking().map((p,i)=>[
+   i+1,p.name,p.rounds,p.kills,p.wins,p.draws,
+   p.losses,p.positionPoints,p.bonus,p.penalties,p.total
+  ])
+ ];
+ download("gaming-pro-pontuacao.csv",
+  "\uFEFF"+rows.map(r=>r.map(csvCell).join(";")).join("\r\n"),
+  "text/csv;charset=utf-8");
+};
+$("backup").onclick=()=>download(
+ "gaming-pro-pontuacao-backup.json",
+ JSON.stringify(db,null,2),"application/json"
+);
+$("print").onclick=()=>window.print();
+$("copy").onclick=async()=>{
+ const text=[
+  db.championship+" — "+db.game,
+  ...filteredRanking().map((p,i)=>
+   (i+1)+"º "+p.name+" — "+fmt(p.total)+" pontos"
+  )
+ ].join("\n");
+ try{await navigator.clipboard.writeText(text);notify("Classificação copiada.")}
+ catch{notify("Não foi possível copiar.")}
+};
+
+function validate(data){
+ if(!data||data.version!==1||
+  !Array.isArray(data.participants)||
+  !Array.isArray(data.results)||
+  data.participants.length>200||
+  data.results.length>50000||
+  typeof data.championship!=="string"||
+  typeof data.game!=="string"||
+  !["br","league","custom"].includes(data.preset)||
+  !["kills","wins","placement","manual"].includes(data.tiebreak))
+  throw Error("Backup inválido.");
+ const r=data.rules;
+ if(!r||!Array.isArray(r.placements)||r.placements.length>200)
+  throw Error("Regras inválidas.");
+ for(const key of ["kill","win","draw","loss"]){
+  if(!Number.isSafeInteger(r[key])||Math.abs(r[key])>1000)
+   throw Error("Pontuação inválida.");
+ }
+ if(r.placements.some(n=>!Number.isSafeInteger(n)||Math.abs(n)>100000))
+  throw Error("Colocações inválidas.");
+ const ids=new Set();
+ for(const p of data.participants){
+  if(!p||typeof p.id!=="string"||!p.id||ids.has(p.id)||
+   typeof p.name!=="string"||!p.name.trim()||p.name.length>80||
+   !["Equipe","Jogador"].includes(p.type))
+   throw Error("Participante inválido.");
+  ids.add(p.id);
+ }
+ const resultIds=new Set();
+ const pairs=new Set();
+ for(const x of data.results){
+  if(!x||typeof x.id!=="string"||!x.id||
+   resultIds.has(x.id)||!ids.has(x.participantId)||
+   typeof x.round!=="string"||!x.round.trim()||x.round.length>80||
+   !Number.isSafeInteger(x.position)||x.position<0||x.position>200||
+   !Number.isSafeInteger(x.kills)||x.kills<0||x.kills>100000||
+   !["win","draw","loss","none"].includes(x.outcome)||
+   !Number.isSafeInteger(x.bonus)||Math.abs(x.bonus)>100000||
+   !Number.isSafeInteger(x.penalty)||x.penalty<0||x.penalty>100000||
+   !Number.isSafeInteger(x.manual)||Math.abs(x.manual)>100000)
+   throw Error("Resultado inválido.");
+  const pair=JSON.stringify([x.participantId,x.round]);
+  if(pairs.has(pair))throw Error("Resultados duplicados.");
+  pairs.add(pair);resultIds.add(x.id);
+ }
+ return data;
+}
+$("import").onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  if(file.size>15000000)throw Error("Arquivo muito grande.");
+  const data=validate(JSON.parse(await file.text()));
+  if(!confirm("Substituir todos os dados pelo backup?"))return;
+  db=data;
+  loadSettings();
+  save();render();
+  notify("Backup restaurado.");
+ }catch(err){notify(err.message)}
+ finally{e.target.value=""}
+};
+function loadSettings(){
+ $("championship").value=db.championship;
+ $("game").value=db.game;
+ $("preset").value=db.preset;
+ $("tiebreak").value=db.tiebreak;
+ $("killPoints").value=db.rules.kill;
+ $("winPoints").value=db.rules.win;
+ $("drawPoints").value=db.rules.draw;
+ $("lossPoints").value=db.rules.loss;
+ renderPlacementInputs();
+}
+try{
+ const raw=localStorage.getItem(KEY);
+ if(raw)db=validate(JSON.parse(raw));
+}catch(err){
+ console.warn(err);
+ notify("Dados locais inválidos. Verifique seu backup.");
+}
+loadSettings();
+$("roundName").value="Rodada 1";
+render();
+</script>
+</body>
+</html>
