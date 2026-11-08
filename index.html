@@ -4,88 +4,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#09090f">
-<title>GAMING PRO | Campeonatos e Ferramentas</title>
+<meta name="theme-color" content="#0b0b12">
+<title>GAMING PRO | Plataforma Esports</title>
 <style>
-:root{--bg:#09090f;--card:#181821;--card2:#22222e;--line:#383845;--orange:#ff791b;--text:#fff;--muted:#b8b8c8;--green:#65ed9e}
+:root{--accent:#ff791b;--bg:#0b0b12;--panel:#191923;--panel2:#242431;--border:#383845;--text:#fff;--muted:#b8b8c8}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
-a{color:inherit;text-decoration:none}
-.wrap{width:min(1320px,94%);margin:auto}
-header{background:#101018f5;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
-nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-size:23px;font-weight:1000;letter-spacing:-1px}
-.orange{color:var(--orange)}
-.flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+a{text-decoration:none;color:inherit}
+.wrap{width:min(1320px,95%);margin:auto}
+header{background:#101018f5;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:30}
+nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{font-size:23px;font-weight:1000;letter-spacing:-1px}
+.accent{color:var(--accent)}
+.flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .between{justify-content:space-between}
-.btn{border:0;border-radius:12px;padding:13px 19px;background:var(--orange);color:#111;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.btn:hover{filter:brightness(1.1)}
-.secondary{background:#292935;border:1px solid #424251;color:#fff}
-.danger{background:#5c2323;color:white}
-.hero{background:linear-gradient(90deg,#09090ff5,#09090f99),url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600") center/cover;padding:80px 0}
-.hero h1{font-size:clamp(38px,7vw,78px);line-height:1.04;margin:20px 0}
-.hero p{font-size:18px;color:#d1d1dd;max-width:650px;line-height:1.7}
-.tag{font-size:12px;font-weight:900;color:#ffad70;text-transform:uppercase;letter-spacing:1px}
-section{padding:30px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:12px;background:var(--accent);color:#101018;padding:12px 17px;font-weight:850}
+.btn:hover{filter:brightness(1.12)}
+.secondary{background:#292936;border:1px solid #494956;color:white}
+.danger{background:#6a2929;color:white}
+.hero{padding:75px 0;background:linear-gradient(90deg,#0b0b12,#0b0b12bd),url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600") center/cover}
+.hero h1{font-size:clamp(39px,7vw,80px);line-height:1.03;margin:15px 0}
+.hero p{font-size:18px;max-width:680px;line-height:1.7;color:#d1d1dc}
+.tag{color:#ffae77;text-transform:uppercase;letter-spacing:1px;font-size:12px;font-weight:900}
+section{padding:25px 0}
 h2{font-size:clamp(25px,4vw,38px)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
-.cover{height:210px;position:relative;background:linear-gradient(120deg,#56230d,#111)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.cover{height:185px;background:linear-gradient(135deg,#5b2912,#171723);display:grid;place-items:center;font-size:70px}
 .cover img{width:100%;height:100%;object-fit:cover}
-.pill{position:absolute;right:12px;top:12px;padding:8px 11px;border-radius:30px;background:#111d;color:var(--green);font-size:11px;font-weight:900}
-.content{padding:22px;display:flex;flex:1;flex-direction:column;gap:12px}
-.content h3{font-size:23px;margin:0}
-.content p{color:var(--muted);line-height:1.6;flex:1}
+.content{padding:19px;display:flex;flex-direction:column;gap:11px;flex:1}
+.content h3{margin:0;font-size:22px}
+.content p{color:var(--muted);line-height:1.5;flex:1}
 .content .btn{width:100%}
-.promo{background:linear-gradient(110deg,#51210e,#19141a);border:1px solid #ff791b70;border-radius:20px;padding:25px;margin:22px 0}
-.field{width:100%;background:#252531;border:1px solid #414150;color:white;padding:13px;border-radius:11px;min-width:0}
-.field:focus{outline:2px solid #ff791b80}
+.promo{padding:23px;background:linear-gradient(110deg,#54250f,#1a1820);border:1px solid #ff791b66;border-radius:20px;margin:20px 0}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:19px;padding:22px;margin-bottom:18px}
+.panel h3{margin:0 0 16px}
+.field{width:100%;min-width:0;background:var(--panel2);border:1px solid #474755;border-radius:11px;padding:12px;color:white}
+.field:focus{outline:2px solid #ff791b77}
 label{display:flex;flex-direction:column;gap:7px;font-weight:650}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
 .full{grid-column:1/-1}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
 .muted{color:var(--muted)}
-.notice{background:#14141d;border:1px solid var(--line);padding:17px;border-radius:13px;margin:12px 0}
-.modalbg{position:fixed;inset:0;z-index:100;background:#000d;display:grid;place-items:center;padding:12px}
-.modal{width:min(740px,100%);max-height:94dvh;overflow:auto;background:#1b1b26;border:1px solid #454553;border-radius:22px;padding:25px}
-.modalhead{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.modalhead h2{margin:0 0 18px}
-.hidden{display:none!important}
-.workspace{min-height:calc(100dvh - 70px);padding:28px 0 65px}
-.workhead{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:20px}
-.workhead h1{margin:5px 0;font-size:clamp(28px,4vw,44px)}
-.panel{background:#171720;border:1px solid var(--line);border-radius:20px;padding:23px;margin-bottom:20px}
-.panel h3{margin-top:0}
-.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin:17px 0}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0}
-.stat{background:#242430;border:1px solid #393949;border-radius:14px;padding:16px}
-.stat strong{display:block;font-size:25px;color:var(--orange);margin-top:8px;overflow-wrap:anywhere}
-.scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th,td{padding:13px;border-bottom:1px solid #383845;text-align:left}
-th{color:#ffb17b;background:#22222d}
-.bracket{display:flex;gap:22px;overflow-x:auto;padding:18px 4px}
-.round{min-width:235px;flex:1;display:flex;flex-direction:column;gap:16px}
-.round h4{text-align:center;color:#ffa56a}
-.matches{display:flex;flex:1;flex-direction:column;justify-content:space-around;gap:18px}
-.match{border:1px solid #464655;background:#21212c;border-radius:14px;padding:10px}
-.team{width:100%;display:flex;justify-content:space-between;gap:8px;background:#2b2b38;border:1px solid #414151;color:white;border-radius:9px;padding:13px;margin:5px 0;text-align:left;overflow-wrap:anywhere}
-.team.winner{background:#5d2c13;border-color:var(--orange)}
-.champion{background:linear-gradient(120deg,#66300d,#21160e);border:1px solid var(--orange);border-radius:18px;padding:25px;text-align:center;font-size:26px;font-weight:1000}
-footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
-@media(max-width:950px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.grid,.fields,.stats,.formgrid{grid-template-columns:1fr}.hero{padding:48px 0}.panel{padding:14px}.modal{padding:17px}.brand{font-size:18px}nav .btn{padding:10px}}
-@media print{header,.actions,.workhead .btn,footer,.no-print{display:none!important}body{background:white;color:black}.panel{background:white;color:black;border:1px solid #aaa}.match{color:black}.team{color:black;background:white}.round h4{color:black}}
+.stat{background:#252532;border:1px solid var(--border);border-radius:13px;padding:15px}
+.stat strong{display:block;font-size:24px;color:var(--accent);overflow-wrap:anywhere}
+.scroll{overflow:auto}
+table{width:100%;min-width:650px;border-collapse:collapse}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--border)}
+th{color:#ffb68b;background:#22222d}
+.notice{background:#242430;border:1px solid var(--border);border-radius:13px;padding:14px;margin:12px 0}
+.workspace{padding:30px 0 70px;min-height:75vh}
+.workhead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.workhead h1{margin:6px 0}
+.hidden{display:none!important}
+.modalbg{position:fixed;inset:0;background:#000d;z-index:100;display:grid;place-items:center;padding:12px}
+.modal{background:#1c1c27;border:1px solid #494958;border-radius:20px;padding:23px;width:min(760px,100%);max-height:94dvh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.preview{position:relative;overflow:hidden;background:linear-gradient(135deg,#131320,#2a1c17);border:1px solid #555;border-radius:16px;padding:24px;margin-top:12px}
+.preview::before{content:"";position:absolute;inset:0;background-image:var(--preview-bg,none);background-size:cover;background-position:center;opacity:.3}
+.preview>*{position:relative}
+.preview h2{color:var(--accent);margin:6px 0 12px}
+.preview pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 system-ui;max-height:350px;overflow:auto}
+.bracket{display:flex;gap:18px;overflow-x:auto;padding:15px 0}
+.round{min-width:210px;flex:1}
+.match{background:#242430;border:1px solid #494957;border-radius:12px;padding:9px;margin:12px 0}
+.team{display:block;width:100%;text-align:left;background:#343440;color:white;border:1px solid #494957;border-radius:8px;padding:11px;margin:5px 0}
+.team.win{background:#643017;border-color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:25px;color:var(--muted)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.grid,.fields,.formgrid,.stats{grid-template-columns:1fr}.hero{padding:45px 0}.panel{padding:14px}.logo{font-size:18px}nav .btn{padding:10px}}
+@media print{
+header,footer,.actions,.no-print,#sharePanel,.workhead .btn{display:none!important}
+body{background:white;color:black}
+.panel{background:white;color:black;border:1px solid #aaa}
+table{color:black}
+}
 </style>
 </head>
 <body>
+
 <header>
 <nav class="wrap">
-<a class="brand" href="#inicio">🎮 GAMING <span class="orange">PRO</span></a>
+<a href="#inicio" class="logo">🎮 GAMING <span class="accent">PRO</span></a>
 <div class="flex">
 <button class="btn secondary" id="loginBtn">Entrar</button>
 <button class="btn" id="publishBtn">📢 Divulgar</button>
@@ -96,12 +101,12 @@ footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
 <div id="home">
 <div class="hero" id="inicio">
 <div class="wrap">
-<div class="tag">PORTAL DE CAMPEONATOS E ESPORTS</div>
-<h1>SEU UNIVERSO<br><span class="orange">GAMING PRO.</span></h1>
-<p>Divulgue seu campeonato, encontre torneios e utilize ferramentas para organizar competições.</p>
+<div class="tag">PLATAFORMA ESPORTS</div>
+<h1>GAMING<br><span class="accent">PRO.</span></h1>
+<p>Campeonatos, divulgação, ferramentas profissionais e organização de competições em um só lugar.</p>
 <div class="flex">
-<a class="btn" href="#campeonatos">🏆 Ver campeonatos</a>
-<a class="btn secondary" href="#ferramentas">🎮 Explorar ferramentas</a>
+<a class="btn" href="#campeonatos">🏆 Campeonatos</a>
+<a class="btn secondary" href="#ferramentas">🎮 Ferramentas</a>
 </div>
 </div>
 </div>
@@ -109,18 +114,15 @@ footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
 <main class="wrap">
 <section id="campeonatos">
 <div class="flex between">
-<div>
-<div class="tag">PUBLICIDADE ESPORTS</div>
-<h2>Campeonatos <span class="orange">divulgados</span></h2>
-</div>
-<button class="btn secondary" id="myAdsBtn">📋 Meus anúncios</button>
+<h2>Campeonatos <span class="accent">divulgados</span></h2>
+<button class="btn secondary" id="myAdsBtn">Meus anúncios</button>
 </div>
 <div class="promo flex between">
 <div>
 <h2>Divulgue seu campeonato</h2>
-<p class="muted">R$ 10,00 por anúncio · 30 dias após a confirmação do pagamento.</p>
+<p>R$ 10,00 por anúncio · 30 dias após a confirmação do pagamento.</p>
 </div>
-<button class="btn" id="publishBtn2">Cadastrar campeonato →</button>
+<button class="btn" id="publishBtn2">Cadastrar campeonato</button>
 </div>
 <div class="flex between">
 <p class="muted" id="adCount">Carregando...</p>
@@ -130,9 +132,9 @@ footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
 </section>
 
 <section id="ferramentas">
-<div class="tag">FERRAMENTAS GAMING PRO</div>
-<h2>Organize seu <span class="orange">campeonato</span></h2>
-<input class="field" id="searchTools" placeholder="Pesquisar ferramentas..." style="max-width:430px;margin-bottom:25px">
+<div class="tag">CENTRAL DE FERRAMENTAS</div>
+<h2>Ferramentas <span class="accent">GAMING PRO</span></h2>
+<input id="searchTools" class="field" placeholder="Pesquisar ferramentas..." style="max-width:430px;margin-bottom:22px">
 <div class="grid" id="toolsGrid"></div>
 </section>
 </main>
@@ -145,13 +147,14 @@ footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
 <div class="tag">GAMING PRO / FERRAMENTAS</div>
 <h1 id="toolTitle"></h1>
 </div>
-<button class="btn secondary" id="backBtn">← Voltar ao portal</button>
+<button class="btn secondary" id="backBtn">← Voltar</button>
 </div>
+<div id="sharePanel"></div>
 <div id="toolContent"></div>
 </div>
 </div>
 
-<footer><div class="wrap">GAMING PRO © 2026 · Plataforma de ferramentas e divulgação de campeonatos.</div></footer>
+<footer><div class="wrap">GAMING PRO © 2026</div></footer>
 
 <div class="modalbg hidden" id="modalBg">
 <div class="modal">
@@ -163,848 +166,1226 @@ footer{border-top:1px solid var(--line);padding:25px;color:var(--muted)}
 </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
- getAuth,GoogleAuthProvider,signInWithPopup,
- signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut
+getAuth,GoogleAuthProvider,signInWithPopup,
+signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 const API="https://empty-union-c098gaming-pro-api.junhodorval.workers.dev";
 const ANALISTA="https://oanalistapro.github.io/ANALISTA-PRO.github.io/";
 
-const firebase=initializeApp({
- apiKey:"AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q",
- authDomain:"gaming-pro-4325c.firebaseapp.com",
- projectId:"gaming-pro-4325c",
- storageBucket:"gaming-pro-4325c.firebasestorage.app",
- messagingSenderId:"931964630474",
- appId:"1:931964630474:web:43b0b4c6c2b27a8b2e4b33"
+const app=initializeApp({
+apiKey:"AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q",
+authDomain:"gaming-pro-4325c.firebaseapp.com",
+projectId:"gaming-pro-4325c",
+storageBucket:"gaming-pro-4325c.firebasestorage.app",
+messagingSenderId:"931964630474",
+appId:"1:931964630474:web:43b0b4c6c2b27a8b2e4b33"
 });
-const auth=getAuth(firebase);
+
+const auth=getAuth(app);
 const provider=new GoogleAuthProvider();
-let user=null,paymentTimer=null;
+let user=null;
+let paymentTimer=null;
+let currentTool="";
+let currentTitle="";
+let bgImage="";
 
 const $=s=>document.querySelector(s);
-const el=(tag,text="",cls="")=>{
- const x=document.createElement(tag);
- x.textContent=text;
- if(cls)x.className=cls;
- return x;
-};
-const btn=(text,fn,secondary=false)=>{
- const x=el("button",text,"btn"+(secondary?" secondary":""));
- x.type="button";
- x.onclick=fn;
- return x;
-};
-const field=(label,type="text",value="")=>{
- const wrap=el("label");
- const input=el("input","","field");
- input.type=type;
- input.value=value;
- wrap.append(el("span",label),input);
- return {wrap,input};
-};
-const number=v=>Math.max(0,Number(v)||0);
-const money=v=>(v/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-const cents=v=>Math.round(number(v)*100);
-const safeUrl=value=>{
- try{
-  const u=new URL(value);
-  return u.protocol==="https:"&&!u.username&&!u.password;
- }catch{return false}
-};
-function saveFile(name,content,type="text/plain"){
- const blob=new Blob([content],{type});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download=name;
- document.body.append(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+function el(tag,text="",cls=""){
+const n=document.createElement(tag);
+n.textContent=text;
+if(cls)n.className=cls;
+return n;
 }
-function csv(rows){
- return "\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
+
+function button(text,fn,secondary=false){
+const b=el("button",text,"btn"+(secondary?" secondary":""));
+b.type="button";
+b.onclick=fn;
+return b;
 }
+
+function field(label,type="text",value=""){
+const wrap=el("label");
+const input=el("input","","field");
+input.type=type;
+input.value=value;
+wrap.append(el("span",label),input);
+return {wrap,input};
+}
+
+function area(label,value=""){
+const wrap=el("label");
+const input=el("textarea","","field");
+input.rows=7;
+input.value=value;
+wrap.append(el("span",label),input);
+return {wrap,input};
+}
+
 function panel(title){
- const p=el("section","","panel");
- p.append(el("h3",title));
- return p;
+const p=el("section","","panel");
+p.append(el("h3",title));
+return p;
 }
-function stats(container,items){
- container.replaceChildren();
- items.forEach(([name,value])=>{
-  const box=el("div","","stat");
-  box.append(el("span",name),el("strong",String(value)));
-  container.append(box);
- });
+
+function formFields(items){
+const box=el("div","","fields");
+items.forEach(x=>box.append(x.wrap));
+return box;
 }
+
+function actions(...buttons){
+const x=el("div","","actions");
+x.append(...buttons);
+return x;
+}
+
 function table(headers,rows){
- const wrap=el("div","","scroll");
- const t=el("table");
- const head=el("thead");
- const hr=el("tr");
- headers.forEach(h=>hr.append(el("th",h)));
- head.append(hr);t.append(head);
- const body=el("tbody");
- rows.forEach(row=>{
-  const tr=el("tr");
-  row.forEach(v=>{
-   const td=el("td");
-   if(v instanceof Node)td.append(v);
-   else td.textContent=String(v??"");
-   tr.append(td);
-  });
-  body.append(tr);
- });
- t.append(body);wrap.append(t);
- return wrap;
+const wrap=el("div","","scroll");
+const t=el("table");
+const head=el("thead");
+const tr=el("tr");
+headers.forEach(h=>tr.append(el("th",h)));
+head.append(tr);
+t.append(head);
+const body=el("tbody");
+rows.forEach(row=>{
+const r=el("tr");
+row.forEach(value=>{
+const cell=el("td");
+if(value instanceof Node)cell.append(value);
+else cell.textContent=String(value??"");
+r.append(cell);
+});
+body.append(r);
+});
+t.append(body);
+wrap.append(t);
+return wrap;
 }
+
+function stats(box,items){
+box.replaceChildren();
+items.forEach(([name,value])=>{
+const x=el("div","","stat");
+x.append(el("span",name),el("strong",String(value)));
+box.append(x);
+});
+}
+
+function num(x){return Math.max(0,Number(x)||0)}
+function reais(x){return (x/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function cents(x){return Math.round(num(x)*100)}
+function uid(){return crypto.randomUUID()}
+function load(key,fallback){
+try{return JSON.parse(localStorage.getItem(key))??fallback}
+catch{return fallback}
+}
+function save(key,data){localStorage.setItem(key,JSON.stringify(data))}
+function safeUrl(value){
+try{
+const u=new URL(value);
+return u.protocol==="https:"&&!u.username&&!u.password;
+}catch{return false}
+}
+
+function download(name,content,type="text/plain"){
+const blob=content instanceof Blob?content:new Blob([content],{type});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;a.download=name;
+document.body.append(a);
+a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+
+function csv(rows){
+return "\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
+}
+
 function modal(title){
- $("#modalTitle").textContent=title;
- $("#modalBody").replaceChildren();
- $("#modalBg").classList.remove("hidden");
- return $("#modalBody");
+$("#modalTitle").textContent=title;
+$("#modalBody").replaceChildren();
+$("#modalBg").classList.remove("hidden");
+return $("#modalBody");
 }
+
 function closeModal(){
- $("#modalBg").classList.add("hidden");
- if(paymentTimer)clearInterval(paymentTimer);
- paymentTimer=null;
+$("#modalBg").classList.add("hidden");
+if(paymentTimer)clearInterval(paymentTimer);
+paymentTimer=null;
 }
+
 $("#closeModal").onclick=closeModal;
 $("#modalBg").onclick=e=>{if(e.target===$("#modalBg"))closeModal()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 
 async function api(path,options={}){
- const r=await fetch(API+path,options);
- const data=await r.json().catch(()=>({}));
- if(!r.ok||data.ok===false)throw Error(data.error||"Falha na API");
- return data;
+const r=await fetch(API+path,options);
+const data=await r.json().catch(()=>({}));
+if(!r.ok||data.ok===false)throw Error(data.error||"Erro na API");
+return data;
 }
+
 async function privateApi(path,options={}){
- if(!user)throw Error("Entre com Google para continuar");
- return api(path,{
-  ...options,
-  headers:{
-   Authorization:"Bearer "+await user.getIdToken(),
-   "Content-Type":"application/json",
-   ...(options.headers||{})
-  }
- });
+if(!user)throw Error("Entre com Google");
+return api(path,{
+...options,
+headers:{
+Authorization:"Bearer "+await user.getIdToken(),
+"Content-Type":"application/json",
+...(options.headers||{})
 }
-async function login(){
- if(user)return true;
- try{
-  await signInWithPopup(auth,provider);
-  return true;
- }catch(e){
-  if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment"].includes(e.code)){
-   await signInWithRedirect(auth,provider);
-   return false;
-  }
-  alert("Não foi possível entrar: "+e.message);
-  return false;
- }
-}
-getRedirectResult(auth).catch(console.warn);
-onAuthStateChanged(auth,u=>{
- user=u;
- $("#loginBtn").textContent=u?(u.displayName?.split(" ")[0]||"Minha conta"):"Entrar";
 });
+}
+
+async function login(){
+if(user)return true;
+try{
+await signInWithPopup(auth,provider);
+return true;
+}catch(e){
+if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment"].includes(e.code)){
+await signInWithRedirect(auth,provider);
+return false;
+}
+alert("Erro ao entrar: "+e.message);
+return false;
+}
+}
+
+getRedirectResult(auth).catch(console.warn);
+
+onAuthStateChanged(auth,u=>{
+user=u;
+$("#loginBtn").textContent=u?(u.displayName?.split(" ")[0]||"Minha conta"):"Entrar";
+});
+
 $("#loginBtn").onclick=async()=>{
- if(!user)return login();
- const root=modal("Minha conta");
- root.append(el("p",user.email||"Conta Google"));
- root.append(btn("Sair",async()=>{await signOut(auth);closeModal()},true));
+if(!user)return login();
+const root=modal("Minha conta");
+root.append(el("p",user.email||"Conta Google"));
+root.append(button("Sair",async()=>{await signOut(auth);closeModal()},true));
 };
 
-const images=[
-"photo-1542751371-adc38448a05e",
-"photo-1550745165-9bc0b252726f",
-"photo-1593305841991-05c297ba4575",
-"photo-1558655146-9f40138edfeb",
-"photo-1511512578047-dfb367046420",
-"photo-1460925895917-afdab827c52f",
-"photo-1529156069898-49953e39b3ac",
-"photo-1535223289827-42f1e9919769",
-"photo-1551288049-bebda4e38f71",
-"photo-1516321318423-f06f85e504b3",
-"photo-1506784983877-45594efa4cbe",
-"photo-1450101499163-c8848c66ca85"
-];
+/* CATÁLOGO */
 const tools=[
-["analista","ANALISTA PRO","Campeonatos","📊","Gestão de campeonatos e análise de jogadores."],
-["chaves","GERADOR DE CHAVES","Campeonatos","🗂️","Sorteio, confrontos, fases eliminatórias e campeão."],
-["ranking","RANKING DE JOGADORES","Jogadores","🥇","Classificação, kills, vitórias e desempenho."],
-["cards","GERADOR DE CARDS","Criatividade","🎨","Criação de artes para equipes e campeonatos."],
-["premiacao","SIMULADOR DE PREMIAÇÃO PRO","Simuladores","🏆","Planejamento de receitas, custos e premiações."],
-["pontuacao","SIMULADOR DE PONTUAÇÃO","Simuladores","⚡","Cálculo de kills, colocações e pontos."],
-["equipes","GESTOR DE EQUIPES","Equipes","👥","Cadastro e organização de equipes."],
-["campeonato","SIMULADOR DE CAMPEONATO","Simuladores","🎯","Simulação de confrontos e resultados."],
-["tabela","TABELA DE PONTOS","Campeonatos","📋","Classificação geral de equipes."],
-["estatisticas","ESTATÍSTICAS ESPORTS","Jogadores","📈","Indicadores e análise de desempenho."],
-["agenda","AGENDA DE TORNEIOS","Campeonatos","📅","Organização de eventos e datas."],
-["inscricoes","GESTOR DE INSCRIÇÕES","Equipes","📝","Controle de participantes e vagas."]
+["analista","ANALISTA PRO","📊","Gestão de campeonatos e jogadores."],
+["chaves","GERADOR DE CHAVES","🗂️","Chaves eliminatórias e campeão."],
+["ranking","RANKING DE JOGADORES","🥇","Kills, pontos, partidas e classificação."],
+["cards","GERADOR DE CARDS","🎨","Artes personalizadas com fotos."],
+["premiacao","SIMULADOR DE PREMIAÇÃO PRO","🏆","Inscrições, custos, patrocínios e prêmios."],
+["pontuacao","SIMULADOR DE PONTUAÇÃO","⚡","Regras configuráveis de pontuação."],
+["equipes","GESTOR DE EQUIPES","👥","Equipes, elencos e jogadores."],
+["campeonato","SIMULADOR DE CAMPEONATO","🎯","Confrontos e resultados."],
+["tabela","TABELA DE PONTOS","📋","Classificação de equipes por queda."],
+["estatisticas","ESTATÍSTICAS ESPORTS","📈","Análise de resultados."],
+["agenda","AGENDA DE TORNEIOS","📅","Datas, horários e eventos."],
+["inscricoes","GESTOR DE INSCRIÇÕES","📝","Participantes, vagas e check-in."]
 ];
 
 function renderTools(){
- const root=$("#toolsGrid");
- root.replaceChildren();
- const search=$("#searchTools").value.toLowerCase();
- tools.forEach((t,i)=>{
-  const [id,name,category,icon,description]=t;
-  if(!(name+" "+category).toLowerCase().includes(search))return;
-  const card=el("article","","card");
-  const cover=el("div","","cover");
-  const img=el("img");
-  img.src="https://images.unsplash.com/"+images[i]+"?w=900&q=80";
-  img.loading="lazy";img.alt=name;
-  cover.append(img,el("span","● DISPONÍVEL","pill"));
-  const body=el("div","","content");
-  body.append(
-   el("span",icon+" "+category,"tag"),
-   el("h3",name),
-   el("p",description),
-   btn("Abrir ferramenta →",()=>openTool(id))
-  );
-  card.append(cover,body);
-  root.append(card);
- });
+const root=$("#toolsGrid");
+root.replaceChildren();
+const search=$("#searchTools").value.toLowerCase();
+
+tools.forEach(t=>{
+const [id,name,icon,description]=t;
+if(!(name+" "+description).toLowerCase().includes(search))return;
+const card=el("article","","card");
+card.append(el("div",icon,"cover"));
+const body=el("div","","content");
+body.append(
+el("h3",name),
+el("p",description),
+button("Abrir ferramenta →",()=>openTool(id))
+);
+card.append(body);
+root.append(card);
+});
 }
+
 $("#searchTools").oninput=renderTools;
 
 function openTool(id){
- if(id==="analista"){
-  window.location.href=ANALISTA;
-  return;
- }
- const item=tools.find(t=>t[0]===id);
- $("#home").classList.add("hidden");
- $("#toolPage").classList.remove("hidden");
- $("#toolTitle").textContent=item[1];
- const root=$("#toolContent");
- root.replaceChildren();
- window.scrollTo(0,0);
- location.hash="ferramenta-"+id;
+if(id==="analista"){location.href=ANALISTA;return}
+const t=tools.find(x=>x[0]===id);
+if(!t)return;
 
- const routes={
-  chaves:buildBracket,
-  ranking:buildRanking,
-  premiacao:buildPrize,
-  cards:buildCards,
-  pontuacao:buildPoints,
-  equipes:r=>buildRecords(r,"equipes","Nome da equipe e jogadores"),
-  campeonato:buildChampionship,
-  tabela:buildTable,
-  estatisticas:buildStatistics,
-  agenda:r=>buildRecords(r,"agenda","Evento e data"),
-  inscricoes:r=>buildRecords(r,"inscricoes","Nome do participante")
- };
- routes[id]?.(root);
+currentTool=id;
+currentTitle=t[1];
+$("#home").classList.add("hidden");
+$("#toolPage").classList.remove("hidden");
+$("#toolTitle").textContent=currentTitle;
+$("#toolContent").replaceChildren();
+window.scrollTo(0,0);
+
+const routes={
+chaves:bracket,
+ranking:ranking,
+cards:cards,
+premiacao:prize,
+pontuacao:points,
+equipes:teams,
+campeonato:championship,
+tabela:scoreboard,
+estatisticas:statistics,
+agenda:agenda,
+inscricoes:registrations
+};
+
+routes[id]($("#toolContent"));
+sharePanel();
 }
+
 function back(){
- $("#toolPage").classList.add("hidden");
- $("#home").classList.remove("hidden");
- location.hash="ferramentas";
+$("#toolPage").classList.add("hidden");
+$("#home").classList.remove("hidden");
+location.hash="ferramentas";
 }
 $("#backBtn").onclick=back;
 
+/* PERSONALIZAÇÃO E COMPARTILHAMENTO */
+function sharePanel(){
+const root=$("#sharePanel");
+root.replaceChildren();
+
+const p=panel("🎨 Personalizar e compartilhar");
+const color=field("Cor principal","color",localStorage.getItem("gp-color")||"#ff791b");
+const bg=field("Foto de fundo","file");
+bg.input.accept="image/*";
+
+color.input.oninput=()=>{
+document.documentElement.style.setProperty("--accent",color.input.value);
+localStorage.setItem("gp-color",color.input.value);
+refreshPreview();
+};
+
+bg.input.onchange=()=>{
+const file=bg.input.files?.[0];
+if(!file)return;
+if(!file.type.startsWith("image/")||file.size>8*1024*1024){
+alert("Escolha uma imagem de até 8 MB.");
+return;
+}
+const reader=new FileReader();
+reader.onload=()=>{bgImage=reader.result;refreshPreview()};
+reader.readAsDataURL(file);
+};
+
+const preview=el("div","","preview");
+preview.id="resultPreview";
+
+const heading=el("h2");
+heading.id="previewHeading";
+
+const text=el("pre");
+text.id="previewText";
+
+preview.append(
+el("strong","GAMING PRO • RESULTADO"),
+heading,text
+);
+
+p.append(formFields([color,bg]));
+
+p.append(actions(
+button("🔄 Atualizar prévia",refreshPreview,true),
+button("📋 Copiar texto",async()=>{
+await navigator.clipboard.writeText(resultText());
+alert("Texto copiado!");
+},true),
+button("🟢 WhatsApp",()=>{
+window.open("https://wa.me/?text="+encodeURIComponent(resultText()),"_blank","noopener,noreferrer");
+},true),
+button("📤 Compartilhar",async()=>{
+const text=resultText();
+if(navigator.share){
+await navigator.share({title:currentTitle,text});
+}else{
+await navigator.clipboard.writeText(text);
+alert("Texto copiado. Seu navegador não oferece compartilhamento direto.");
+}
+},true),
+button("⬇ PNG",()=>exportImage("png")),
+button("⬇ JPG",()=>exportImage("jpeg"),true),
+button("🖨 PDF / Imprimir",()=>window.print(),true),
+button("💾 TXT",()=>download("gaming-pro.txt",resultText()),true),
+button("✕ Tirar fundo",()=>{bgImage="";refreshPreview()},true)
+));
+
+p.append(preview);
+root.append(p);
+refreshPreview();
+}
+
+function resultText(){
+return currentTitle+"\n\n"+($("#toolContent").innerText||"").slice(0,12000);
+}
+
+function refreshPreview(){
+const preview=$("#resultPreview");
+if(!preview)return;
+$("#previewHeading").textContent=currentTitle;
+$("#previewText").textContent=($("#toolContent").innerText||"").slice(0,7000)||"Preencha a ferramenta.";
+preview.style.setProperty("--preview-bg",bgImage?"url("+JSON.stringify(bgImage)+")":"none");
+}
+
+async function exportImage(type){
+refreshPreview();
+if(typeof html2canvas!=="function"){
+alert("Biblioteca de imagens não carregou. Verifique a internet.");
+return;
+}
+try{
+const canvas=await html2canvas($("#resultPreview"),{
+backgroundColor:"#15151f",
+scale:2,
+useCORS:true
+});
+canvas.toBlob(blob=>{
+if(blob)download("gaming-pro."+(type==="jpeg"?"jpg":"png"),blob);
+},"image/"+type,.94);
+}catch(e){alert("Erro ao gerar imagem: "+e.message)}
+}
+
 /* GERADOR DE CHAVES */
-function buildBracket(root){
- const setup=panel("🏆 Configurar campeonato");
- const name=field("Nome do campeonato","text","COPA GAMING PRO");
- const teams=el("textarea","","field");
- teams.rows=10;
- teams.placeholder="Uma equipe por linha\nREAL MEDO\nCOMPLEX\nFURY\nTRUPE FANTASMA";
- const config=el("div","","fields");
- config.append(name.wrap);
- setup.append(config,el("p","Digite entre 2 e 64 equipes. Clique no vencedor para avançar de fase.","muted"),teams);
- const actions=el("div","","actions");
- const board=panel("Chave eliminatória");
- const winnerBox=el("div");
- setup.append(actions);
- root.append(setup,board,winnerBox);
+function bracket(root){
+const p=panel("🏆 Gerador de Chaves");
+const name=field("Campeonato","text","COPA GAMING PRO");
+const list=area("Equipes — uma por linha");
+list.input.placeholder="REAL MEDO\nCOMPLEX\nFURY\nTRUPE FANTASMA";
+const output=panel("Chave eliminatória");
+const key="gp-bracket-v4";
+let state=load(key,null);
 
- const storage="gaming-pro-bracket-v3";
- let state=null;
- try{state=JSON.parse(localStorage.getItem(storage)||"null")}catch{}
-
- function persist(){localStorage.setItem(storage,JSON.stringify(state))}
- function propagate(){
-  for(let r=1;r<state.rounds.length;r++){
-   state.rounds[r].forEach((match,i)=>{
-    const a=state.rounds[r-1][i*2];
-    const b=state.rounds[r-1][i*2+1];
-    const next=[
-     a?.winner==null?null:a.teams[a.winner],
-     b?.winner==null?null:b.teams[b.winner]
-    ];
-    if(match.teams[0]!==next[0]||match.teams[1]!==next[1]){
-     match.teams=next;
-     match.winner=null;
-    }
-   });
-  }
- }
- function generate(){
-  const names=teams.value.split("\n").map(s=>s.trim()).filter(Boolean);
-  if(names.length<2||names.length>64)return alert("Informe de 2 a 64 equipes.");
-  if(new Set(names.map(s=>s.toLowerCase())).size!==names.length)return alert("Há equipes repetidas.");
-  for(let i=names.length-1;i>0;i--){
-   const j=Math.floor(Math.random()*(i+1));
-   [names[i],names[j]]=[names[j],names[i]];
-  }
-  const capacity=2**Math.ceil(Math.log2(names.length));
-  const byeCount=capacity-names.length;
-  const first=[];
-  let pos=0;
-  for(let i=0;i<capacity/2;i++){
-   if(i<byeCount)first.push({teams:[names[pos++],null],winner:0});
-   else first.push({teams:[names[pos++],names[pos++]],winner:null});
-  }
-  const rounds=[first];
-  let n=first.length;
-  while(n>1){
-   n/=2;
-   rounds.push(Array.from({length:n},()=>({teams:[null,null],winner:null})));
-  }
-  state={title:name.input.value.trim()||"CAMPEONATO",rounds};
-  propagate();persist();render();
- }
- function choose(r,m,t){
-  const match=state.rounds[r][m];
-  if(!match.teams[t])return;
-  if(r>0&&!match.teams.every(Boolean))return;
-  match.winner=t;
-  propagate();persist();render();
- }
- function render(){
-  board.replaceChildren(el("h3",state?.title||"Chave eliminatória"));
-  winnerBox.replaceChildren();
-  if(!state){
-   board.append(el("p","Cadastre as equipes para gerar a chave.","muted"));
-   return;
-  }
-  const bracket=el("div","","bracket");
-  const labels=["FINAL","SEMIFINAL","QUARTAS DE FINAL","OITAVAS DE FINAL"];
-  state.rounds.forEach((round,r)=>{
-   const col=el("div","","round");
-   const remaining=state.rounds.length-r-1;
-   col.append(el("h4",labels[remaining]||"RODADA "+(r+1)));
-   const matches=el("div","","matches");
-   round.forEach((match,m)=>{
-    const box=el("div","","match");
-    box.append(el("small","Partida "+(m+1),"muted"));
-    match.teams.forEach((team,t)=>{
-     const button=el("button",team||(r===0?"FOLGA":"A definir"),"team"+(match.winner===t?" winner":""));
-     button.type="button";
-     button.disabled=!team||(r>0&&!match.teams.every(Boolean));
-     if(match.winner===t)button.append(el("span","✓"));
-     button.onclick=()=>choose(r,m,t);
-     box.append(button);
-    });
-    matches.append(box);
-   });
-   col.append(matches);bracket.append(col);
-  });
-  board.append(bracket);
-  const final=state.rounds.at(-1)[0];
-  if(final.winner!=null)winnerBox.append(el("div","🏆 CAMPEÃO: "+final.teams[final.winner],"champion"));
- }
- actions.append(
-  btn("🎲 Sortear e gerar chave",generate),
-  btn("💾 Salvar",()=>{if(state){persist();alert("Chave salva.")}},true),
-  btn("⬇ Exportar JSON",()=>{if(state)saveFile("chave-gaming-pro.json",JSON.stringify(state,null,2),"application/json")},true),
-  btn("🖨 Imprimir / PDF",()=>window.print(),true),
-  btn("🗑 Nova chave",()=>{
-   if(confirm("Apagar chave atual?")){state=null;localStorage.removeItem(storage);render()}
-  },true)
- );
- render();
+function propagate(){
+for(let r=1;r<state.rounds.length;r++){
+state.rounds[r].forEach((match,i)=>{
+const a=state.rounds[r-1][i*2];
+const b=state.rounds[r-1][i*2+1];
+const next=[
+a?.winner==null?null:a.teams[a.winner],
+b?.winner==null?null:b.teams[b.winner]
+];
+if(match.teams[0]!==next[0]||match.teams[1]!==next[1]){
+match.teams=next;
+match.winner=null;
+}
+});
+}
 }
 
-/* RANKING DE JOGADORES */
-function buildRanking(root){
- const setup=panel("🥇 Cadastro e desempenho");
- const fields=el("div","","fields");
- const f={
-  name:field("Jogador"),
-  team:field("Equipe"),
-  kills:field("Kills","number","0"),
-  matches:field("Partidas","number","1"),
-  wins:field("Vitórias","number","0"),
-  extra:field("Pontos extras","number","0")
- };
- Object.values(f).forEach(v=>fields.append(v.wrap));
- const actions=el("div","","actions");
- setup.append(fields,actions);
- const result=panel("🏅 Classificação geral");
- const summary=el("div","","stats");
- const list=el("div");
- result.append(summary,list);
- root.append(setup,result);
- const key="gaming-pro-ranking-v3";
- let players=[];
- try{players=JSON.parse(localStorage.getItem(key)||"[]")}catch{}
- const score=p=>number(p.kills)+number(p.wins)*5+Number(p.extra||0);
- function save(){localStorage.setItem(key,JSON.stringify(players));render()}
- function add(){
-  const name=f.name.input.value.trim();
-  if(!name)return alert("Informe o jogador.");
-  players.push({
-   id:crypto.randomUUID(),name,
-   team:f.team.input.value.trim()||"SEM EQUIPE",
-   kills:number(f.kills.input.value),
-   matches:number(f.matches.input.value),
-   wins:number(f.wins.input.value),
-   extra:Number(f.extra.input.value)||0
-  });
-  f.name.input.value="";save();
- }
- function render(){
-  const sorted=[...players].sort((a,b)=>score(b)-score(a)||b.kills-a.kills);
-  stats(summary,[
-   ["Jogadores",players.length],
-   ["Kills totais",players.reduce((s,p)=>s+p.kills,0)],
-   ["Líder",sorted[0]?.name||"—"]
-  ]);
-  const rows=sorted.map((p,i)=>{
-   const actions=el("div","","flex");
-   actions.append(
-    btn("Editar",()=>{
-     const k=prompt("Kills:",p.kills);
-     if(k===null)return;
-     const w=prompt("Vitórias:",p.wins);
-     if(w===null)return;
-     const ex=prompt("Pontos extras:",p.extra);
-     if(ex===null)return;
-     p.kills=number(k);p.wins=number(w);p.extra=Number(ex)||0;save();
-    },true),
-    btn("Excluir",()=>{
-     if(confirm("Excluir jogador?")){players=players.filter(x=>x.id!==p.id);save()}
-    },true)
-   );
-   return [
-    i===0?"🥇 1":i===1?"🥈 2":i===2?"🥉 3":i+1,
-    p.name,p.team,p.kills,p.matches,p.wins,
-    p.matches?(p.kills/p.matches).toFixed(2):"0.00",
-    score(p),actions
-   ];
-  });
-  list.replaceChildren(table(
-   ["TOP","JOGADOR","EQUIPE","KILLS","PARTIDAS","VITÓRIAS","K/P","PONTOS","AÇÕES"],
-   rows
-  ));
- }
- actions.append(
-  btn("➕ Adicionar jogador",add),
-  btn("⬇ Baixar CSV",()=>saveFile("ranking.csv",csv([
-   ["Jogador","Equipe","Kills","Partidas","Vitórias","Pontos"],
-   ...players.map(p=>[p.name,p.team,p.kills,p.matches,p.wins,score(p)])
-  ]),"text/csv;charset=utf-8"),true),
-  btn("🗑 Limpar",()=>{
-   if(confirm("Apagar ranking?")){players=[];save()}
-  },true)
- );
- render();
+function generate(){
+const names=list.input.value.split("\n").map(s=>s.trim()).filter(Boolean);
+if(names.length<2||names.length>128){
+alert("Informe de 2 a 128 equipes.");
+return;
+}
+if(new Set(names.map(s=>s.toLowerCase())).size!==names.length){
+alert("Há equipes repetidas.");
+return;
+}
+for(let i=names.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[names[i],names[j]]=[names[j],names[i]];
+}
+const size=2**Math.ceil(Math.log2(names.length));
+const byes=size-names.length;
+const first=[];
+let pos=0;
+for(let i=0;i<size/2;i++){
+if(i<byes)first.push({teams:[names[pos++],null],winner:0});
+else first.push({teams:[names[pos++],names[pos++]],winner:null});
+}
+const rounds=[first];
+let n=first.length;
+while(n>1){
+n/=2;
+rounds.push(Array.from({length:n},()=>({teams:[null,null],winner:null})));
+}
+state={name:name.input.value||"CAMPEONATO",rounds};
+propagate();save(key,state);render();
 }
 
-/* SIMULADOR DE PREMIAÇÃO */
-function buildPrize(root){
- const setup=panel("🏆 Planejamento financeiro");
- const f={
-  fee:field("Inscrição por equipe (R$)","number","20"),
-  teams:field("Equipes inscritas","number","12"),
-  sponsors:field("Patrocínios (R$)","number","100"),
-  other:field("Outras receitas (R$)","number","0"),
-  expenses:field("Despesas (R$)","number","50"),
-  reserve:field("Reserva administrativa (%)","number","10"),
-  guaranteed:field("Premiação extra financiada (R$)","number","0"),
-  places:field("Colocados premiados (1 a 200)","number","3")
- };
- const fields=el("div","","fields");
- Object.values(f).forEach(x=>fields.append(x.wrap));
- const actions=el("div","","actions");
- setup.append(fields,actions);
- const result=panel("💰 Resultado da premiação");
- const summary=el("div","","stats");
- const list=el("div");
- result.append(summary,list);
- root.append(setup,result);
- let rows=[],total=0;
- function calculate(){
-  const count=Math.floor(Number(f.places.input.value));
-  if(count<1||count>200)return alert("Informe entre 1 e 200 colocados.");
-  const revenue=cents(f.fee.input.value)*Math.floor(number(f.teams.input.value))+
-   cents(f.sponsors.input.value)+cents(f.other.input.value);
-  const costs=cents(f.expenses.input.value);
-  const balance=Math.max(0,revenue-costs);
-  const reserve=Math.round(balance*Math.min(100,number(f.reserve.input.value))/100);
-  total=balance-reserve+cents(f.guaranteed.input.value);
-  const weights=Array.from({length:count},(_,i)=>count-i);
-  const sum=weights.reduce((a,b)=>a+b,0);
-  let remaining=total;
-  rows=weights.map((w,i)=>{
-   const amount=i===count-1?remaining:Math.floor(total*w/sum);
-   remaining-=amount;
-   return [i+1,amount,total?100*amount/total:0];
-  });
-  stats(summary,[
-   ["Receita",money(revenue)],
-   ["Despesas",money(costs)],
-   ["Reserva",money(reserve)],
-   ["Premiação",money(total)],
-   ["Colocados",count],
-   ["Saldo operacional",money(balance-reserve)]
-  ]);
-  list.replaceChildren(
-   el("p","Distribuição proporcional decrescente. A premiação extra deve ter financiamento próprio.","muted"),
-   table(["COLOCAÇÃO","PERCENTUAL","PRÊMIO"],rows.map(r=>[
-    r[0]+"º",r[2].toFixed(2)+"%",money(r[1])
-   ]))
-  );
- }
- actions.append(
-  btn("🧮 Calcular premiação",calculate),
-  btn("⬇ Exportar CSV",()=>{
-   if(!rows.length)calculate();
-   saveFile("premiacao.csv",csv([
-    ["Colocação","Percentual","Prêmio (R$)"],
-    ...rows.map(r=>[r[0],r[2].toFixed(2),(r[1]/100).toFixed(2)])
-   ]),"text/csv;charset=utf-8");
-  },true),
-  btn("🖨 Imprimir / PDF",()=>window.print(),true)
- );
- calculate();
+function choose(r,i,t){
+const m=state.rounds[r][i];
+if(!m.teams[t])return;
+if(r>0&&!m.teams.every(Boolean))return;
+m.winner=t;
+propagate();save(key,state);render();
 }
 
-/* GERADOR DE CARDS */
-function buildCards(root){
- const p=panel("🎨 Criador de cards");
- const name=field("Título","text","CAMPEONATO GAMING PRO");
- const subtitle=field("Descrição","text","A GRANDE FINAL");
- const color=field("Cor principal","color","#ff791b");
- const fields=el("div","","fields");
- fields.append(name.wrap,subtitle.wrap,color.wrap);
- const canvas=el("canvas");
- canvas.width=1200;canvas.height=675;
- canvas.style="width:100%;max-width:900px;border-radius:15px;background:#111";
- function draw(){
-  const c=canvas.getContext("2d");
-  const g=c.createLinearGradient(0,0,1200,675);
-  g.addColorStop(0,"#0c0c15");g.addColorStop(1,color.input.value);
-  c.fillStyle=g;c.fillRect(0,0,1200,675);
-  c.fillStyle="#fff";c.font="bold 42px Arial";
-  c.fillText("GAMING PRO",65,100);
-  c.font="bold 70px Arial";
-  c.fillText(name.input.value.slice(0,26),65,320);
-  c.font="36px Arial";
-  c.fillText(subtitle.input.value.slice(0,48),65,400);
-  c.fillStyle=color.input.value;c.fillRect(65,480,450,12);
- }
- [name,subtitle,color].forEach(x=>x.input.oninput=draw);
- const actions=el("div","","actions");
- actions.append(btn("⬇ Baixar PNG",()=>{
-  const a=document.createElement("a");
-  a.download="gaming-pro-card.png";
-  a.href=canvas.toDataURL("image/png");a.click();
- }));
- p.append(fields,actions,canvas);root.append(p);draw();
+function render(){
+output.replaceChildren(el("h3",state?.name||"Chave eliminatória"));
+if(!state)return;
+const board=el("div","","bracket");
+state.rounds.forEach((round,r)=>{
+const col=el("div","","round");
+col.append(el("h3",r===state.rounds.length-1?"FINAL":"FASE "+(r+1)));
+round.forEach((m,i)=>{
+const box=el("div","","match");
+box.append(el("small","Partida "+(i+1)));
+m.teams.forEach((team,t)=>{
+const b=el("button",team||(r===0?"FOLGA":"A definir"),"team"+(m.winner===t?" win":""));
+b.disabled=!team||(r>0&&!m.teams.every(Boolean));
+b.onclick=()=>choose(r,i,t);
+box.append(b);
+});
+col.append(box);
+});
+board.append(col);
+});
+output.append(board);
+const final=state.rounds.at(-1)[0];
+if(final.winner!=null){
+output.append(el("div","🏆 CAMPEÃO: "+final.teams[final.winner],"notice"));
+}
+refreshPreview();
 }
 
-/* SIMULADOR DE PONTUAÇÃO */
-function buildPoints(root){
- const p=panel("⚡ Pontuação personalizada");
- const f={
-  team:field("Equipe"),
-  kills:field("Kills","number","0"),
-  placement:field("Colocação","number","1"),
-  killValue:field("Pontos por kill","number","1"),
-  top1:field("Pontos TOP 1","number","12")
- };
- const fields=el("div","","fields");
- Object.values(f).forEach(x=>fields.append(x.wrap));
- const output=el("div","","notice");
- const actions=el("div","","actions");
- actions.append(btn("Calcular",()=>{
-  const top=Math.max(0,number(f.top1.input.value)-(number(f.placement.input.value)-1));
-  const score=top+number(f.kills.input.value)*number(f.killValue.input.value);
-  output.textContent=(f.team.input.value||"Equipe")+": "+score+" pontos";
- }));
- p.append(fields,actions,output);root.append(p);
+p.append(name.wrap,list.wrap,actions(
+button("🎲 Sortear",generate),
+button("💾 Salvar",()=>{if(state)save(key,state)},true),
+button("⬇ JSON",()=>{if(state)download("chaves.json",JSON.stringify(state,null,2),"application/json")},true),
+button("🗑 Limpar",()=>{
+if(confirm("Apagar chave?")){
+state=null;localStorage.removeItem(key);render();
+}
+},true)
+));
+root.append(p,output);
+render();
 }
 
-/* GESTORES LOCAIS */
-function buildRecords(root,id,label){
- const p=panel("📋 Gerenciamento de "+id);
- const input=field(label);
- const actions=el("div","","actions");
- const output=el("div");
- const key="gaming-pro-"+id+"-v3";
- let records=[];
- try{records=JSON.parse(localStorage.getItem(key)||"[]")}catch{}
- function save(){localStorage.setItem(key,JSON.stringify(records));render()}
- function render(){
-  output.replaceChildren();
-  records.forEach((record,i)=>{
-   const box=el("div","","notice flex between");
-   box.append(el("strong",record),btn("Excluir",()=>{records.splice(i,1);save()},true));
-   output.append(box);
-  });
- }
- actions.append(
-  btn("➕ Adicionar",()=>{
-   if(!input.input.value.trim())return;
-   records.push(input.input.value.trim());
-   input.input.value="";save();
-  }),
-  btn("⬇ CSV",()=>saveFile(id+".csv",csv([[label],...records.map(x=>[x])]),"text/csv"),true)
- );
- p.append(input.wrap,actions,output);root.append(p);render();
+/* RANKING */
+function ranking(root){
+const p=panel("🥇 Cadastro de jogadores");
+const f={
+name:field("Jogador"),
+team:field("Equipe"),
+kills:field("Kills","number","0"),
+deaths:field("Mortes","number","0"),
+assists:field("Assistências","number","0"),
+matches:field("Partidas","number","1"),
+wins:field("Vitórias","number","0"),
+extra:field("Pontos extras","number","0")
+};
+const key="gaming-pro-ranking-v3";
+let players=load(key,[]);
+const output=panel("🏅 Classificação");
+
+function score(x){return num(x.kills)+num(x.wins)*5+Number(x.extra||0)}
+function persist(){save(key,players);render()}
+
+function add(){
+const name=f.name.input.value.trim();
+if(!name)return alert("Informe o jogador.");
+players.push({
+id:uid(),name,
+team:f.team.input.value.trim()||"SEM EQUIPE",
+kills:num(f.kills.input.value),
+deaths:num(f.deaths.input.value),
+assists:num(f.assists.input.value),
+matches:num(f.matches.input.value),
+wins:num(f.wins.input.value),
+extra:Number(f.extra.input.value)||0
+});
+f.name.input.value="";
+persist();
+}
+
+function render(){
+const sorted=[...players].sort((a,b)=>score(b)-score(a));
+output.replaceChildren(el("h3","Classificação geral"));
+const summary=el("div","","stats");
+stats(summary,[
+["Jogadores",players.length],
+["Kills",players.reduce((s,p)=>s+num(p.kills),0)],
+["Líder",sorted[0]?.name||"—"]
+]);
+output.append(summary);
+output.append(table(
+["TOP","JOGADOR","EQUIPE","KILLS","K/D","KDA","VITÓRIAS","PONTOS","AÇÕES"],
+sorted.map((x,i)=>{
+const buttons=el("div","","flex");
+buttons.append(
+button("Editar",()=>{
+const k=prompt("Kills",x.kills);if(k===null)return;
+const d=prompt("Mortes",x.deaths||0);if(d===null)return;
+const a=prompt("Assistências",x.assists||0);if(a===null)return;
+x.kills=num(k);x.deaths=num(d);x.assists=num(a);
+persist();
+},true),
+button("Excluir",()=>{
+if(confirm("Excluir jogador?")){
+players=players.filter(p=>p.id!==x.id);
+persist();
+}
+},true)
+);
+const deaths=num(x.deaths);
+return [
+i+1,x.name,x.team,x.kills,
+deaths?(x.kills/deaths).toFixed(2):x.kills.toFixed(2),
+deaths?((x.kills+num(x.assists))/deaths).toFixed(2):(x.kills+num(x.assists)).toFixed(2),
+x.wins,score(x),buttons
+];
+})
+));
+refreshPreview();
+}
+
+p.append(formFields(Object.values(f)),actions(
+button("➕ Adicionar",add),
+button("⬇ CSV",()=>download("ranking.csv",csv([
+["Jogador","Equipe","Kills","Mortes","Assistências","Partidas","Vitórias","Pontos"],
+...players.map(x=>[x.name,x.team,x.kills,x.deaths,x.assists,x.matches,x.wins,score(x)])
+]),"text/csv;charset=utf-8"),true),
+button("🗑 Limpar",()=>{
+if(confirm("Apagar ranking?")){players=[];persist()}
+},true)
+));
+root.append(p,output);
+render();
+}
+
+/* PREMIAÇÃO */
+function prize(root){
+const p=panel("🏆 Planejamento de premiação");
+const f={
+fee:field("Inscrição por equipe (R$)","number","20"),
+teams:field("Equipes","number","12"),
+sponsor:field("Patrocínios (R$)","number","100"),
+other:field("Outras receitas (R$)","number","0"),
+expenses:field("Despesas (R$)","number","50"),
+reserve:field("Reserva administrativa (%)","number","10"),
+places:field("Colocados premiados (1–200)","number","3")
+};
+const mode=field("Distribuição");
+const select=el("select","","field");
+["Proporcional","Igualitária","Personalizada por porcentagem"].forEach(x=>{
+const o=el("option",x);select.append(o);
+});
+mode.wrap.replaceChild(select,mode.input);
+const custom=area("Porcentagens personalizadas, uma por linha","50\n30\n20");
+const output=panel("💰 Resultado financeiro");
+let rows=[];
+
+function calculate(){
+const count=Math.floor(num(f.places.input.value));
+if(count<1||count>200)return alert("Informe entre 1 e 200 colocados.");
+const revenue=cents(f.fee.input.value)*Math.floor(num(f.teams.input.value))+
+cents(f.sponsor.input.value)+cents(f.other.input.value);
+const costs=cents(f.expenses.input.value);
+const balance=Math.max(0,revenue-costs);
+const reserve=Math.round(balance*Math.min(100,num(f.reserve.input.value))/100);
+const pool=balance-reserve;
+let weights=[];
+
+if(select.value==="Igualitária"){
+weights=Array(count).fill(1);
+}else if(select.value==="Personalizada por porcentagem"){
+weights=custom.input.value.split("\n").map(Number);
+if(weights.length!==count||weights.some(x=>!Number.isFinite(x)||x<0)||
+Math.abs(weights.reduce((a,b)=>a+b,0)-100)>.001){
+alert("Informe "+count+" porcentagens que somem exatamente 100.");
+return;
+}
+}else{
+weights=Array.from({length:count},(_,i)=>count-i);
+}
+const sum=weights.reduce((a,b)=>a+b,0);
+if(sum<=0)return alert("Distribuição inválida.");
+let remaining=pool;
+rows=weights.map((w,i)=>{
+const value=i===count-1?remaining:Math.floor(pool*w/sum);
+remaining-=value;
+return [i+1,w/sum*100,value];
+});
+
+output.replaceChildren(el("h3","Resultado financeiro"));
+const summary=el("div","","stats");
+stats(summary,[
+["Receita",reais(revenue)],
+["Despesas",reais(costs)],
+["Reserva",reais(reserve)],
+["Premiação",reais(pool)]
+]);
+output.append(summary,table(
+["COLOCAÇÃO","PERCENTUAL","PRÊMIO"],
+rows.map(r=>[r[0]+"º",r[1].toFixed(2)+"%",reais(r[2])])
+));
+refreshPreview();
+}
+
+p.append(formFields(Object.values(f)),mode.wrap,custom.wrap,actions(
+button("🧮 Calcular",calculate),
+button("⬇ CSV",()=>download("premiacao.csv",csv([
+["Colocação","Percentual","Prêmio (R$)"],
+...rows.map(r=>[r[0],r[1].toFixed(2),(r[2]/100).toFixed(2)])
+]),"text/csv;charset=utf-8"),true)
+));
+root.append(p,output);
+calculate();
+}
+
+/* CARDS */
+function cards(root){
+const p=panel("🎨 Criador de cards");
+const name=field("Título","text","CAMPEONATO GAMING PRO");
+const subtitle=field("Descrição","text","GRANDE FINAL");
+const color=field("Cor","color","#ff791b");
+const photo=field("Imagem de fundo","file");
+photo.input.accept="image/*";
+const canvas=el("canvas");
+canvas.width=1200;canvas.height=675;
+canvas.style="width:100%;max-width:900px;border-radius:15px";
+let background=null;
+
+function draw(){
+const c=canvas.getContext("2d");
+const gradient=c.createLinearGradient(0,0,1200,675);
+gradient.addColorStop(0,"#0a0a14");
+gradient.addColorStop(1,color.input.value);
+c.fillStyle=gradient;
+c.fillRect(0,0,1200,675);
+
+if(background){
+c.globalAlpha=.35;
+const scale=Math.max(1200/background.width,675/background.height);
+const w=background.width*scale,h=background.height*scale;
+c.drawImage(background,(1200-w)/2,(675-h)/2,w,h);
+c.globalAlpha=1;
+}
+c.fillStyle="#fff";
+c.font="bold 43px Arial";
+c.fillText("GAMING PRO",65,105);
+c.font="bold 64px Arial";
+c.fillText(name.input.value.slice(0,28),65,320);
+c.font="35px Arial";
+c.fillText(subtitle.input.value.slice(0,50),65,400);
+c.fillStyle=color.input.value;
+c.fillRect(65,485,500,12);
+}
+
+[name,subtitle,color].forEach(x=>x.input.oninput=draw);
+photo.input.onchange=()=>{
+const file=photo.input.files?.[0];
+if(!file||!file.type.startsWith("image/"))return;
+const url=URL.createObjectURL(file);
+const img=new Image();
+img.onload=()=>{background=img;draw();URL.revokeObjectURL(url)};
+img.src=url;
+};
+
+p.append(formFields([name,subtitle,color,photo]),actions(
+button("⬇ Baixar PNG",()=>{
+const a=document.createElement("a");
+a.download="card-gaming-pro.png";
+a.href=canvas.toDataURL("image/png");
+a.click();
+})
+),canvas);
+root.append(p);
+draw();
+}
+
+/* PONTUAÇÃO */
+function points(root){
+const p=panel("⚡ Sistema de pontuação");
+const team=field("Equipe");
+const kills=field("Kills","number","0");
+const placement=field("Colocação","number","1");
+const killValue=field("Pontos por kill","number","1");
+const placementRules=area("Pontos por colocação, do TOP 1 em diante","12\n9\n8\n7\n6\n5\n4\n3\n2\n1\n0\n0");
+const output=panel("Resultados");
+const key="gp-points-v4";
+let results=load(key,[]);
+
+function render(){
+output.replaceChildren(el("h3","Resultados"));
+output.append(table(
+["EQUIPE","KILLS","TOP","PONTOS"],
+[...results].sort((a,b)=>b.score-a.score).map(x=>[x.team,x.kills,x.placement,x.score])
+));
+refreshPreview();
+}
+
+function add(){
+if(!team.input.value.trim())return alert("Informe a equipe.");
+const rules=placementRules.input.value.split("\n").map(num);
+const top=Math.floor(num(placement.input.value));
+if(top<1)return alert("Colocação inválida.");
+const score=num(kills.input.value)*num(killValue.input.value)+(rules[top-1]||0);
+results.push({team:team.input.value.trim(),kills:num(kills.input.value),placement:top,score});
+save(key,results);render();
+}
+
+p.append(formFields([team,kills,placement,killValue]),placementRules.wrap,actions(
+button("➕ Adicionar resultado",add),
+button("⬇ CSV",()=>download("pontuacao.csv",csv([
+["Equipe","Kills","Colocação","Pontos"],
+...results.map(x=>[x.team,x.kills,x.placement,x.score])
+]),"text/csv"),true),
+button("🗑 Limpar",()=>{
+if(confirm("Limpar resultados?")){results=[];save(key,results);render()}
+},true)
+));
+root.append(p,output);render();
+}
+
+/* GESTOR DE EQUIPES */
+function teams(root){
+const p=panel("👥 Gestão de equipes");
+const name=field("Nome da equipe");
+const tag=field("TAG");
+const captain=field("Capitão");
+const players=area("Jogadores — um por linha");
+const key="gp-teams-v4";
+let records=load(key,[]);
+const output=panel("Equipes cadastradas");
+
+function render(){
+output.replaceChildren(el("h3","Equipes cadastradas"));
+records.forEach((x,i)=>{
+const box=el("div","","notice");
+box.append(el("h3",x.name+" ["+x.tag+"]"),
+el("p","Capitão: "+x.captain),
+el("p","Jogadores: "+x.players.join(", ")),
+button("Excluir",()=>{
+if(confirm("Excluir equipe?")){records.splice(i,1);persist()}
+},true));
+output.append(box);
+});
+refreshPreview();
+}
+function persist(){save(key,records);render()}
+
+p.append(formFields([name,tag,captain]),players.wrap,actions(
+button("➕ Cadastrar equipe",()=>{
+if(!name.input.value.trim())return;
+records.push({
+name:name.input.value.trim(),
+tag:tag.input.value.trim(),
+captain:captain.input.value.trim(),
+players:players.input.value.split("\n").map(x=>x.trim()).filter(Boolean)
+});
+persist();
+}),
+button("⬇ JSON",()=>download("equipes.json",JSON.stringify(records,null,2),"application/json"),true)
+));
+root.append(p,output);render();
 }
 
 /* SIMULADOR DE CAMPEONATO */
-function buildChampionship(root){
- const p=panel("🎯 Simulador de confrontos");
- const names=el("textarea","","field");
- names.rows=9;names.placeholder="Uma equipe por linha";
- const output=el("div");
- p.append(names,el("div","","actions"),output);
- p.querySelector(".actions").append(btn("🎲 Simular jogos",()=>{
-  const teams=names.value.split("\n").map(s=>s.trim()).filter(Boolean);
-  if(teams.length<2)return alert("Informe duas ou mais equipes.");
-  const rows=[];
-  teams.forEach((a,i)=>teams.slice(i+1).forEach(b=>{
-   rows.push([a,Math.floor(Math.random()*5),Math.floor(Math.random()*5),b]);
-  }));
-  output.replaceChildren(table(["EQUIPE A","PLACAR A","PLACAR B","EQUIPE B"],rows));
- }));
- root.append(p);
+function championship(root){
+const p=panel("🎯 Simulador de campeonato");
+const names=area("Equipes — uma por linha");
+const output=panel("Confrontos");
+p.append(names.wrap,actions(
+button("🎲 Simular confrontos",()=>{
+const teams=names.input.value.split("\n").map(x=>x.trim()).filter(Boolean);
+if(teams.length<2)return alert("Informe pelo menos duas equipes.");
+const rows=[];
+teams.forEach((a,i)=>teams.slice(i+1).forEach(b=>{
+rows.push([a,Math.floor(Math.random()*5),Math.floor(Math.random()*5),b]);
+}));
+output.replaceChildren(el("h3","Resultados simulados"),
+table(["EQUIPE A","GOLS A","GOLS B","EQUIPE B"],rows));
+refreshPreview();
+})
+));
+root.append(p,output);
 }
 
 /* TABELA DE PONTOS */
-function buildTable(root){
- const p=panel("📋 Tabela geral de pontos");
- const name=field("Equipe");
- const kills=field("Kills","number","0");
- const placement=field("Pontos de colocação","number","0");
- const fields=el("div","","fields");
- fields.append(name.wrap,kills.wrap,placement.wrap);
- const actions=el("div","","actions");
- const output=el("div");
- const key="gaming-pro-table-v3";
- let rows=[];
- try{rows=JSON.parse(localStorage.getItem(key)||"[]")}catch{}
- function render(){
-  const sorted=[...rows].sort((a,b)=>b.total-a.total);
-  output.replaceChildren(table(["TOP","EQUIPE","KILLS","COLOCAÇÃO","TOTAL"],
-   sorted.map((r,i)=>[i+1,r.name,r.kills,r.placement,r.total])));
- }
- actions.append(
-  btn("Adicionar equipe",()=>{
-   if(!name.input.value.trim())return;
-   rows.push({
-    name:name.input.value.trim(),
-    kills:number(kills.input.value),
-    placement:number(placement.input.value),
-    total:number(kills.input.value)+number(placement.input.value)
-   });
-   localStorage.setItem(key,JSON.stringify(rows));render();
-  }),
-  btn("⬇ CSV",()=>saveFile("tabela.csv",csv([
-   ["Equipe","Kills","Colocação","Total"],
-   ...rows.map(r=>[r.name,r.kills,r.placement,r.total])
-  ]),"text/csv"),true),
-  btn("Limpar",()=>{
-   if(confirm("Limpar tabela?")){rows=[];localStorage.removeItem(key);render()}
-  },true)
- );
- p.append(fields,actions,output);root.append(p);render();
+function scoreboard(root){
+const p=panel("📋 Tabela geral");
+const name=field("Equipe");
+const round=field("Queda","number","1");
+const kills=field("Kills","number","0");
+const placement=field("Pontos de colocação","number","0");
+const key="gp-scoreboard-v4";
+let rows=load(key,[]);
+const output=panel("Classificação");
+
+function render(){
+const grouped=new Map();
+rows.forEach(x=>{
+const old=grouped.get(x.name)||{name:x.name,kills:0,placement:0,score:0,rounds:0};
+old.kills+=x.kills;
+old.placement+=x.placement;
+old.score+=x.kills+x.placement;
+old.rounds++;
+grouped.set(x.name,old);
+});
+const sorted=[...grouped.values()].sort((a,b)=>b.score-a.score||b.kills-a.kills);
+output.replaceChildren(el("h3","Classificação geral"),
+table(["TOP","EQUIPE","QUEDAS","KILLS","COLOCAÇÃO","TOTAL"],
+sorted.map((x,i)=>[i+1,x.name,x.rounds,x.kills,x.placement,x.score])));
+output.append(el("h3","Histórico por queda"),
+table(["EQUIPE","QUEDA","KILLS","PONTOS TOP"],
+rows.map(x=>[x.name,x.round,x.kills,x.placement])));
+refreshPreview();
+}
+function persist(){save(key,rows);render()}
+
+p.append(formFields([name,round,kills,placement]),actions(
+button("➕ Adicionar queda",()=>{
+if(!name.input.value.trim())return;
+rows.push({
+name:name.input.value.trim(),
+round:num(round.input.value),
+kills:num(kills.input.value),
+placement:num(placement.input.value)
+});
+persist();
+}),
+button("⬇ CSV",()=>download("tabela.csv",csv([
+["Equipe","Queda","Kills","Pontos de colocação"],
+...rows.map(x=>[x.name,x.round,x.kills,x.placement])
+]),"text/csv"),true),
+button("🗑 Limpar",()=>{
+if(confirm("Apagar tabela?")){rows=[];persist()}
+},true)
+));
+root.append(p,output);render();
 }
 
 /* ESTATÍSTICAS */
-function buildStatistics(root){
- const p=panel("📈 Análise de desempenho");
- const textarea=el("textarea","","field");
- textarea.rows=8;
- textarea.placeholder="Jogador,pontos\nAna,20\nPedro,15";
- const output=el("div");
- const actions=el("div","","actions");
- actions.append(btn("Analisar dados",()=>{
-  const rows=textarea.value.trim().split("\n").slice(1).map(x=>x.split(","));
-  const valid=rows.map(x=>({name:x[0],value:Number(x[1])})).filter(x=>Number.isFinite(x.value));
-  if(!valid.length)return alert("Informe dados no formato indicado.");
-  const total=valid.reduce((s,x)=>s+x.value,0);
-  const sorted=valid.sort((a,b)=>b.value-a.value);
-  const summary=el("div","","stats");
-  stats(summary,[
-   ["Jogadores",valid.length],
-   ["Total",total],
-   ["Média",(total/valid.length).toFixed(2)]
-  ]);
-  output.replaceChildren(summary,table(["JOGADOR","PONTOS"],sorted.map(x=>[x.name,x.value])));
- }));
- p.append(textarea,actions,output);root.append(p);
+function statistics(root){
+const p=panel("📈 Estatísticas Esports");
+const input=area("Dados no formato: Jogador,pontos","Jogador,pontos\nAna,20\nPedro,15");
+const output=panel("Análise");
+p.append(input.wrap,actions(
+button("📊 Analisar",()=>{
+const rows=input.input.value.trim().split("\n").slice(1)
+.map(x=>x.split(","))
+.map(x=>({name:x[0]?.trim(),value:Number(x[1])}))
+.filter(x=>x.name&&Number.isFinite(x.value));
+if(!rows.length)return alert("Informe dados válidos.");
+const total=rows.reduce((s,x)=>s+x.value,0);
+rows.sort((a,b)=>b.value-a.value);
+const summary=el("div","","stats");
+stats(summary,[
+["Participantes",rows.length],
+["Total",total],
+["Média",(total/rows.length).toFixed(2)]
+]);
+output.replaceChildren(el("h3","Análise"),summary,
+table(["PARTICIPANTE","PONTOS"],rows.map(x=>[x.name,x.value])));
+refreshPreview();
+})
+));
+root.append(p,output);
 }
 
-/* PORTAL DE ANÚNCIOS */
-function image(src){
- const img=el("img");
- img.loading="lazy";
- img.referrerPolicy="no-referrer";
- img.src=safeUrl(src)?src:"https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900";
- return img;
+/* AGENDA */
+function agenda(root){
+const p=panel("📅 Agenda de torneios");
+const name=field("Evento");
+const date=field("Data","date");
+const time=field("Horário","time");
+const location=field("Local ou plataforma");
+const key="gp-agenda-v4";
+let records=load(key,[]);
+const output=panel("Eventos");
+
+function render(){
+output.replaceChildren(el("h3","Eventos agendados"),
+table(["EVENTO","DATA","HORÁRIO","LOCAL"],
+[...records].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))
+.map(x=>[x.name,x.date,x.time,x.location])));
+refreshPreview();
 }
+p.append(formFields([name,date,time,location]),actions(
+button("➕ Adicionar evento",()=>{
+if(!name.input.value.trim()||!date.input.value)return alert("Informe evento e data.");
+records.push({
+name:name.input.value.trim(),
+date:date.input.value,
+time:time.input.value,
+location:location.input.value
+});
+save(key,records);render();
+}),
+button("⬇ CSV",()=>download("agenda.csv",csv([
+["Evento","Data","Horário","Local"],
+...records.map(x=>[x.name,x.date,x.time,x.location])
+]),"text/csv"),true),
+button("🗑 Limpar",()=>{
+if(confirm("Limpar agenda?")){records=[];save(key,records);render()}
+},true)
+));
+root.append(p,output);render();
+}
+
+/* INSCRIÇÕES */
+function registrations(root){
+const p=panel("📝 Gestor de inscrições");
+const name=field("Participante ou equipe");
+const contact=field("Contato");
+const slots=field("Limite de vagas","number","12");
+const key="gp-registrations-v4";
+let records=load(key,[]);
+const output=panel("Inscrições");
+
+function render(){
+output.replaceChildren(el("h3","Inscrições"));
+const summary=el("div","","stats");
+stats(summary,[
+["Inscritos",records.length],
+["Confirmados",records.filter(x=>x.confirmed).length],
+["Check-in",records.filter(x=>x.checkin).length]
+]);
+output.append(summary,table(
+["PARTICIPANTE","CONTATO","CONFIRMADO","CHECK-IN","AÇÕES"],
+records.map(x=>{
+const controls=el("div","","flex");
+controls.append(
+button(x.confirmed?"Desconfirmar":"Confirmar",()=>{
+x.confirmed=!x.confirmed;persist();
+},true),
+button(x.checkin?"Retirar check-in":"Check-in",()=>{
+x.checkin=!x.checkin;persist();
+},true),
+button("Excluir",()=>{
+if(confirm("Excluir inscrição?")){
+records=records.filter(r=>r.id!==x.id);persist();
+}
+},true)
+);
+return [x.name,x.contact,x.confirmed?"Sim":"Não",x.checkin?"Sim":"Não",controls];
+})
+));
+refreshPreview();
+}
+function persist(){save(key,records);render()}
+
+p.append(formFields([name,contact,slots]),actions(
+button("➕ Inscrever",()=>{
+if(!name.input.value.trim())return;
+if(records.length>=num(slots.input.value))return alert("Vagas esgotadas.");
+records.push({
+id:uid(),name:name.input.value.trim(),
+contact:contact.input.value.trim(),
+confirmed:false,checkin:false
+});
+persist();
+}),
+button("⬇ CSV",()=>download("inscricoes.csv",csv([
+["Participante","Contato","Confirmado","Check-in"],
+...records.map(x=>[x.name,x.contact,x.confirmed,x.checkin])
+]),"text/csv"),true)
+));
+root.append(p,output);render();
+}
+
+/* ANÚNCIOS */
+function adImage(src){
+const img=el("img");
+img.loading="lazy";
+img.referrerPolicy="no-referrer";
+img.src=safeUrl(src)?src:
+"https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900";
+return img;
+}
+
 async function loadAds(){
- const root=$("#adsGrid");
- $("#adCount").textContent="Carregando campeonatos...";
- try{
-  const data=await api("/api/ads",{cache:"no-store"});
-  root.replaceChildren();
-  for(const a of data.ads||[]){
-   if(!safeUrl(a.target_url))continue;
-   const card=el("article","","card");
-   const cover=el("div","","cover");
-   cover.append(image(a.image_url),el("span","● DIVULGAÇÃO ATIVA","pill"));
-   const body=el("div","","content");
-   body.append(
-    el("span",a.game||"CAMPEONATO","tag"),
-    el("h3",a.title||"Campeonato"),
-    el("p","Organizador: "+(a.organizer||"Não informado")),
-    el("p",a.description||"Acesse o campeonato.")
-   );
-   const link=el("a","Acessar campeonato →","btn");
-   link.href=a.target_url;link.target="_blank";link.rel="noopener noreferrer";
-   body.append(link);card.append(cover,body);root.append(card);
-  }
-  $("#adCount").textContent=root.children.length+" campeonato(s) divulgado(s)";
- }catch(e){
-  $("#adCount").textContent="Erro ao carregar anúncios: "+e.message;
- }
+const root=$("#adsGrid");
+$("#adCount").textContent="Carregando...";
+try{
+const data=await api("/api/ads",{cache:"no-store"});
+root.replaceChildren();
+for(const a of data.ads||[]){
+if(!safeUrl(a.target_url))continue;
+const card=el("article","","card");
+const cover=el("div","","cover");
+cover.append(adImage(a.image_url));
+const body=el("div","","content");
+body.append(
+el("span",a.game||"CAMPEONATO","tag"),
+el("h3",a.title||"Campeonato"),
+el("p","Organizador: "+(a.organizer||"Não informado")),
+el("p",a.description||"Acesse o campeonato.")
+);
+const link=el("a","Acessar campeonato →","btn");
+link.href=a.target_url;
+link.target="_blank";
+link.rel="noopener noreferrer";
+body.append(link);
+card.append(cover,body);
+root.append(card);
 }
+$("#adCount").textContent=root.children.length+" campeonato(s) divulgado(s)";
+}catch(e){
+$("#adCount").textContent="Erro ao carregar: "+e.message;
+}
+}
+
 $("#refreshAds").onclick=loadAds;
 
 async function myAds(){
- if(!user&&!await login())return;
- const root=modal("Meus anúncios");
- root.textContent="Carregando...";
- try{
-  const data=await privateApi("/api/my-ads");
-  root.replaceChildren();
-  if(!data.ads?.length)root.append(el("p","Nenhum anúncio cadastrado."));
-  for(const ad of data.ads||[]){
-   const box=el("div","","notice");
-   const status=el("p","Situação: "+(ad.status==="active"?"ATIVO ✅":"Aguardando pagamento"));
-   const expires=el("p","Vencimento: "+(ad.expires_at||"Ainda não iniciado"),"muted");
-   box.append(el("h3",ad.title),status,expires);
-   if(ad.status!=="active"){
-    const verify=btn("🔄 Verificar pagamento",async()=>{
-     verify.disabled=true;
-     try{
-      const result=await privateApi("/api/payment-status?adId="+encodeURIComponent(ad.id));
-      if(result.status==="active"){
-       status.textContent="Situação: ATIVO ✅";
-       expires.textContent="Vencimento: "+(result.expiresAt||"Confirmado");
-       verify.remove();await loadAds();
-      }else alert("Pagamento ainda não confirmado.");
-     }catch(e){alert(e.message)}
-     finally{verify.disabled=false}
-    });
-    box.append(verify);
-   }
-   root.append(box);
-  }
- }catch(e){root.textContent=e.message}
+if(!user&&!await login())return;
+const root=modal("Meus anúncios");
+root.textContent="Carregando...";
+try{
+const data=await privateApi("/api/my-ads");
+root.replaceChildren();
+if(!data.ads?.length)root.append(el("p","Nenhum anúncio cadastrado."));
+for(const ad of data.ads||[]){
+const box=el("div","","notice");
+const status=el("p","Situação: "+(ad.status==="active"?"ATIVO ✅":"Aguardando pagamento"));
+const expires=el("p","Vencimento: "+(ad.expires_at||"Ainda não iniciado"));
+box.append(el("h3",ad.title),status,expires);
+if(ad.status!=="active"){
+const verify=button("🔄 Verificar pagamento",async()=>{
+verify.disabled=true;
+try{
+const result=await privateApi("/api/payment-status?adId="+encodeURIComponent(ad.id));
+if(result.status==="active"){
+status.textContent="Situação: ATIVO ✅";
+expires.textContent="Vencimento: "+(result.expiresAt||"Confirmado");
+verify.remove();
+await loadAds();
+}else alert("Pagamento ainda não confirmado.");
+}catch(e){alert(e.message)}
+finally{verify.disabled=false}
+},true);
+box.append(verify);
 }
+root.append(box);
+}
+}catch(e){root.textContent=e.message}
+}
+
 $("#myAdsBtn").onclick=myAds;
 
 async function publish(){
- if(!user&&!await login())return;
- const root=modal("Cadastrar campeonato");
- const form=el("form","","formgrid");
- const fields={};
- const definitions=[
-  ["title","Nome do campeonato","text",true],
-  ["organizer","Organizador","text",true],
-  ["game","Jogo","text",true],
-  ["event_date","Data do evento","date",false],
-  ["target_url","Link do campeonato (HTTPS)","url",true],
-  ["image_url","Link da imagem (opcional)","url",false],
-  ["customerName","Nome do pagador","text",true],
-  ["cpfCnpj","CPF ou CNPJ","text",true]
- ];
- definitions.forEach(([key,label,type,required])=>{
-  const f=field(label,type);
-  f.input.required=required;
-  fields[key]=f.input;
-  form.append(f.wrap);
- });
- const description=el("textarea","","field full");
- description.placeholder="Descrição do campeonato";
- description.rows=4;
- const submit=el("button","Gerar Pix R$ 10,00","btn full");
- submit.type="submit";
- form.append(description,submit);
- root.append(form);
+if(!user&&!await login())return;
+const root=modal("Cadastrar campeonato");
+const form=el("form","","formgrid");
+const fields={};
+const definitions=[
+["title","Nome do campeonato","text",true],
+["organizer","Organizador","text",true],
+["game","Jogo","text",true],
+["event_date","Data do evento","date",false],
+["target_url","Link do campeonato (HTTPS)","url",true],
+["image_url","Link da imagem (opcional)","url",false],
+["customerName","Nome do pagador","text",true],
+["cpfCnpj","CPF ou CNPJ","text",true]
+];
 
- form.onsubmit=async e=>{
-  e.preventDefault();
-  const payload=Object.fromEntries(
-   Object.entries(fields).map(([k,v])=>[k,v.value.trim()])
-  );
-  payload.description=description.value.trim();
-  if(!safeUrl(payload.target_url)||payload.image_url&&!safeUrl(payload.image_url)){
-   return alert("Os links precisam começar com https://");
-  }
-  submit.disabled=true;
-  try{
-   const data=await privateApi("/api/ads",{
-    method:"POST",body:JSON.stringify(payload)
-   });
-   root.replaceChildren(
-    el("h3","Pix de R$ 10,00"),
-    el("p","A divulgação será liberada após confirmação do Asaas.","muted")
-   );
-   if(data.pix?.encodedImage){
-    const img=el("img");
-    img.src="data:image/png;base64,"+data.pix.encodedImage;
-    img.style="display:block;max-width:250px;width:100%;margin:15px auto;background:white;padding:10px;border-radius:12px";
-    root.append(img);
-   }
-   if(data.pix?.payload){
-    const code=el("textarea","","field");
-    code.rows=4;code.readOnly=true;code.value=data.pix.payload;
-    root.append(code,btn("Copiar código Pix",async()=>{
-     await navigator.clipboard.writeText(code.value);
-     alert("Código Pix copiado!");
-    },true));
-   }
-   const status=el("p","Aguardando pagamento...","muted");
-   const verify=btn("🔄 Verificar pagamento",check,true);
-   root.append(status,verify);
-   let checking=false;
-   async function check(){
-    if(checking)return;
-    checking=true;
-    try{
-     const result=await privateApi("/api/payment-status?adId="+encodeURIComponent(data.adId));
-     if(result.status==="active"){
-      status.textContent="✅ Pagamento confirmado! Anúncio liberado.";
-      verify.disabled=true;
-      if(paymentTimer)clearInterval(paymentTimer);
-      await loadAds();
-     }else status.textContent="Pagamento ainda não confirmado pelo Asaas.";
-    }catch(err){status.textContent=err.message}
-    finally{checking=false}
-   }
-   paymentTimer=setInterval(check,15000);
-  }catch(err){
-   alert(err.message);submit.disabled=false;
-  }
- };
+definitions.forEach(([key,label,type,required])=>{
+const f=field(label,type);
+f.input.required=required;
+fields[key]=f.input;
+form.append(f.wrap);
+});
+
+const description=el("textarea","","field full");
+description.placeholder="Descrição do campeonato";
+description.rows=4;
+
+const submit=el("button","Gerar Pix R$ 10,00","btn full");
+submit.type="submit";
+form.append(description,submit);
+root.append(form);
+
+form.onsubmit=async e=>{
+e.preventDefault();
+const payload=Object.fromEntries(
+Object.entries(fields).map(([k,v])=>[k,v.value.trim()])
+);
+payload.description=description.value.trim();
+
+if(!safeUrl(payload.target_url)||payload.image_url&&!safeUrl(payload.image_url)){
+alert("Os links precisam começar com https://");
+return;
 }
+
+submit.disabled=true;
+
+try{
+const data=await privateApi("/api/ads",{
+method:"POST",
+body:JSON.stringify(payload)
+});
+
+root.replaceChildren(
+el("h3","Pix de R$ 10,00"),
+el("p","A divulgação será liberada após confirmação do Asaas.","muted")
+);
+
+if(data.pix?.encodedImage){
+const img=el("img");
+img.src="data:image/png;base64,"+data.pix.encodedImage;
+img.style="display:block;max-width:250px;width:100%;margin:15px auto;background:white;padding:10px;border-radius:12px";
+root.append(img);
+}
+
+if(data.pix?.payload){
+const code=el("textarea","","field");
+code.rows=4;
+code.readOnly=true;
+code.value=data.pix.payload;
+root.append(code,button("Copiar código Pix",async()=>{
+await navigator.clipboard.writeText(code.value);
+alert("Código Pix copiado!");
+},true));
+}
+
+const status=el("p","Aguardando pagamento...","muted");
+const verify=button("🔄 Verificar pagamento",check,true);
+root.append(status,verify);
+
+let checking=false;
+
+async function check(){
+if(checking)return;
+checking=true;
+try{
+const result=await privateApi("/api/payment-status?adId="+encodeURIComponent(data.adId));
+if(result.status==="active"){
+status.textContent="✅ Pagamento confirmado! Anúncio liberado.";
+verify.disabled=true;
+if(paymentTimer)clearInterval(paymentTimer);
+await loadAds();
+}else{
+status.textContent="Pagamento ainda não confirmado pelo Asaas.";
+}
+}catch(err){
+status.textContent=err.message;
+}finally{
+checking=false;
+}
+}
+
+paymentTimer=setInterval(check,15000);
+
+}catch(err){
+alert(err.message);
+submit.disabled=false;
+}
+};
+}
+
 $("#publishBtn").onclick=publish;
 $("#publishBtn2").onclick=publish;
+
+const savedColor=localStorage.getItem("gp-color");
+if(savedColor&&/^#[0-9a-f]{6}$/i.test(savedColor)){
+document.documentElement.style.setProperty("--accent",savedColor);
+}
 
 renderTools();
 loadAds();
