@@ -3,1048 +3,610 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#09090e">
-<meta name="description" content="Gaming Pro: ferramentas para campeonatos, esports, equipes, jogadores e simuladores.">
-<title>GAMING PRO | Universo Esports</title>
-
+<meta name="description" content="Gaming Pro - Plataforma de ferramentas para esports, campeonatos, jogadores e equipes.">
+<title>GAMING PRO | Global Esports Platform</title>
 <link rel="icon" href="./gaming-pro.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="./gaming-pro-32.png">
 <link rel="apple-touch-icon" href="./gaming-pro-180.png">
-
 <style>
-:root {
-  --bg:#09090e;
-  --panel:#15151e;
-  --panel2:#20202b;
-  --border:#343440;
-  --orange:#ff791b;
-  --gold:#ffc06b;
-  --white:#f8f8fc;
-  --muted:#a8a8b9;
-  --green:#73e6a1;
+:root{
+ --bg:#09090e;--panel:#15151e;--panel2:#20202b;
+ --border:#343440;--orange:#ff791b;--gold:#ffbf70;
+ --white:#fafafe;--muted:#aaaabb;--green:#76e9a3;
 }
-* {box-sizing:border-box}
-html {scroll-behavior:smooth}
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-  font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-}
-button,input {font:inherit}
-button {cursor:pointer}
-a {text-decoration:none;color:inherit}
-[hidden] {display:none!important}
-.container {width:min(1400px,calc(100% - 32px));margin:auto}
-header {
-  position:sticky;
-  top:0;
-  z-index:40;
-  background:#0c0c12f2;
-  border-bottom:1px solid #ffffff1b;
-  backdrop-filter:blur(18px);
-}
-.nav {
-  min-height:74px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-.brand {display:flex;align-items:center;gap:12px}
-.brand img {
-  width:49px;height:49px;
-  object-fit:cover;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ff9a37,#15151e);
-}
-.brand-name {font-size:22px;font-weight:950;letter-spacing:-.7px}
-.brand-name span {color:var(--orange)}
-.brand small {
-  display:block;
-  font-size:10px;
-  letter-spacing:1.5px;
-  color:var(--muted);
-}
-.nav-actions {display:flex;gap:9px;align-items:center}
-.btn {
-  border:0;
-  background:var(--orange);
-  color:#111;
-  border-radius:12px;
-  padding:13px 19px;
-  font-weight:900;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  transition:.2s;
-}
-.btn:hover:not(:disabled) {filter:brightness(1.1);transform:translateY(-2px)}
-.btn:disabled {opacity:.55;cursor:not-allowed}
-.btn.secondary {
-  background:#22222d;
-  border:1px solid var(--border);
-  color:white;
-}
-.btn.small {padding:10px 13px;font-size:13px}
-.hero {
-  position:relative;
-  background:
-    linear-gradient(90deg,#09090efc,#09090edc 60%,#181015bb),
-    url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&q=85")
-    center/cover;
-  min-height:480px;
-  display:flex;
-  align-items:center;
-  border-bottom:1px solid #ffffff15;
-}
-.hero-content {padding:75px 0;position:relative}
-.kicker {
-  color:var(--gold);
-  font-size:12px;
-  font-weight:950;
-  letter-spacing:2px;
-}
-.hero h1 {
-  font-size:clamp(42px,7vw,82px);
-  letter-spacing:-2.8px;
-  line-height:1.04;
-  margin:17px 0;
-}
-.hero h1 span {color:var(--orange)}
-.hero p {
-  color:#d1d1dd;
-  max-width:650px;
-  line-height:1.8;
-  font-size:17px;
-}
-.hero-buttons {display:flex;flex-wrap:wrap;gap:11px;margin-top:25px}
-.hero-tags {display:flex;flex-wrap:wrap;gap:9px;margin-top:35px}
-.hero-tags span {
-  background:#ffffff12;
-  border:1px solid #ffffff28;
-  border-radius:30px;
-  padding:9px 12px;
-  font-size:12px;
-}
-main {padding:50px 0}
-.section-top {
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:18px;
-  flex-wrap:wrap;
-}
-h2 {font-size:clamp(28px,4vw,43px);margin:10px 0}
-h2 span {color:var(--orange)}
-.subtext {color:var(--muted);line-height:1.7}
-.search {
-  width:min(390px,100%);
-  padding:16px;
-  background:var(--panel);
-  color:white;
-  border:1px solid var(--border);
-  border-radius:14px;
-  outline:none;
-}
-.search:focus {border-color:var(--orange)}
-.toolbar {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:25px 0 20px;
-}
-.filters {display:flex;gap:9px;overflow-x:auto;padding:4px 0 10px}
-.filter {
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:white;
-  padding:12px 17px;
-  border-radius:28px;
-  font-weight:800;
-}
-.filter.active {background:var(--orange);border-color:var(--orange);color:#111}
-.grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:21px;
-}
-.card {
-  display:flex;
-  flex-direction:column;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:24px;
-  overflow:hidden;
-  transition:.25s;
-  min-width:0;
-}
-.card:hover {
-  transform:translateY(-5px);
-  border-color:#ff791b99;
-  box-shadow:0 16px 45px #0009;
-}
-.cover {
-  position:relative;
-  height:205px;
-  background:#28202a center/cover no-repeat;
-}
-.cover::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(0deg,#0a0a0dbb,transparent 75%);
-  pointer-events:none;
-}
-.icon-box {
-  position:absolute;
-  left:19px;
-  bottom:17px;
-  z-index:1;
-  width:65px;
-  height:65px;
-  border:1px solid #ffffff4b;
-  border-radius:18px;
-  background:#15151fe9;
-  display:grid;
-  place-items:center;
-  font-size:32px;
-}
-.status {
-  position:absolute;
-  top:15px;
-  right:15px;
-  z-index:1;
-  background:#101014e8;
-  color:#ffb568;
-  padding:9px 12px;
-  border-radius:25px;
-  font-size:10px;
-  font-weight:950;
-}
-.status.ready {color:var(--green)}
-.card-content {
-  display:flex;
-  flex-direction:column;
-  flex:1;
-  padding:24px;
-}
-.cat {
-  color:var(--gold);
-  font-size:11px;
-  letter-spacing:1px;
-  font-weight:950;
-  text-transform:uppercase;
-}
-.card h3 {
-  font-size:22px;
-  line-height:1.3;
-  margin:12px 0;
-  min-height:57px;
-}
-.card p {
-  color:var(--muted);
-  line-height:1.75;
-  font-size:14px;
-  flex:1;
-}
-.actions {display:flex;gap:10px;margin-top:20px}
-.actions .btn {flex:1;min-width:0}
-.favorite {
-  width:52px;
-  min-width:52px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:var(--panel2);
-  color:var(--gold);
-  font-size:26px;
-}
-.empty {
-  text-align:center;
-  padding:45px;
-  color:var(--muted);
-  border:1px dashed var(--border);
-  border-radius:20px;
-}
-.features {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin:70px 0 20px;
-}
-.feature {
-  padding:25px;
-  background:linear-gradient(140deg,#20202b,#13131a);
-  border:1px solid var(--border);
-  border-radius:20px;
-}
-.feature strong {font-size:19px}
-.feature p {color:var(--muted);line-height:1.7}
-footer {
-  border-top:1px solid var(--border);
-  padding:30px 0;
-  background:#101016;
-  color:var(--muted);
-}
-.footer-row {display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-.footer-row strong {color:white}
-.overlay {
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#000d;
-  display:grid;
-  place-items:center;
-  padding:15px;
-}
-.modal {
-  width:min(520px,100%);
-  max-height:90dvh;
-  overflow:auto;
-  border-radius:22px;
-  padding:25px;
-  background:#1a1a24;
-  border:1px solid var(--border);
-}
-.modal-head {display:flex;align-items:center;justify-content:space-between;gap:10px}
-.modal-head h2 {font-size:24px}
-.modal p {color:var(--muted);line-height:1.7}
-.toast {
-  position:fixed;
-  bottom:22px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:150;
-  background:#252532;
-  color:white;
-  border:1px solid #555;
-  padding:14px 18px;
-  border-radius:12px;
-  text-align:center;
-  max-width:90%;
-}
-@media(max-width:980px) {
-  .grid {grid-template-columns:repeat(2,minmax(0,1fr))}
-  .features {grid-template-columns:1fr}
-}
-@media(max-width:650px) {
-  .grid {grid-template-columns:1fr}
-  .container {width:calc(100% - 24px)}
-  .brand-name {font-size:17px}
-  .brand small {font-size:8px}
-  .brand img {width:43px;height:43px}
-  .nav-actions .btn {padding:10px;font-size:12px}
-  .hero {min-height:450px}
-  .hero-content {padding:55px 0}
-  .hero h1 {letter-spacing:-1px}
-  .hero p {font-size:15px}
-  main {padding:32px 0}
-  .cover {height:185px}
-  .card-content {padding:20px}
-  .card h3 {min-height:auto}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font-family:system-ui,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+[hidden]{display:none!important}
+.container{width:min(1400px,calc(100% - 32px));margin:auto}
+header{position:sticky;top:0;z-index:50;background:#0c0c12ef;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff18}
+.nav{min-height:74px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:49px;height:49px;border-radius:14px;background:linear-gradient(135deg,#ff9a38,#b94700);display:grid;place-items:center;font-size:27px;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand strong{font-size:22px;letter-spacing:-.7px}
+.brand strong span,.orange{color:var(--orange)}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.5px}
+.nav-actions{display:flex;gap:9px}
+.btn{border:0;border-radius:12px;padding:13px 18px;background:var(--orange);color:#111;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-2px)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.secondary{background:#22222d;border:1px solid var(--border);color:white}
+.btn.small{padding:10px 13px;font-size:12px}
+.hero{min-height:480px;display:flex;align-items:center;background:linear-gradient(90deg,#09090efd,#09090ee0 58%,#151016ac),url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&q=85") center/cover;border-bottom:1px solid #ffffff16}
+.hero-content{padding:72px 0}
+.kicker{color:var(--gold);font-size:12px;font-weight:950;letter-spacing:2px}
+.hero h1{font-size:clamp(42px,7vw,82px);line-height:1.05;letter-spacing:-2.5px;margin:18px 0}
+.hero h1 span{color:var(--orange)}
+.hero p{max-width:660px;color:#d0d0dc;font-size:17px;line-height:1.8}
+.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:25px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:32px}
+.hero-tags span{background:#ffffff12;border:1px solid #ffffff25;border-radius:30px;padding:9px 13px;font-size:12px}
+main{padding:48px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+h2{font-size:clamp(28px,4vw,42px);margin:10px 0}
+.muted{color:var(--muted);line-height:1.7}
+.search{width:min(390px,100%);padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--panel);color:white;outline:none}
+.search:focus{border-color:var(--orange)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:24px 0 20px}
+.filters{display:flex;gap:9px;overflow-x:auto;padding:4px 0 10px}
+.filter{white-space:nowrap;border:1px solid var(--border);background:var(--panel);color:white;padding:12px 17px;border-radius:30px;font-weight:800}
+.filter.active{background:var(--orange);border-color:var(--orange);color:#111}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:21px}
+.card{display:flex;flex-direction:column;min-width:0;background:var(--panel);border:1px solid var(--border);border-radius:23px;overflow:hidden;transition:.25s}
+.card:hover{transform:translateY(-5px);border-color:#ff791ba0;box-shadow:0 18px 45px #0008}
+.cover{height:205px;position:relative;background:#24202b center/cover no-repeat}
+.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#09090ebc,transparent 75%);pointer-events:none}
+.icon-box{position:absolute;z-index:1;left:19px;bottom:17px;width:65px;height:65px;border-radius:18px;background:#171720e8;border:1px solid #ffffff48;display:grid;place-items:center;font-size:31px}
+.status{position:absolute;z-index:1;right:15px;top:15px;background:#101014e9;border-radius:30px;padding:9px 12px;color:#ffb56b;font-size:10px;font-weight:950}
+.status.ready{color:var(--green)}
+.card-content{display:flex;flex-direction:column;flex:1;padding:23px}
+.category{color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:950}
+.card h3{font-size:22px;line-height:1.3;margin:12px 0;min-height:57px}
+.card p{color:var(--muted);font-size:14px;line-height:1.75;flex:1}
+.actions{display:flex;gap:10px;margin-top:20px}
+.actions .btn{flex:1;min-width:0}
+.favorite{width:52px;min-width:52px;border:1px solid var(--border);border-radius:13px;background:var(--panel2);color:var(--gold);font-size:26px}
+.empty{text-align:center;padding:40px;border:1px dashed var(--border);border-radius:20px;color:var(--muted)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:70px 0 20px}
+.feature{padding:25px;background:linear-gradient(140deg,#20202b,#13131a);border:1px solid var(--border);border-radius:20px}
+.feature h3{font-size:19px}
+.feature p{color:var(--muted);line-height:1.7}
+footer{background:#101016;border-top:1px solid var(--border);padding:30px 0;color:var(--muted)}
+.footer-row{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.footer-row strong{color:white}
+.overlay{position:fixed;inset:0;z-index:100;background:#000d;display:grid;place-items:center;padding:15px}
+.modal{width:min(540px,100%);max-height:90dvh;overflow:auto;border-radius:22px;padding:24px;background:#1a1a24;border:1px solid var(--border)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.modal-head h2{font-size:23px}
+.modal p{color:var(--muted);line-height:1.7}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:150;background:#252532;color:white;border:1px solid #555;border-radius:12px;padding:14px 18px;max-width:90%;text-align:center}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.features{grid-template-columns:1fr}}
+@media(max-width:650px){
+ .grid{grid-template-columns:1fr}
+ .container{width:calc(100% - 24px)}
+ .brand strong{font-size:17px}
+ .brand small{font-size:8px}
+ .logo{width:43px;height:43px}
+ .nav-actions .btn{padding:10px;font-size:12px}
+ .hero{min-height:440px}
+ .hero-content{padding:50px 0}
+ .hero h1{letter-spacing:-1px}
+ .hero p{font-size:15px}
+ main{padding:32px 0}
+ .cover{height:185px}
+ .card-content{padding:20px}
+ .card h3{min-height:auto}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="container nav">
-    <a class="brand" href="#inicio">
-      <img src="./gaming-pro-192.png" alt="Gaming Pro" onerror="this.style.display='none'">
-      <div>
-        <div class="brand-name">GAMING <span>PRO</span></div>
-        <small>GLOBAL ESPORTS PLATFORM</small>
-      </div>
-    </a>
-    <div class="nav-actions">
-      <button class="btn secondary small" id="loginBtn">Entrar</button>
-      <a href="#ferramentas" class="btn small">Explorar</a>
-    </div>
-  </div>
+<div class="container nav">
+<a class="brand" href="#inicio">
+<div class="logo" id="brandLogo">🎮</div>
+<div>
+<strong>GAMING <span>PRO</span></strong>
+<small>GLOBAL ESPORTS PLATFORM</small>
+</div>
+</a>
+<div class="nav-actions">
+<button class="btn secondary small" id="loginBtn">Entrar</button>
+<a class="btn small" href="#ferramentas">Explorar</a>
+</div>
+</div>
 </header>
 
 <section class="hero" id="inicio">
-  <div class="container hero-content">
-    <div class="kicker">◆ GAMING PRO · ESPORTS WORLD</div>
-    <h1>SEU UNIVERSO<br><span>COMPETITIVO.</span></h1>
-    <p>
-      Gerencie campeonatos, organize equipes, simule premiações,
-      acompanhe rankings e explore ferramentas para diferentes jogos.
-    </p>
-    <div class="hero-buttons">
-      <a href="#ferramentas" class="btn">🚀 Explorar ferramentas</a>
-      <a href="./simulador-premiacao/index.html" class="btn secondary" id="heroPrize">🏆 Simulador PRO</a>
-    </div>
-    <div class="hero-tags">
-      <span>🌎 Multijogos</span>
-      <span>🏆 Campeonatos</span>
-      <span>📊 Estatísticas</span>
-      <span>📱 Celular e PC</span>
-    </div>
-  </div>
+<div class="container hero-content">
+<div class="kicker">◆ GAMING PRO · ESPORTS WORLD</div>
+<h1>SEU UNIVERSO<br><span>COMPETITIVO.</span></h1>
+<p>Gerencie campeonatos, organize equipes, simule premiações, acompanhe rankings e explore ferramentas para diferentes jogos.</p>
+<div class="hero-actions">
+<a href="#ferramentas" class="btn">🚀 Explorar ferramentas</a>
+<a href="#ferramentas" class="btn secondary" id="heroPrize">🏆 Simulador PRO</a>
+</div>
+<div class="hero-tags">
+<span>🌎 Multijogos</span>
+<span>🏆 Campeonatos</span>
+<span>📊 Estatísticas</span>
+<span>📱 Celular e PC</span>
+</div>
+</div>
 </section>
 
 <main class="container">
-  <section id="ferramentas">
-    <div class="section-top">
-      <div>
-        <div class="kicker">FERRAMENTAS GAMING PRO</div>
-        <h2>Explore o <span>ecossistema</span></h2>
-        <p class="subtext" id="counter">Carregando catálogo...</p>
-      </div>
-      <input id="search" class="search" type="search" placeholder="🔎 Pesquisar ferramentas..." aria-label="Pesquisar ferramentas">
-    </div>
+<section id="ferramentas">
+<div class="section-head">
+<div>
+<div class="kicker">FERRAMENTAS GAMING PRO</div>
+<h2>Explore o <span class="orange">ecossistema</span></h2>
+<p class="muted" id="counter">Carregando catálogo...</p>
+</div>
+<input class="search" id="search" type="search" placeholder="🔎 Pesquisar ferramentas..." aria-label="Pesquisar ferramentas">
+</div>
+<div class="toolbar">
+<div class="filters" id="filters"></div>
+<button class="btn secondary small" id="refresh">↻ Atualizar catálogo</button>
+</div>
+<div id="cards" class="grid"></div>
+<div id="empty" class="empty" hidden>Nenhuma ferramenta encontrada.</div>
+</section>
 
-    <div class="toolbar">
-      <div class="filters" id="filters"></div>
-      <button class="btn secondary small" id="refresh">↻ Atualizar catálogo</button>
-    </div>
-
-    <div id="cards" class="grid"></div>
-    <div id="empty" class="empty" hidden>Nenhuma ferramenta encontrada.</div>
-  </section>
-
-  <section class="features">
-    <article class="feature">
-      <div style="font-size:35px">🏆</div>
-      <h3>Campeonatos</h3>
-      <p>Organização de torneios, equipes, pontuações, inscrições e premiações.</p>
-    </article>
-    <article class="feature">
-      <div style="font-size:35px">📈</div>
-      <h3>Análise competitiva</h3>
-      <p>Estatísticas, classificações e ferramentas para acompanhar o desempenho.</p>
-    </article>
-    <article class="feature">
-      <div style="font-size:35px">🌎</div>
-      <h3>Multiplataforma</h3>
-      <p>Interface adaptável para computador, tablet e celular.</p>
-    </article>
-  </section>
+<section class="features">
+<article class="feature"><div style="font-size:35px">🏆</div><h3>Campeonatos</h3><p>Organização de torneios, equipes, pontuações, inscrições e premiações.</p></article>
+<article class="feature"><div style="font-size:35px">📈</div><h3>Análise competitiva</h3><p>Estatísticas, classificações e ferramentas para acompanhar desempenho.</p></article>
+<article class="feature"><div style="font-size:35px">🌎</div><h3>Multiplataforma</h3><p>Interface adaptada para computador, tablet e celular.</p></article>
+</section>
 </main>
 
 <footer>
-  <div class="container footer-row">
-    <div>
-      <strong>GAMING PRO</strong>
-      <p>Seu universo de ferramentas esports.</p>
-    </div>
-    <div>
-      <p>© <span id="year"></span> Gaming Pro</p>
-      <a href="mailto:adm.oanalistapro@gmail.com">Contato</a>
-    </div>
-  </div>
+<div class="container footer-row">
+<div><strong>GAMING PRO</strong><p>Seu universo de ferramentas esports.</p></div>
+<div><p>© <span id="year"></span> Gaming Pro</p><a href="mailto:adm.oanalistapro@gmail.com">Contato</a></div>
+</div>
 </footer>
 
 <div class="overlay" id="overlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-head">
-      <h2 id="modalTitle">Gaming Pro</h2>
-      <button id="closeModal" class="btn secondary small">✕</button>
-    </div>
-    <div id="modalBody"></div>
-  </div>
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-head">
+<h2 id="modalTitle">Gaming Pro</h2>
+<button id="closeModal" class="btn secondary small" aria-label="Fechar">✕</button>
+</div>
+<div id="modalBody"></div>
+</div>
 </div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
 "use strict";
+const $=id=>document.getElementById(id);
+const ROOT=new URL("./",location.href);
+const ANALISTA_URL="https://oanalistapro.github.io/ANALISTA-PRO.github.io/";
 
-const $ = id => document.getElementById(id);
-const ROOT = new URL("./", location.href);
-
-/*
-  CADA MÓDULO TEM SUA PRÓPRIA FOTO.
-  Nenhuma imagem é reutilizada entre os 12 cartões.
-  Para personalizar, altere somente o campo "foto".
-*/
-const DEFAULT_APPS = [
-  {
-    id:"analista-pro",
-    nome:"ANALISTA PRO",
-    categoria:"Campeonatos",
-    icone:"📊",
-    descricao:"Gestão de campeonatos, tabelas e análise de jogadores.",
-    url:"https://oanalistapro.github.io/ANALISTA-PRO.github.io/",
-    ativo:true,
-    foto:"https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&q=80"
-  },
-  {
-    id:"simulador-premiacao",
-    nome:"SIMULADOR DE PREMIAÇÃO PRO",
-    categoria:"Simuladores",
-    icone:"🏆",
-    descricao:"Até 200 colocações, inscrições, taxas, patrocínios e distribuição de prêmios.",
-    url:"./simulador-premiacao/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900&q=80"
-  },
-  {
-    id:"simulador-campeonato",
-    nome:"SIMULADOR DE CAMPEONATO",
-    categoria:"Simuladores",
-    icone:"🎯",
-    descricao:"Planeje formatos, equipes, rodadas e confrontos.",
-    url:"./simulador-campeonato/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=900&q=80"
-  },
-  {
-    id:"gerador-chaves",
-    nome:"GERADOR DE CHAVES",
-    categoria:"Campeonatos",
-    icone:"🗂️",
-    descricao:"Monte chaves eliminatórias para torneios.",
-    url:"./gerador-chaves/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900&q=80"
-  },
-  {
-    id:"ranking-jogadores",
-    nome:"RANKING DE JOGADORES",
-    categoria:"Jogadores",
-    icone:"🥇",
-    descricao:"Classificações e desempenho individual em diferentes jogos.",
-    url:"./ranking-jogadores/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=900&q=80"
-  },
-  {
-    id:"gerador-cards",
-    nome:"GERADOR DE CARDS",
-    categoria:"Criatividade",
-    icone:"🎨",
-    descricao:"Crie artes para jogadores, equipes e campeonatos.",
-    url:"./gerador-cards/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=900&q=80"
-  },
-  {
-    id:"gestor-equipes",
-    nome:"GESTOR DE EQUIPES",
-    categoria:"Equipes",
-    icone:"👥",
-    descricao:"Cadastre equipes e acompanhe seus integrantes.",
-    url:"./gestor-equipes/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
-  },
-  {
-    id:"tabela-pontos",
-    nome:"TABELA DE PONTOS",
-    categoria:"Campeonatos",
-    icone:"📋",
-    descricao:"Organize posições, eliminações e pontuações.",
-    url:"./tabela-pontos/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80"
-  },
-  {
-    id:"estatisticas-esports",
-    nome:"ESTATÍSTICAS ESPORTS",
-    categoria:"Jogadores",
-    icone:"📈",
-    descricao:"Analise resultados e histórico de desempenho.",
-    url:"./estatisticas-esports/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80"
-  },
-  {
-    id:"agenda-torneios",
-    nome:"AGENDA DE TORNEIOS PRO",
-    categoria:"Campeonatos",
-    icone:"📅",
-    descricao:"Organize datas, horários e eventos competitivos.",
-    url:"./agenda-torneios/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=80"
-  },
-  {
-    id:"gestor-inscricoes",
-    nome:"GESTOR DE INSCRIÇÕES PRO",
-    categoria:"Equipes",
-    icone:"📝",
-    descricao:"Gerencie inscrições, participantes e check-in.",
-    url:"./gestor-inscricoes/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80"
-  },
-  {
-    id:"simulador-pontuacao",
-    nome:"SIMULADOR DE PONTUAÇÃO PRO",
-    categoria:"Simuladores",
-    icone:"⚡",
-    descricao:"Teste regras e sistemas de pontos para diferentes jogos.",
-    url:"./simulador-pontuacao/index.html",
-    ativo:false,
-    foto:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80"
-  }
+const DEFAULT_APPS=[
+{id:"analista-pro",nome:"ANALISTA PRO",categoria:"Campeonatos",icone:"📊",descricao:"Gestão de campeonatos, tabelas e análise de jogadores.",url:ANALISTA_URL,foto:"https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&q=80"},
+{id:"simulador-premiacao",nome:"SIMULADOR DE PREMIAÇÃO PRO",categoria:"Simuladores",icone:"🏆",descricao:"Até 200 colocações, inscrições, taxas e distribuição de premiações.",url:"./simulador-premiacao/index.html",foto:"https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900&q=80"},
+{id:"simulador-campeonato",nome:"SIMULADOR DE CAMPEONATO",categoria:"Simuladores",icone:"🎯",descricao:"Planeje formatos, equipes, rodadas e confrontos.",url:"./simulador-campeonato/index.html",foto:"https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=900&q=80"},
+{id:"gerador-chaves",nome:"GERADOR DE CHAVES",categoria:"Campeonatos",icone:"🗂️",descricao:"Monte chaves eliminatórias para torneios.",url:"./gerador-chaves/index.html",foto:"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900&q=80"},
+{id:"ranking-jogadores",nome:"RANKING DE JOGADORES",categoria:"Jogadores",icone:"🥇",descricao:"Classificações e desempenho individual.",url:"./ranking-jogadores/index.html",foto:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=900&q=80"},
+{id:"gerador-cards",nome:"GERADOR DE CARDS",categoria:"Criatividade",icone:"🎨",descricao:"Crie artes para jogadores, equipes e campeonatos.",url:"./gerador-cards/index.html",foto:"https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=900&q=80"},
+{id:"gestor-equipes",nome:"GESTOR DE EQUIPES",categoria:"Equipes",icone:"👥",descricao:"Cadastre equipes e acompanhe seus integrantes.",url:"./gestor-equipes/index.html",foto:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"},
+{id:"tabela-pontos",nome:"TABELA DE PONTOS",categoria:"Campeonatos",icone:"📋",descricao:"Organize posições, eliminações e pontuações.",url:"./tabela-pontos/index.html",foto:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80"},
+{id:"estatisticas-esports",nome:"ESTATÍSTICAS ESPORTS",categoria:"Jogadores",icone:"📈",descricao:"Analise resultados e histórico de desempenho.",url:"./estatisticas-esports/index.html",foto:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80"},
+{id:"agenda-torneios",nome:"AGENDA DE TORNEIOS PRO",categoria:"Campeonatos",icone:"📅",descricao:"Organize datas, horários e eventos competitivos.",url:"./agenda-torneios/index.html",foto:"https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=80"},
+{id:"gestor-inscricoes",nome:"GESTOR DE INSCRIÇÕES PRO",categoria:"Equipes",icone:"📝",descricao:"Gerencie inscrições, participantes e check-in.",url:"./gestor-inscricoes/index.html",foto:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80"},
+{id:"simulador-pontuacao",nome:"SIMULADOR DE PONTUAÇÃO PRO",categoria:"Simuladores",icone:"⚡",descricao:"Teste regras e sistemas de pontos.",url:"./simulador-pontuacao/index.html",foto:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80"}
 ];
 
-const FAVORITES_KEY = "gamingpro_favorites_v1";
-const ALIASES = {
-  "sim-premiacao":"simulador-premiacao"
-};
+const FAVORITES_KEY="gamingpro_favorites_v1";
+const ALIASES={"sim-premiacao":"simulador-premiacao"};
+let apps=DEFAULT_APPS.map(a=>({...a}));
+let category="Todas",onlyFavorites=false,favorites=[];
 
-let apps = DEFAULT_APPS.map(a=>({...a}));
-let currentCategory = "Todas";
-let onlyFavorites = false;
-let favorites = [];
-let currentUser = null;
+try{
+ const stored=JSON.parse(localStorage.getItem(FAVORITES_KEY)||"[]");
+ if(Array.isArray(stored))favorites=stored;
+}catch{}
 
-try {
-  const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY)||"[]");
-  if(Array.isArray(saved)) favorites = saved;
-} catch {}
+function canonical(id){return ALIASES[id]||id}
 
-function canonical(id) {
-  return ALIASES[id] || id;
+function notify(message){
+ $("toast").textContent=message;
+ $("toast").hidden=false;
+ clearTimeout(notify.timer);
+ notify.timer=setTimeout(()=>$("toast").hidden=true,3500);
 }
 
-function showToast(message) {
-  $("toast").textContent = message;
-  $("toast").hidden = false;
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(()=>$("toast").hidden=true,3500);
+function openModal(title,content){
+ $("modalTitle").textContent=title;
+ $("modalBody").replaceChildren();
+ if(typeof content==="string"){
+  const p=document.createElement("p");
+  p.textContent=content;
+  $("modalBody").append(p);
+ }else{
+  $("modalBody").append(content);
+ }
+ $("overlay").hidden=false;
+ document.body.style.overflow="hidden";
 }
-
-function openModal(title,content) {
-  $("modalTitle").textContent = title;
-  $("modalBody").replaceChildren();
-  if(typeof content==="string") {
-    const p=document.createElement("p");
-    p.textContent=content;
-    $("modalBody").append(p);
-  } else {
-    $("modalBody").append(content);
-  }
-  $("overlay").hidden=false;
-  document.body.style.overflow="hidden";
+function closeModal(){
+ $("overlay").hidden=true;
+ document.body.style.overflow="";
 }
-
-function closeModal() {
-  $("overlay").hidden=true;
-  document.body.style.overflow="";
-}
-
 $("closeModal").onclick=closeModal;
-$("overlay").onclick=e=>{
-  if(e.target===$("overlay"))closeModal();
-};
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape")closeModal();
-});
+$("overlay").onclick=e=>{if(e.target===$("overlay"))closeModal()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 
-function isAllowedUrl(value) {
-  try {
-    const url=new URL(value,ROOT);
-    if(!["https:","http:"].includes(url.protocol))return false;
-    if(url.origin===ROOT.origin) {
-      return url.pathname.startsWith(ROOT.pathname);
-    }
-    return url.href==="https://oanalistapro.github.io/ANALISTA-PRO.github.io/";
-  } catch {
-    return false;
-  }
+function isAllowedUrl(value){
+ try{
+  const url=new URL(value,ROOT);
+  if(!["https:","http:"].includes(url.protocol))return false;
+  if(url.origin===ROOT.origin)return url.pathname.startsWith(ROOT.pathname);
+  return url.origin==="https://oanalistapro.github.io"
+   && url.pathname.replace(/\/+$/,"")==="/ANALISTA-PRO.github.io";
+ }catch{return false}
 }
 
-async function exists(url) {
-  try {
-    const target=new URL(url,ROOT);
-    if(target.origin!==ROOT.origin)return false;
-    if(!target.pathname.startsWith(ROOT.pathname))return false;
+async function exists(value){
+ try{
+  const url=new URL(value,ROOT);
+  if(url.origin!==ROOT.origin)return false;
+  if(!url.pathname.startsWith(ROOT.pathname))return false;
 
-    const response=await fetch(target.href,{
-      cache:"no-store",
-      redirect:"follow"
-    });
-
-    if(!response.ok)return false;
-
-    const type=response.headers.get("content-type")||"";
-    if(!type.includes("text/html"))return false;
-
-    const html=(await response.text()).slice(0,3000).toLowerCase();
-    return html.includes("<html") || html.includes("<!doctype html");
-  } catch {
-    return false;
-  }
+  const response=await fetch(url.href,{cache:"no-store"});
+  if(!response.ok)return false;
+  const type=response.headers.get("content-type")||"";
+  if(!type.includes("text/html"))return false;
+  const html=(await response.text()).slice(0,3000).toLowerCase();
+  return html.includes("<html")||html.includes("<!doctype html");
+ }catch{return false}
 }
 
-async function loadCatalog() {
-  $("counter").textContent="Verificando ferramentas...";
-  const map=new Map();
+async function loadCatalog(){
+ $("counter").textContent="Verificando ferramentas...";
+ const map=new Map(DEFAULT_APPS.map(app=>[app.id,{...app}]));
 
-  DEFAULT_APPS.forEach(app=>{
-    map.set(app.id,{...app});
-  });
+ try{
+  const response=await fetch(
+   new URL("catalogo.json?v="+Date.now(),ROOT),
+   {cache:"no-store"}
+  );
+  if(!response.ok)throw Error("Catálogo não encontrado");
+  const data=await response.json();
+  if(!Array.isArray(data.aplicativos))throw Error("Lista inválida");
 
-  try {
-    const response=await fetch(
-      new URL("catalogo.json?v="+Date.now(),ROOT),
-      {cache:"no-store"}
-    );
+  for(const item of data.aplicativos){
+   if(!item||!item.id)continue;
+   const id=canonical(String(item.id));
+   const previous=map.get(id)||{};
+   map.set(id,{
+    ...previous,
+    id,
+    nome:String(item.nome||previous.nome||id),
+    categoria:String(item.categoria||previous.categoria||"Outros"),
+    icone:String(item.icone||previous.icone||"🎮"),
+    descricao:String(item.descricao||previous.descricao||"Ferramenta Gaming Pro"),
+    url:String(item.url||previous.url||""),
+    foto:String(item.foto||previous.foto||""),
+    ativo:item.ativo===true
+   });
+  }
+ }catch(error){
+  console.warn("Catálogo:",error.message);
+ }
 
-    if(!response.ok)throw Error("Catálogo não encontrado");
+ apps=[...map.values()];
 
-    const data=await response.json();
-    if(!Array.isArray(data.aplicativos)) {
-      throw Error("Lista inválida");
-    }
-
-    data.aplicativos.forEach(item=>{
-      if(!item || typeof item!=="object" || !item.id)return;
-
-      const id=canonical(String(item.id));
-      const previous=map.get(id)||{};
-
-      map.set(id,{
-        ...previous,
-        id,
-        nome:String(item.nome||previous.nome||id),
-        categoria:String(item.categoria||previous.categoria||"Outros"),
-        icone:String(item.icone||previous.icone||"🎮"),
-        descricao:String(item.descricao||previous.descricao||"Ferramenta Gaming Pro"),
-        url:String(item.url||previous.url||""),
-        foto:String(item.foto||previous.foto||""),
-        ativo:item.ativo===true
-      });
-    });
-  } catch(error) {
-    console.warn("Catálogo:",error.message);
+ await Promise.all(apps.map(async app=>{
+  // O Analista Pro é um aplicativo externo já cadastrado.
+  if(app.id==="analista-pro"){
+   app.url=ANALISTA_URL;
+   app.ativo=true;
+   app.ready=true;
+   return;
   }
 
-  apps=[...map.values()];
-
-  await Promise.all(apps.map(async app=>{
-    if(!isAllowedUrl(app.url)) {
-      app.ready=false;
-      return;
-    }
-
-    if(app.id==="analista-pro") {
-      app.ready=true;
-      return;
-    }
-
-    app.ready=await exists(app.url);
-  }));
-
-  renderFilters();
-  renderCards();
-  updatePrizeLink();
-}
-
-function updatePrizeLink() {
-  const prize=apps.find(a=>a.id==="simulador-premiacao");
-  const link=$("heroPrize");
-  if(prize?.ready) {
-    link.href=new URL(prize.url,ROOT).href;
-    link.removeAttribute("aria-disabled");
-  } else {
-    link.removeAttribute("href");
-    link.setAttribute("aria-disabled","true");
-    link.onclick=e=>{
-      e.preventDefault();
-      showToast("O simulador PRO ainda precisa ser publicado.");
-    };
-  }
-}
-
-function renderFilters() {
-  const box=$("filters");
-  box.replaceChildren();
-
-  function add(label,selected,callback) {
-    const button=document.createElement("button");
-    button.className="filter"+(selected?" active":"");
-    button.textContent=label;
-    button.onclick=callback;
-    box.append(button);
+  if(!isAllowedUrl(app.url)){
+   app.ready=false;
+   return;
   }
 
-  add("⭐ Favoritos",onlyFavorites,()=>{
-    onlyFavorites=!onlyFavorites;
-    renderFilters();
-    renderCards();
-  });
+  // Para módulos locais, somente disponibilizar arquivos publicados.
+  app.ready=await exists(app.url);
+ }));
 
-  const categories=["Todas",...new Set(apps.map(a=>a.categoria))];
-
-  categories.forEach(cat=>{
-    add(cat,currentCategory===cat,()=>{
-      currentCategory=cat;
-      renderFilters();
-      renderCards();
-    });
-  });
+ renderFilters();
+ renderCards();
+ updatePrizeLink();
 }
 
-function isFavorite(id) {
-  return favorites.some(x=>canonical(x)===canonical(id));
-}
+function updatePrizeLink(){
+ const prize=apps.find(app=>app.id==="simulador-premiacao");
+ const link=$("heroPrize");
+ link.onclick=null;
 
-function toggleFavorite(id) {
-  if(isFavorite(id)) {
-    favorites=favorites.filter(x=>canonical(x)!==canonical(id));
-  } else {
-    favorites.push(id);
-  }
-  try {
-    localStorage.setItem(FAVORITES_KEY,JSON.stringify(favorites));
-  } catch {}
-  renderCards();
-}
-
-function createCard(app,index) {
-  const card=document.createElement("article");
-  card.className="card";
-
-  const cover=document.createElement("div");
-  cover.className="cover";
-
-  const gradients=[
-    "linear-gradient(135deg,#502411,#13131f)",
-    "linear-gradient(135deg,#171e4d,#32121f)",
-    "linear-gradient(135deg,#163c3b,#25131e)",
-    "linear-gradient(135deg,#4a1b36,#111624)"
-  ];
-
-  cover.style.background=gradients[index%gradients.length];
-
-  if(app.foto) {
-    try {
-      const url=new URL(app.foto,location.href);
-      if(url.protocol==="https:" && url.hostname==="images.unsplash.com") {
-        cover.style.backgroundImage=
-          `linear-gradient(0deg,#09090eaa,transparent 70%),url("${url.href}")`;
-        cover.style.backgroundSize="cover";
-        cover.style.backgroundPosition="center";
-      }
-    } catch {}
-  }
-
-  const icon=document.createElement("div");
-  icon.className="icon-box";
-  icon.textContent=app.icone;
-
-  const status=document.createElement("div");
-  status.className="status"+(app.ready?" ready":"");
-  status.textContent=app.ready?"● DISPONÍVEL":"EM DESENVOLVIMENTO";
-
-  cover.append(icon,status);
-
-  const content=document.createElement("div");
-  content.className="card-content";
-
-  const category=document.createElement("span");
-  category.className="cat";
-  category.textContent=app.categoria;
-
-  const title=document.createElement("h3");
-  title.textContent=app.nome;
-
-  const description=document.createElement("p");
-  description.textContent=app.descricao;
-
-  const actions=document.createElement("div");
-  actions.className="actions";
-
-  const open=document.createElement("button");
-  open.className="btn";
-  open.textContent=app.ready?"Abrir ferramenta →":"Em breve";
-  open.disabled=!app.ready;
-
-  open.onclick=()=>{
-    if(!app.ready)return;
-    if(!isAllowedUrl(app.url))return;
-    window.location.href=new URL(app.url,ROOT).href;
+ if(prize?.ready&&isAllowedUrl(prize.url)){
+  link.href=new URL(prize.url,ROOT).href;
+  link.removeAttribute("aria-disabled");
+  link.style.opacity="1";
+ }else{
+  link.href="#ferramentas";
+  link.setAttribute("aria-disabled","true");
+  link.style.opacity=".7";
+  link.onclick=e=>{
+   e.preventDefault();
+   notify("Publique o index.html do Simulador de Premiação PRO.");
   };
-
-  const favorite=document.createElement("button");
-  favorite.className="favorite";
-  favorite.textContent=isFavorite(app.id)?"★":"☆";
-  favorite.setAttribute("aria-label","Favoritar "+app.nome);
-  favorite.setAttribute("aria-pressed",String(isFavorite(app.id)));
-  favorite.onclick=()=>toggleFavorite(app.id);
-
-  actions.append(open,favorite);
-  content.append(category,title,description,actions);
-  card.append(cover,content);
-
-  return card;
+ }
 }
 
-function renderCards() {
-  const search=$("search").value.trim().toLocaleLowerCase("pt-BR");
-  const grid=$("cards");
-  grid.replaceChildren();
+function renderFilters(){
+ const box=$("filters");
+ box.replaceChildren();
 
-  let displayed=0;
+ function add(label,active,callback){
+  const button=document.createElement("button");
+  button.className="filter"+(active?" active":"");
+  button.textContent=label;
+  button.onclick=callback;
+  box.append(button);
+ }
 
-  apps.forEach((app,index)=>{
-    if(currentCategory!=="Todas" && app.categoria!==currentCategory)return;
-    if(onlyFavorites && !isFavorite(app.id))return;
+ add("⭐ Favoritos",onlyFavorites,()=>{
+  onlyFavorites=!onlyFavorites;
+  renderFilters();renderCards();
+ });
 
-    const text=`${app.nome} ${app.categoria} ${app.descricao}`
-      .toLocaleLowerCase("pt-BR");
-
-    if(!text.includes(search))return;
-
-    grid.append(createCard(app,index));
-    displayed++;
+ ["Todas",...new Set(apps.map(app=>app.categoria))].forEach(cat=>{
+  add(cat,category===cat,()=>{
+   category=cat;
+   renderFilters();renderCards();
   });
+ });
+}
 
-  $("empty").hidden=displayed>0;
+function isFavorite(id){
+ return favorites.some(value=>canonical(value)===canonical(id));
+}
+function toggleFavorite(id){
+ favorites=isFavorite(id)
+  ?favorites.filter(value=>canonical(value)!==canonical(id))
+  :[...favorites,id];
 
-  const ready=apps.filter(a=>a.ready).length;
-  $("counter").textContent=
-    `${displayed} ferramentas exibidas · ${ready} disponíveis`;
+ try{
+  localStorage.setItem(FAVORITES_KEY,JSON.stringify(favorites));
+ }catch{}
+ renderCards();
+}
+
+function createCard(app,index){
+ const card=document.createElement("article");
+ card.className="card";
+
+ const cover=document.createElement("div");
+ cover.className="cover";
+ const backgrounds=[
+  "linear-gradient(135deg,#502411,#13131f)",
+  "linear-gradient(135deg,#171e4d,#32121f)",
+  "linear-gradient(135deg,#163c3b,#25131e)",
+  "linear-gradient(135deg,#4a1b36,#111624)"
+ ];
+ cover.style.background=backgrounds[index%backgrounds.length];
+
+ if(app.foto){
+  try{
+   const url=new URL(app.foto,ROOT);
+   if(url.protocol==="https:"&&
+      (url.hostname==="images.unsplash.com"||url.origin===ROOT.origin)){
+    cover.style.backgroundImage=
+     `linear-gradient(0deg,#09090eaa,transparent 70%),url("${url.href}")`;
+    cover.style.backgroundSize="cover";
+    cover.style.backgroundPosition="center";
+   }
+  }catch{}
+ }
+
+ const icon=document.createElement("div");
+ icon.className="icon-box";
+ icon.textContent=app.icone;
+
+ const status=document.createElement("div");
+ status.className="status"+(app.ready?" ready":"");
+ status.textContent=app.ready?"● DISPONÍVEL":"EM DESENVOLVIMENTO";
+ cover.append(icon,status);
+
+ const content=document.createElement("div");
+ content.className="card-content";
+
+ const cat=document.createElement("span");
+ cat.className="category";
+ cat.textContent=app.categoria;
+
+ const title=document.createElement("h3");
+ title.textContent=app.nome;
+
+ const description=document.createElement("p");
+ description.textContent=app.descricao;
+
+ const actions=document.createElement("div");
+ actions.className="actions";
+
+ const open=document.createElement("button");
+ open.className="btn";
+ open.textContent=app.ready?"Abrir ferramenta →":"Em breve";
+ open.disabled=!app.ready;
+ open.onclick=()=>{
+  if(!app.ready||!isAllowedUrl(app.url))return;
+  window.location.href=new URL(app.url,ROOT).href;
+ };
+
+ const favorite=document.createElement("button");
+ favorite.className="favorite";
+ favorite.textContent=isFavorite(app.id)?"★":"☆";
+ favorite.setAttribute("aria-label","Favoritar "+app.nome);
+ favorite.setAttribute("aria-pressed",String(isFavorite(app.id)));
+ favorite.onclick=()=>toggleFavorite(app.id);
+
+ actions.append(open,favorite);
+ content.append(cat,title,description,actions);
+ card.append(cover,content);
+ return card;
+}
+
+function renderCards(){
+ const query=$("search").value.trim().toLocaleLowerCase("pt-BR");
+ const grid=$("cards");
+ grid.replaceChildren();
+ let displayed=0;
+
+ apps.forEach((app,index)=>{
+  if(category!=="Todas"&&app.categoria!==category)return;
+  if(onlyFavorites&&!isFavorite(app.id))return;
+  const text=`${app.nome} ${app.categoria} ${app.descricao}`
+   .toLocaleLowerCase("pt-BR");
+  if(!text.includes(query))return;
+  grid.append(createCard(app,index));
+  displayed++;
+ });
+
+ $("empty").hidden=displayed!==0;
+ $("counter").textContent=
+  `${displayed} ferramentas exibidas · ${apps.filter(a=>a.ready).length} disponíveis`;
 }
 
 $("search").addEventListener("input",renderCards);
-
 $("refresh").onclick=async()=>{
-  await loadCatalog();
-  showToast("Catálogo verificado.");
+ await loadCatalog();
+ notify("Catálogo atualizado.");
 };
-
 $("year").textContent=new Date().getFullYear();
+
+const logo=new Image();
+logo.onload=()=>$("brandLogo").replaceChildren(logo);
+logo.src="./gaming-pro-192.png";
 
 loadCatalog();
 </script>
 
 <script type="module">
-import {initializeApp} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
-  onAuthStateChanged,
-  signOut
-} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
+ getAuth,GoogleAuthProvider,signInWithPopup,
+ signInWithRedirect,getRedirectResult,
+ onAuthStateChanged,signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore,
-  doc,
-  setDoc,
-  serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+ getFirestore,doc,setDoc,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
-  apiKey:"AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q",
-  authDomain:"gaming-pro-4325c.firebaseapp.com",
-  projectId:"gaming-pro-4325c",
-  storageBucket:"gaming-pro-4325c.firebasestorage.app",
-  messagingSenderId:"931964630474",
-  appId:"1:931964630474:web:43b0b4c6c2b27a8b2e4b33",
-  measurementId:"G-KY2YHLMH32"
+ apiKey:"AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q",
+ authDomain:"gaming-pro-4325c.firebaseapp.com",
+ projectId:"gaming-pro-4325c",
+ storageBucket:"gaming-pro-4325c.firebasestorage.app",
+ messagingSenderId:"931964630474",
+ appId:"1:931964630474:web:43b0b4c6c2b27a8b2e4b33",
+ measurementId:"G-KY2YHLMH32"
 };
 
-try {
-  const app=initializeApp(firebaseConfig);
-  const auth=getAuth(app);
-  const db=getFirestore(app);
-  const google=new GoogleAuthProvider();
+try{
+ const app=initializeApp(firebaseConfig);
+ const auth=getAuth(app);
+ const db=getFirestore(app);
+ const google=new GoogleAuthProvider();
+ let user=null;
 
-  let user=null;
+ $("loginBtn").onclick=()=>accountDialog();
 
-  function accountDialog() {
-    const body=document.createElement("div");
-    const p=document.createElement("p");
-    const action=document.createElement("button");
-    const message=document.createElement("p");
+ function accountDialog(){
+  const body=document.createElement("div");
+  const p=document.createElement("p");
+  const button=document.createElement("button");
+  const message=document.createElement("p");
+  button.className="btn";
+  message.className="muted";
 
-    action.className="btn";
-    message.className="subtext";
-
-    if(user) {
-      p.textContent="Conectado como "+(user.displayName||user.email||"Jogador");
-      action.textContent="Sair da conta";
-      action.onclick=async()=>{
-        try {
-          await signOut(auth);
-          closeModal();
-          showToast("Você saiu da conta.");
-        } catch(error) {
-          message.textContent=error.message;
-        }
-      };
-    } else {
-      p.textContent="Entre com sua conta Google. Você também pode explorar as ferramentas públicas sem login.";
-      action.textContent="Continuar com Google";
-      action.onclick=async()=>{
-        action.disabled=true;
-        try {
-          await signInWithPopup(auth,google);
-          closeModal();
-        } catch(error) {
-          if([
-            "auth/popup-blocked",
-            "auth/operation-not-supported-in-this-environment"
-          ].includes(error.code)) {
-            try {
-              await signInWithRedirect(auth,google);
-            } catch(err) {
-              message.textContent="Erro: "+(err.code||err.message);
-            }
-          } else {
-            message.textContent="Erro: "+(error.code||error.message);
-          }
-        } finally {
-          action.disabled=false;
-        }
-      };
+  if(user){
+   p.textContent="Conectado como "+(user.displayName||user.email||"Jogador");
+   button.textContent="Sair da conta";
+   button.onclick=async()=>{
+    try{
+     await signOut(auth);
+     closeModal();
+     notify("Você saiu da conta.");
+    }catch(error){
+     message.textContent="Erro: "+error.message;
     }
-
-    body.append(p,action,message);
-    openModal(user?"Minha conta":"Entrar no Gaming Pro",body);
+   };
+  }else{
+   p.textContent="Entre com Google ou explore as ferramentas públicas sem login.";
+   button.textContent="Continuar com Google";
+   button.onclick=async()=>{
+    button.disabled=true;
+    try{
+     await signInWithPopup(auth,google);
+     closeModal();
+    }catch(error){
+     if([
+      "auth/popup-blocked",
+      "auth/operation-not-supported-in-this-environment"
+     ].includes(error.code)){
+      try{
+       await signInWithRedirect(auth,google);
+      }catch(err){
+       message.textContent="Erro: "+(err.code||err.message);
+      }
+     }else{
+      message.textContent="Erro: "+(error.code||error.message);
+     }
+    }finally{
+     button.disabled=false;
+    }
+   };
   }
 
-  $("loginBtn").onclick=accountDialog;
+  body.append(p,button,message);
+  openModal(user?"Minha conta":"Entrar no Gaming Pro",body);
+ }
 
-  getRedirectResult(auth).catch(error=>{
-    console.warn("Login Google:",error.code);
-  });
+ getRedirectResult(auth).catch(error=>{
+  console.warn("Login Google:",error.code);
+ });
 
-  onAuthStateChanged(auth,async current=>{
-    user=current;
-    $("loginBtn").textContent=current
-      ?(current.displayName?.split(" ")[0]||"Minha conta")
-      :"Entrar";
+ onAuthStateChanged(auth,async current=>{
+  user=current;
+  $("loginBtn").textContent=current
+   ?(current.displayName?.split(" ")[0]||"Minha conta")
+   :"Entrar";
 
-    if(!current)return;
+  if(!current)return;
 
-    try {
-      await setDoc(doc(db,"users",current.uid),{
-        uid:current.uid,
-        displayName:current.displayName||"",
-        email:current.email||"",
-        photoURL:current.photoURL||"",
-        provider:"google",
-        portal:"Gaming Pro",
-        lastLogin:serverTimestamp()
-      },{merge:true});
-    } catch(error) {
-      console.warn("Firestore:",error.code);
-    }
-  });
-} catch(error) {
-  console.error("Firebase:",error);
-  $("loginBtn").onclick=()=>{
-    openModal("Login indisponível","Não foi possível iniciar o Firebase. Verifique a configuração.");
-  };
+  try{
+   await setDoc(doc(db,"users",current.uid),{
+    uid:current.uid,
+    displayName:current.displayName||"",
+    email:current.email||"",
+    photoURL:current.photoURL||"",
+    provider:"google",
+    portal:"Gaming Pro",
+    lastLogin:serverTimestamp()
+   },{merge:true});
+  }catch(error){
+   console.warn("Firestore:",error.code);
+  }
+ });
+}catch(error){
+ console.error("Firebase:",error);
+ $("loginBtn").onclick=()=>{
+  openModal("Login indisponível","Verifique a configuração do Firebase.");
+ };
 }
 </script>
 </body>
