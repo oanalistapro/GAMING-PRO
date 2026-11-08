@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Gestor de Equipes PRO | Gaming Pro</title>
+<style>
+:root{--bg:#0b0b0f;--panel:#17171e;--field:#24242e;--line:#393943;--text:#f8f8fa;--muted:#aaaab8;--orange:#ff791b;--green:#79e6a5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1250px;margin:auto;padding:15px}
+header{background:#141419;border-bottom:1px solid var(--line);padding:20px 0}
+h1{font-size:clamp(26px,5vw,40px);margin:7px 0}
+h2{font-size:20px;margin:0 0 15px}
+h3{font-size:17px;margin:0}
+.orange{color:var(--orange)}
+.muted{color:var(--muted);line-height:1.6}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{width:100%;min-width:0;background:var(--field);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{background:var(--orange);color:#111;border:0;border-radius:10px;padding:12px 15px;font-weight:850}
+.btn.alt{background:var(--field);color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#632929;color:#fff}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--field);border-radius:12px;padding:14px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{display:block;color:var(--orange);font-size:24px;margin-top:5px}
+.teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.team-card{border:1px solid var(--line);border-radius:15px;padding:15px;background:var(--field)}
+.team-head{display:flex;align-items:center;gap:12px}
+.logo{width:64px;height:64px;flex-shrink:0;object-fit:cover;border-radius:13px;border:1px solid var(--line);background:#111}
+.logo-placeholder{width:64px;height:64px;display:grid;place-items:center;border-radius:13px;background:#3a291c;font-size:30px}
+.tag{color:var(--orange);font-size:12px;font-weight:850}
+.player{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.player strong{overflow-wrap:anywhere}
+.player small{color:var(--muted)}
+.player-actions{display:flex;gap:5px}
+.small-btn{background:#34343d;color:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12px}
+.badge{color:var(--green);font-size:11px}
+.hidden{display:none!important}
+.notice{background:#352315;border:1px solid #80501f;color:#ffd09c;padding:12px;border-radius:11px}
+.table-wrap{overflow:auto;max-height:300px}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid var(--line);font-size:12px}
+th{color:var(--orange)}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}.teams{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.grid{grid-template-columns:1fr}.panel{padding:13px}}
+@media print{
+ body{background:#fff;color:#111}
+ header,.editor,.actions,.filters,footer,.small-btn{display:none!important}
+ .panel,.team-card{background:#fff;color:#111;border-color:#aaa}
+ .player small,.muted{color:#444}
+ .tag{color:#a64b00}
+ .teams{grid-template-columns:repeat(2,1fr)}
+ @page{size:A4;margin:12mm}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <strong class="orange">🎮 GAMING PRO</strong>
+  <h1>👥 GESTOR DE EQUIPES PRO</h1>
+  <p class="muted">Gerencie equipes, jogadores, reservas e escalações.</p>
+ </div>
+</header>
+
+<main class="wrap">
+
+<section class="panel editor">
+ <h2>🛡️ Cadastro de equipes</h2>
+ <div class="grid">
+  <div class="field"><label>Nome da equipe</label><input id="teamName" maxlength="70" placeholder="TRUPE FANTASMA"></div>
+  <div class="field"><label>TAG</label><input id="teamTag" maxlength="12" placeholder="TF"></div>
+  <div class="field"><label>Modalidade</label>
+   <select id="game">
+    <option>Free Fire</option><option>Valorant</option><option>Counter-Strike 2</option>
+    <option>Fortnite</option><option>League of Legends</option>
+    <option>PUBG</option><option>Call of Duty</option>
+    <option>Mobile Legends</option><option>Outro</option>
+   </select>
+  </div>
+  <div class="field"><label>Responsável / Técnico</label><input id="coach" maxlength="70"></div>
+  <div class="field"><label>Contato</label><input id="contact" maxlength="100" placeholder="WhatsApp ou e-mail"></div>
+  <div class="field"><label>Região</label><input id="region" maxlength="60" placeholder="Brasil"></div>
+  <div class="field"><label>Limite de jogadores</label><input id="limit" type="number" min="1" max="50" value="8"></div>
+  <div class="field"><label>Logo da equipe</label><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp"></div>
+ </div>
+ <div class="actions">
+  <button class="btn" id="saveTeam">➕ Cadastrar equipe</button>
+  <button class="btn alt hidden" id="cancelTeam">Cancelar edição</button>
+ </div>
+ <p id="message" class="notice hidden" role="status"></p>
+</section>
+
+<section class="panel editor">
+ <h2>🎮 Cadastrar jogador</h2>
+ <div class="grid">
+  <div class="field"><label>Equipe</label><select id="playerTeam"></select></div>
+  <div class="field"><label>Nome do jogador</label><input id="playerName" maxlength="70"></div>
+  <div class="field"><label>ID no jogo</label><input id="gameId" maxlength="60"></div>
+  <div class="field"><label>Função</label>
+   <select id="role">
+    <option>Jogador</option><option>Rush</option><option>Suporte</option>
+    <option>Sniper</option><option>IGL</option><option>Flex</option>
+   </select>
+  </div>
+  <div class="field"><label>Situação</label>
+   <select id="status">
+    <option value="titular">Titular</option>
+    <option value="reserva">Reserva</option>
+    <option value="inativo">Inativo</option>
+   </select>
+  </div>
+  <div class="field"><label>Capitão</label>
+   <select id="captain"><option value="no">Não</option><option value="yes">Sim</option></select>
+  </div>
+ </div>
+ <div class="actions">
+  <button class="btn" id="savePlayer">➕ Adicionar jogador</button>
+  <button class="btn alt hidden" id="cancelPlayer">Cancelar edição</button>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>📊 Painel geral</h2>
+ <div class="stats" id="stats"></div>
+</section>
+
+<section class="panel filters">
+ <h2>🔎 Pesquisar equipes</h2>
+ <div class="grid">
+  <div class="field"><label>Nome, TAG ou jogador</label><input id="search" type="search" placeholder="Pesquisar..."></div>
+  <div class="field"><label>Modalidade</label><select id="filterGame"><option value="">Todas</option></select></div>
+  <div class="field"><label>Ordenação</label>
+   <select id="sort">
+    <option value="name">Nome</option>
+    <option value="players">Mais jogadores</option>
+    <option value="recent">Mais recentes</option>
+   </select>
+  </div>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>🏆 Equipes cadastradas</h2>
+ <div class="teams" id="teamList"></div>
+ <p class="muted" id="count"></p>
+</section>
+
+<section class="panel editor">
+ <h2>📜 Histórico de alterações</h2>
+ <div class="table-wrap">
+  <table>
+   <thead><tr><th>Data</th><th>Ação</th><th>Descrição</th></tr></thead>
+   <tbody id="history"></tbody>
+  </table>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>📥 Exportação e backup</h2>
+ <div class="actions">
+  <button class="btn" id="csv">📊 Baixar CSV</button>
+  <button class="btn alt" id="backup">💾 Backup JSON</button>
+  <button class="btn alt" id="print">🖨️ Imprimir / PDF</button>
+  <button class="btn alt" id="copy">📋 Copiar escalações</button>
+ </div>
+ <div class="field editor" style="margin-top:15px">
+  <label>Importar backup JSON</label>
+  <input type="file" id="import" accept=".json,application/json">
+ </div>
+ <p class="muted">Os dados são armazenados neste navegador. Faça backups para evitar perdas.</p>
+</section>
+
+</main>
+<footer>🎮 GAMING PRO · GESTOR DE EQUIPES PRO</footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_equipes_v1";
+const games=["Free Fire","Valorant","Counter-Strike 2","Fortnite","League of Legends","PUBG","Call of Duty","Mobile Legends","Outro"];
+let db={version:1,teams:[],players:[],history:[]};
+let editingTeam=null,editingPlayer=null,logoDraft=null;
+const uid=()=>typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2);
+
+function notice(s){
+ $("message").textContent=s;
+ $("message").classList.toggle("hidden",!s);
+}
+function record(action,detail){
+ db.history.unshift({id:uid(),date:new Date().toISOString(),action,detail});
+ db.history=db.history.slice(0,500);
+}
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(db))}
+ catch{notice("Armazenamento cheio. Exporte um backup JSON.");}
+}
+function option(select,value,label){
+ const o=document.createElement("option");o.value=value;o.textContent=label;select.append(o);
+}
+function teamPlayers(id){return db.players.filter(p=>p.teamId===id)}
+function resetTeam(){
+ editingTeam=null;logoDraft=null;
+ ["teamName","teamTag","coach","contact","region","logoFile"].forEach(id=>$(id).value="");
+ $("game").value="Free Fire";$("limit").value=8;
+ $("saveTeam").textContent="➕ Cadastrar equipe";
+ $("cancelTeam").classList.add("hidden");
+}
+function resetPlayer(){
+ editingPlayer=null;
+ ["playerName","gameId"].forEach(id=>$(id).value="");
+ $("role").value="Jogador";$("status").value="titular";$("captain").value="no";
+ $("savePlayer").textContent="➕ Adicionar jogador";
+ $("cancelPlayer").classList.add("hidden");
+}
+function readImage(file){
+ return new Promise((resolve,reject)=>{
+  if(!file)return resolve(null);
+  if(file.size>3*1024*1024)return reject(Error("Logo deve ter até 3 MB."));
+  const reader=new FileReader();
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>{
+    const c=document.createElement("canvas");c.width=256;c.height=256;
+    const x=c.getContext("2d");
+    const ratio=Math.min(256/img.width,256/img.height);
+    x.drawImage(img,(256-img.width*ratio)/2,(256-img.height*ratio)/2,img.width*ratio,img.height*ratio);
+    resolve(c.toDataURL("image/webp",.82));
+   };
+   img.onerror=()=>reject(Error("Imagem inválida."));
+   img.src=reader.result;
+  };
+  reader.onerror=()=>reject(Error("Erro ao ler imagem."));
+  reader.readAsDataURL(file);
+ });
+}
+$("logoFile").onchange=async e=>{
+ try{logoDraft=await readImage(e.target.files[0]);notice("Logo carregada.");}
+ catch(err){notice(err.message)}
+};
+
+$("saveTeam").onclick=()=>{
+ const name=$("teamName").value.trim();
+ const tag=$("teamTag").value.trim().toUpperCase();
+ const limit=Number($("limit").value);
+ if(!name||!tag)return notice("Informe nome e TAG da equipe.");
+ if(!Number.isInteger(limit)||limit<1||limit>50)return notice("Limite de jogadores: 1 a 50.");
+ if(db.teams.some(t=>t.id!==editingTeam&&t.name.toLowerCase()===name.toLowerCase()&&t.game===$("game").value))
+  return notice("Equipe já cadastrada nesta modalidade.");
+ if(!editingTeam&&db.teams.length>=200)return notice("Limite de 200 equipes atingido.");
+ if(editingTeam&&teamPlayers(editingTeam).length>limit)
+  return notice("O limite não pode ser menor que o elenco atual.");
+
+ const old=db.teams.find(t=>t.id===editingTeam);
+ const team={
+  id:editingTeam||uid(),name,tag,game:$("game").value,
+  coach:$("coach").value.trim(),contact:$("contact").value.trim(),
+  region:$("region").value.trim(),limit,
+  logo:logoDraft??old?.logo??null,
+  createdAt:old?.createdAt||new Date().toISOString()
+ };
+ if(editingTeam){
+  db.teams=db.teams.map(t=>t.id===editingTeam?team:t);
+  record("Equipe editada",name);
+ }else{
+  db.teams.push(team);record("Equipe cadastrada",name);
+ }
+ resetTeam();save();render();notice("Equipe salva com sucesso.");
+};
+
+$("savePlayer").onclick=()=>{
+ const teamId=$("playerTeam").value;
+ const team=db.teams.find(t=>t.id===teamId);
+ const name=$("playerName").value.trim();
+ const gameId=$("gameId").value.trim();
+ if(!team)return notice("Cadastre ou selecione uma equipe.");
+ if(!name)return notice("Informe o nome do jogador.");
+ if(!editingPlayer&&teamPlayers(teamId).length>=team.limit)
+  return notice("Esta equipe atingiu o limite de jogadores.");
+ if(editingPlayer){
+  const old=db.players.find(p=>p.id===editingPlayer);
+  if(old?.teamId!==teamId&&teamPlayers(teamId).length>=team.limit)
+   return notice("Equipe de destino está cheia.");
+ }
+ if(db.players.some(p=>p.id!==editingPlayer&&p.teamId===teamId&&p.name.toLowerCase()===name.toLowerCase()))
+  return notice("Jogador já cadastrado nesta equipe.");
+ if(gameId&&db.players.some(p=>p.id!==editingPlayer&&p.teamId===teamId&&p.gameId===gameId))
+  return notice("Este ID já está cadastrado na equipe.");
+
+ const captain=$("captain").value==="yes";
+ const player={
+  id:editingPlayer||uid(),teamId,name,gameId,
+  role:$("role").value,status:$("status").value,captain
+ };
+ if(captain)db.players.forEach(p=>{if(p.teamId===teamId)p.captain=false});
+ if(editingPlayer){
+  db.players=db.players.map(p=>p.id===editingPlayer?player:p);
+  record("Jogador editado",name+" — "+team.name);
+ }else{
+  db.players.push(player);record("Jogador cadastrado",name+" — "+team.name);
+ }
+ resetPlayer();save();render();notice("Jogador salvo com sucesso.");
+};
+
+function editTeam(id){
+ const t=db.teams.find(t=>t.id===id);if(!t)return;
+ editingTeam=id;logoDraft=t.logo;
+ const values={teamName:t.name,teamTag:t.tag,game:t.game,coach:t.coach,contact:t.contact,region:t.region,limit:t.limit};
+ Object.entries(values).forEach(([k,v])=>$(k).value=v);
+ $("saveTeam").textContent="💾 Salvar alterações";
+ $("cancelTeam").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function editPlayer(id){
+ const p=db.players.find(p=>p.id===id);if(!p)return;
+ editingPlayer=id;
+ $("playerTeam").value=p.teamId;
+ $("playerName").value=p.name;$("gameId").value=p.gameId;
+ $("role").value=p.role;$("status").value=p.status;
+ $("captain").value=p.captain?"yes":"no";
+ $("savePlayer").textContent="💾 Salvar jogador";
+ $("cancelPlayer").classList.remove("hidden");
+ document.querySelector("#savePlayer").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function removeTeam(id){
+ const t=db.teams.find(t=>t.id===id);if(!t)return;
+ if(!confirm("Excluir "+t.name+" e todos os jogadores dela?"))return;
+ db.teams=db.teams.filter(x=>x.id!==id);
+ db.players=db.players.filter(p=>p.teamId!==id);
+ record("Equipe excluída",t.name);save();render();
+}
+function removePlayer(id){
+ const p=db.players.find(p=>p.id===id);if(!p)return;
+ if(!confirm("Excluir o jogador "+p.name+"?"))return;
+ db.players=db.players.filter(x=>x.id!==id);
+ record("Jogador excluído",p.name);save();render();
+}
+function transferPlayer(id){
+ const p=db.players.find(p=>p.id===id);if(!p)return;
+ const names=db.teams.filter(t=>t.id!==p.teamId);
+ if(!names.length)return notice("Cadastre outra equipe para transferir.");
+ const text=names.map((t,i)=>(i+1)+" - "+t.name+" ["+t.tag+"]").join("\n");
+ const answer=prompt("Escolha o número da equipe de destino:\n"+text);
+ if(answer===null)return;
+ const index=Number(answer)-1;
+ if(!Number.isInteger(index)||index<0||index>=names.length)return notice("Equipe inválida.");
+ const target=names[index];
+ if(teamPlayers(target.id).length>=target.limit)return notice("Equipe de destino está cheia.");
+ if(db.players.some(x=>x.teamId===target.id&&x.name.toLowerCase()===p.name.toLowerCase()))
+  return notice("Já existe jogador com esse nome na equipe de destino.");
+ p.teamId=target.id;p.captain=false;
+ record("Transferência",p.name+" → "+target.name);
+ save();render();notice("Jogador transferido.");
+}
+function makeButton(label,fn){
+ const b=document.createElement("button");b.className="small-btn";b.textContent=label;b.onclick=fn;return b;
+}
+function stat(label,value){
+ const el=document.createElement("div");el.className="stat";
+ const small=document.createElement("small");small.textContent=label;
+ const strong=document.createElement("strong");strong.textContent=value;
+ el.append(small,strong);return el;
+}
+function render(){
+ const select=$("playerTeam"),old=select.value;
+ select.replaceChildren();
+ db.teams.forEach(t=>option(select,t.id,t.name+" ["+t.tag+"]"));
+ if(db.teams.some(t=>t.id===old))select.value=old;
+
+ const filter=$("filterGame"),current=filter.value;
+ filter.replaceChildren();option(filter,"","Todas");
+ [...new Set(db.teams.map(t=>t.game))].sort().forEach(g=>option(filter,g,g));
+ filter.value=current;
+
+ $("stats").replaceChildren(
+  stat("Equipes",db.teams.length),
+  stat("Jogadores",db.players.length),
+  stat("Titulares",db.players.filter(p=>p.status==="titular").length),
+  stat("Reservas",db.players.filter(p=>p.status==="reserva").length)
+ );
+
+ const query=$("search").value.toLowerCase(),game=$("filterGame").value;
+ const list=db.teams.filter(t=>
+  (!game||t.game===game)&&
+  (t.name+" "+t.tag+" "+teamPlayers(t.id).map(p=>p.name).join(" ")).toLowerCase().includes(query)
+ );
+ if($("sort").value==="name")list.sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ if($("sort").value==="players")list.sort((a,b)=>teamPlayers(b.id).length-teamPlayers(a.id).length);
+ if($("sort").value==="recent")list.sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+
+ const root=$("teamList");root.replaceChildren();
+ list.forEach(t=>{
+  const card=document.createElement("article");card.className="team-card";
+  const head=document.createElement("div");head.className="team-head";
+  if(t.logo){
+   const img=document.createElement("img");img.className="logo";img.src=t.logo;img.alt="Logo de "+t.name;head.append(img);
+  }else{
+   const placeholder=document.createElement("div");placeholder.className="logo-placeholder";placeholder.textContent="🛡️";head.append(placeholder);
+  }
+  const info=document.createElement("div");
+  const tag=document.createElement("div");tag.className="tag";tag.textContent=t.tag+" · "+t.game;
+  const name=document.createElement("h3");name.textContent=t.name;
+  const coach=document.createElement("small");coach.className="muted";coach.textContent="Técnico: "+(t.coach||"Não informado");
+  info.append(tag,name,coach);head.append(info);card.append(head);
+
+  const count=document.createElement("p");count.className="muted";
+  count.textContent=teamPlayers(t.id).length+" / "+t.limit+" jogadores · "+(t.region||"Região não informada");
+  card.append(count);
+
+  if(t.contact){
+   const contact=document.createElement("p");contact.className="muted";contact.textContent="Contato: "+t.contact;card.append(contact);
+  }
+  const players=teamPlayers(t.id);
+  players.forEach(p=>{
+   const row=document.createElement("div");row.className="player";
+   const info=document.createElement("div");
+   const name=document.createElement("strong");name.textContent=p.name+(p.captain?" 👑":"");
+   const meta=document.createElement("div");meta.className="muted";
+   meta.textContent=p.role+" · "+p.status+" · ID: "+(p.gameId||"—");
+   info.append(name,meta);
+   const actions=document.createElement("div");actions.className="player-actions editor";
+   actions.append(
+    makeButton("✏️",()=>editPlayer(p.id)),
+    makeButton("⇄",()=>transferPlayer(p.id)),
+    makeButton("✕",()=>removePlayer(p.id))
+   );
+   row.append(info,actions);card.append(row);
+  });
+  if(!players.length){
+   const empty=document.createElement("p");empty.className="muted";empty.textContent="Nenhum jogador cadastrado.";card.append(empty);
+  }
+  const actions=document.createElement("div");actions.className="actions editor";
+  const edit=document.createElement("button");edit.className="btn alt";edit.textContent="✏️ Editar";edit.onclick=()=>editTeam(t.id);
+  const del=document.createElement("button");del.className="btn danger";del.textContent="Excluir";del.onclick=()=>removeTeam(t.id);
+  actions.append(edit,del);card.append(actions);root.append(card);
+ });
+ $("count").textContent=list.length+" equipes exibidas.";
+
+ const history=$("history");history.replaceChildren();
+ db.history.forEach(h=>{
+  const tr=document.createElement("tr");
+  [new Date(h.date).toLocaleString("pt-BR"),h.action,h.detail].forEach(value=>{
+   const td=document.createElement("td");td.textContent=value;tr.append(td);
+  });
+  history.append(tr);
+ });
+}
+$("cancelTeam").onclick=resetTeam;
+$("cancelPlayer").onclick=resetPlayer;
+["search","filterGame","sort"].forEach(id=>$(id).addEventListener("input",render));
+
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function rosterText(){
+ return db.teams.map(t=>[
+  t.name+" ["+t.tag+"] — "+t.game,
+  "Técnico: "+(t.coach||"—"),
+  ...teamPlayers(t.id).map(p=>"- "+p.name+" | "+p.role+" | "+p.status+(p.captain?" | CAPITÃO":"")),
+  ""
+ ].join("\n")).join("\n");
+}
+$("copy").onclick=async()=>{
+ try{await navigator.clipboard.writeText(rosterText());notice("Escalações copiadas.");}
+ catch{notice("Não foi possível copiar.");}
+};
+$("csv").onclick=()=>{
+ const rows=[["Equipe","TAG","Modalidade","Técnico","Jogador","ID no jogo","Função","Situação","Capitão"]];
+ db.teams.forEach(t=>{
+  const players=teamPlayers(t.id);
+  if(!players.length)rows.push([t.name,t.tag,t.game,t.coach,"","","","",""]);
+  players.forEach(p=>rows.push([t.name,t.tag,t.game,t.coach,p.name,p.gameId,p.role,p.status,p.captain?"Sim":"Não"]));
+ });
+ const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(";")).join("\r\n");
+ download("gaming-pro-equipes.csv",csv,"text/csv;charset=utf-8");
+};
+$("backup").onclick=()=>download("gaming-pro-equipes-backup.json",JSON.stringify(db,null,2),"application/json");
+$("print").onclick=()=>window.print();
+
+function validate(data){
+ if(!data||data.version!==1||!Array.isArray(data.teams)||!Array.isArray(data.players)||!Array.isArray(data.history)||data.teams.length>200||data.players.length>10000||data.history.length>5000)
+  throw Error("Backup inválido.");
+ const teamIds=new Set(),playerIds=new Set();
+ for(const t of data.teams){
+  if(!t||typeof t.id!=="string"||!t.id||teamIds.has(t.id)||
+   typeof t.name!=="string"||!t.name.trim()||t.name.length>70||
+   typeof t.tag!=="string"||t.tag.length>12||
+   !games.includes(t.game)||!Number.isInteger(t.limit)||t.limit<1||t.limit>50||
+   typeof t.createdAt!=="string"||
+   (t.logo!==null&&t.logo!==undefined&&
+    (typeof t.logo!=="string"||!/^data:image\/(webp|png|jpeg);base64,/i.test(t.logo)||t.logo.length>1000000)))
+   throw Error("Equipe inválida.");
+  teamIds.add(t.id);
+ }
+ for(const p of data.players){
+  if(!p||typeof p.id!=="string"||!p.id||playerIds.has(p.id)||
+   !teamIds.has(p.teamId)||typeof p.name!=="string"||!p.name.trim()||p.name.length>70||
+   typeof p.gameId!=="string"||p.gameId.length>60||
+   typeof p.role!=="string"||p.role.length>50||
+   !["titular","reserva","inativo"].includes(p.status)||typeof p.captain!=="boolean")
+   throw Error("Jogador inválido.");
+  playerIds.add(p.id);
+ }
+ for(const t of data.teams){
+  if(data.players.filter(p=>p.teamId===t.id).length>t.limit)
+   throw Error("Elenco excede limite.");
+ }
+ for(const h of data.history){
+  if(!h||typeof h.date!=="string"||typeof h.action!=="string"||typeof h.detail!=="string"||h.detail.length>300)
+   throw Error("Histórico inválido.");
+ }
+ return data;
+}
+$("import").onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  if(file.size>15000000)throw Error("Arquivo muito grande.");
+  const data=validate(JSON.parse(await file.text()));
+  if(!confirm("Substituir os dados atuais pelo backup?"))return;
+  db=data;save();render();notice("Backup restaurado.");
+ }catch(err){notice(err.message)}
+ e.target.value="";
+};
+try{
+ const saved=localStorage.getItem(KEY);
+ if(saved)db=validate(JSON.parse(saved));
+}catch(e){console.warn(e);notice("Dados locais inválidos. Verifique seu backup.");}
+render();
+</script>
+</body>
+</html>
