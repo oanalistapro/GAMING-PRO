@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c0c10">
+<title>Simulador de Premiação PRO | Gaming Pro</title>
+<style>
+:root{
+ --bg:#0c0c10;--panel:#18181f;--field:#24242e;
+ --line:#393943;--text:#fafafa;--muted:#aaaab5;
+ --orange:#ff791b;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:system-ui,Arial,sans-serif;
+}
+.wrap{max-width:1100px;margin:auto;padding:20px}
+header{
+ background:#15151b;border-bottom:1px solid var(--line);
+ padding:20px;
+}
+h1{margin:5px 0;font-size:clamp(25px,5vw,39px)}
+h2{font-size:19px;margin:0 0 17px}
+.orange{color:var(--orange)}
+.muted{color:var(--muted);line-height:1.6}
+.panel{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:18px;padding:20px;margin:18px 0;
+}
+.grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:15px;
+}
+.field{display:grid;gap:7px}
+label{font-size:13px;font-weight:750}
+input,select{
+ width:100%;min-width:0;padding:13px;border-radius:11px;
+ border:1px solid var(--line);background:var(--field);
+ color:var(--text);font:inherit;
+}
+input:focus,select:focus{outline:2px solid var(--orange)}
+button{
+ background:var(--orange);color:#111;border:0;
+ border-radius:12px;padding:13px 17px;
+ font:inherit;font-weight:850;cursor:pointer;
+}
+button.secondary{
+ background:var(--field);color:var(--text);
+ border:1px solid var(--line);
+}
+button:hover{filter:brightness(1.1)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.summary{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px;
+}
+.stat{
+ padding:15px;border:1px solid var(--line);
+ border-radius:13px;background:var(--field);
+}
+.stat small{display:block;color:var(--muted)}
+.stat strong{
+ display:block;color:var(--orange);font-size:20px;
+ margin-top:7px;overflow-wrap:anywhere;
+}
+.table-scroll{overflow:auto;max-height:600px}
+table{width:100%;border-collapse:collapse}
+th,td{
+ padding:12px;border-bottom:1px solid var(--line);
+ text-align:left;white-space:nowrap;
+}
+th{color:var(--orange);position:sticky;top:0;background:var(--panel)}
+td input{max-width:110px;padding:9px}
+.total{font-weight:850;color:var(--orange)}
+.error{color:#ff9999}
+@media(max-width:700px){
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .wrap{padding:12px}
+ .panel{padding:15px}
+}
+@media(max-width:390px){
+ .grid{grid-template-columns:1fr}
+}
+@media print{
+ body{background:white;color:black}
+ header,.settings,.actions{display:none!important}
+ .panel{border:0}
+ .table-scroll{max-height:none;overflow:visible}
+ th,td{color:black;border-color:#ccc}
+ th{position:static;background:white}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="wrap">
+  <div class="orange"><b>🎮 GAMING PRO</b></div>
+  <h1>🏆 Simulador de Premiação PRO</h1>
+  <p class="muted">Até 200 colocações · Cálculo automático · Exportação</p>
+ </div>
+</header>
+
+<main class="wrap">
+
+<section class="panel settings">
+ <h2>💰 Configuração financeira</h2>
+ <div class="grid">
+  <div class="field">
+   <label>Premiação base (R$)</label>
+   <input id="base" type="number" min="0" step=".01" value="1000">
+  </div>
+  <div class="field">
+   <label>Patrocínio (R$)</label>
+   <input id="sponsor" type="number" min="0" step=".01" value="0">
+  </div>
+  <div class="field">
+   <label>Inscrição por equipe (R$)</label>
+   <input id="entry" type="number" min="0" step=".01" value="0">
+  </div>
+  <div class="field">
+   <label>Equipes inscritas</label>
+   <input id="teams" type="number" min="0" max="10000" value="12">
+  </div>
+  <div class="field">
+   <label>Taxa de organização (%)</label>
+   <input id="fee" type="number" min="0" max="100" step=".01" value="0">
+  </div>
+  <div class="field">
+   <label>Colocações premiadas (1–200)</label>
+   <input id="places" type="number" min="1" max="200" value="3">
+  </div>
+  <div class="field">
+   <label>Modelo de distribuição</label>
+   <select id="model">
+    <option value="classic">Clássico</option>
+    <option value="champion">Foco no campeão</option>
+    <option value="balanced">Equilibrado</option>
+    <option value="equal">Igualitário</option>
+    <option value="custom">Personalizado</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Jogadores por equipe</label>
+   <input id="players" type="number" min="1" max="100" value="4">
+  </div>
+ </div>
+ <p class="muted">
+  O valor das inscrições, menos a taxa de organização,
+  é somado à premiação base e ao patrocínio.
+ </p>
+ <div class="actions">
+  <button id="calculate">⚡ Calcular premiação</button>
+  <button class="secondary" id="reset">↻ Restaurar</button>
+ </div>
+ <p class="error" id="error" role="alert"></p>
+</section>
+
+<section class="panel">
+ <h2>📊 Resumo financeiro</h2>
+ <div class="summary" id="summary"></div>
+</section>
+
+<section class="panel">
+ <h2>🥇 Distribuição por colocação</h2>
+ <p class="muted">
+  Você pode editar a porcentagem de cada colocação.
+  O sistema redistribui o restante automaticamente.
+ </p>
+ <div class="table-scroll">
+  <table>
+   <thead>
+    <tr>
+     <th>Posição</th>
+     <th>Porcentagem</th>
+     <th>Premiação</th>
+     <th>Por jogador</th>
+    </tr>
+   </thead>
+   <tbody id="results"></tbody>
+  </table>
+ </div>
+ <p class="total" id="total"></p>
+</section>
+
+<section class="panel">
+ <h2>📥 Exportar resultados</h2>
+ <div class="actions">
+  <button id="copy">📋 Copiar tabela</button>
+  <button id="csv">📊 Baixar CSV</button>
+  <button id="print">🖨️ Imprimir / Salvar PDF</button>
+ </div>
+</section>
+
+</main>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const money=v=>new Intl.NumberFormat("pt-BR",{
+ style:"currency",currency:"BRL"
+}).format(v);
+
+let weights=[];
+let payouts=[];
+let poolCents=0;
+let valid=false;
+
+function num(id){return Number($(id).value)}
+
+function modelWeights(count,model){
+ if(count===1)return [1];
+ if(model==="equal")return Array(count).fill(1);
+ if(model==="classic"&&count===3)return [50,30,20];
+
+ const ratio={
+  classic:.7,
+  champion:.45,
+  balanced:.88,
+  custom:.7
+ }[model]||.7;
+
+ return Array.from({length:count},(_,i)=>Math.pow(ratio,i));
+}
+
+function percentages(){
+ const sum=weights.reduce((a,b)=>a+b,0);
+ return weights.map(w=>sum>0?w/sum*100:0);
+}
+
+function distribute(total,percent){
+ const exact=percent.map(p=>total*p/100);
+ const result=exact.map(Math.floor);
+ let left=total-result.reduce((a,b)=>a+b,0);
+
+ const order=exact.map((n,i)=>({
+  i,rest:n-Math.floor(n)
+ })).sort((a,b)=>b.rest-a.rest||a.i-b.i);
+
+ for(let i=0;i<left;i++)result[order[i].i]++;
+ return result;
+}
+
+function summary(label,value){
+ const div=document.createElement("div");
+ div.className="stat";
+ const small=document.createElement("small");
+ small.textContent=label;
+ const strong=document.createElement("strong");
+ strong.textContent=money(value);
+ div.append(small,strong);
+ return div;
+}
+
+function calculate(){
+ const base=num("base");
+ const sponsor=num("sponsor");
+ const entry=num("entry");
+ const teams=num("teams");
+ const fee=num("fee");
+ const places=num("places");
+ const players=num("players");
+
+ $("error").textContent="";
+ valid=false;
+
+ if([base,sponsor,entry,teams,fee,places,players]
+  .some(v=>!Number.isFinite(v))||
+  [base,sponsor,entry,teams].some(v=>v<0)||
+  !Number.isInteger(teams)||teams>10000||
+  fee<0||fee>100||
+  !Number.isInteger(places)||places<1||places>200||
+  !Number.isInteger(players)||players<1||players>100){
+  $("error").textContent="Confira os valores informados.";
+  return;
+ }
+
+ if(teams>0&&places>teams){
+  $("error").textContent=
+   "As posições premiadas não podem superar o número de equipes.";
+  return;
+ }
+
+ if(weights.length!==places){
+  weights=modelWeights(places,$("model").value);
+ }
+
+ const perc=percentages();
+ if(perc.reduce((a,b)=>a+b,0)<=0){
+  $("error").textContent="Os percentuais precisam somar 100%.";
+  return;
+ }
+
+ const entryCents=Math.round(entry*100)*teams;
+ const feeCents=Math.round(entryCents*fee/100);
+ poolCents=Math.round(base*100)+Math.round(sponsor*100)
+  +entryCents-feeCents;
+
+ if(!Number.isSafeInteger(poolCents)||poolCents<0){
+  $("error").textContent="Premiação inválida ou muito alta.";
+  return;
+ }
+
+ payouts=distribute(poolCents,perc);
+ valid=true;
+
+ $("summary").replaceChildren(
+  summary("Premiação base",base),
+  summary("Patrocínio",sponsor),
+  summary("Inscrições",entryCents/100),
+  summary("Taxa de organização",feeCents/100),
+  summary("Fundo total",poolCents/100)
+ );
+
+ const tbody=$("results");
+ tbody.replaceChildren();
+
+ payouts.forEach((cents,i)=>{
+  const tr=document.createElement("tr");
+
+  const place=document.createElement("td");
+  place.textContent=(i+1)+"º lugar";
+
+  const percent=document.createElement("td");
+  const input=document.createElement("input");
+  input.type="number";
+  input.min="0";input.max="100";input.step=".01";
+  input.value=perc[i].toFixed(4);
+  input.setAttribute("aria-label","Porcentagem do "+(i+1)+"º lugar");
+
+  input.onchange=()=>{
+   const v=Number(input.value);
+   if(!Number.isFinite(v)||v<0||v>100){
+    calculate();return;
+   }
+
+   const old=percentages();
+   const other=old.reduce((s,p,j)=>s+(i===j?0:p),0);
+   const remaining=100-v;
+
+   if(places===1){
+    weights=[100];
+   }else{
+    weights=old.map((p,j)=>
+     j===i?v:
+     other>0?p/other*remaining:remaining/(places-1)
+    );
+   }
+   $("model").value="custom";
+   calculate();
+  };
+
+  percent.append(input);
+
+  const prize=document.createElement("td");
+  prize.textContent=money(cents/100);
+  prize.className="total";
+
+  const player=document.createElement("td");
+  player.textContent=money(
+   Math.floor(cents/players)/100
+  );
+
+  tr.append(place,percent,prize,player);
+  tbody.append(tr);
+ });
+
+ $("total").textContent=
+  "Total distribuído: "+money(
+   payouts.reduce((a,b)=>a+b,0)/100
+  );
+}
+
+function exportText(){
+ const perc=percentages();
+ return [
+  "GAMING PRO — PREMIAÇÃO",
+  "Fundo total: "+money(poolCents/100),
+  "",
+  ...payouts.map((c,i)=>
+   `${i+1}º lugar | ${perc[i].toFixed(4)}% | ${money(c/100)}`
+  )
+ ].join("\n");
+}
+
+$("calculate").onclick=calculate;
+
+$("model").onchange=()=>{
+ const places=num("places");
+ if(Number.isInteger(places)&&places>=1&&places<=200){
+  weights=modelWeights(places,$("model").value);
+ }
+ calculate();
+};
+
+$("places").onchange=()=>{
+ const places=num("places");
+ if(Number.isInteger(places)&&places>=1&&places<=200){
+  weights=modelWeights(places,$("model").value);
+ }
+ calculate();
+};
+
+$("reset").onclick=()=>{
+ const defaults={
+  base:1000,sponsor:0,entry:0,teams:12,
+  fee:0,places:3,players:4
+ };
+ for(const [id,value] of Object.entries(defaults)){
+  $(id).value=value;
+ }
+ $("model").value="classic";
+ weights=modelWeights(3,"classic");
+ calculate();
+};
+
+$("copy").onclick=async()=>{
+ if(!valid)return alert("Calcule primeiro.");
+ try{
+  await navigator.clipboard.writeText(exportText());
+  alert("Tabela copiada!");
+ }catch{
+  alert("Não foi possível copiar.");
+ }
+};
+
+$("csv").onclick=()=>{
+ if(!valid)return alert("Calcule primeiro.");
+
+ const perc=percentages();
+ const rows=[
+  ["Posição","Porcentagem","Premiação BRL"],
+  ...payouts.map((c,i)=>[
+   i+1,perc[i].toFixed(4),(c/100).toFixed(2)
+  ])
+ ];
+
+ const content="\uFEFF"+rows.map(row=>
+  row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(";")
+ ).join("\r\n");
+
+ const url=URL.createObjectURL(
+  new Blob([content],{type:"text/csv;charset=utf-8"})
+ );
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="gaming-pro-premiacao.csv";
+ document.body.append(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+
+$("print").onclick=()=>window.print();
+
+document.querySelectorAll(
+ "input:not(#places),select:not(#model)"
+).forEach(el=>el.addEventListener("change",calculate));
+
+weights=modelWeights(3,"classic");
+calculate();
+</script>
+</body>
+</html>
