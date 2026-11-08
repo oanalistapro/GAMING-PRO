@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabela de Pontos PRO | Gaming Pro</title>
+<meta name="theme-color" content="#0b0b0f">
+<style>
+:root{
+ --bg:#0b0b0f;--card:#17171f;--field:#24242e;
+ --line:#393944;--ink:#f7f7fb;--muted:#acacba;
+ --hot:#ff791b
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,Arial}
+header{padding:22px 0;background:#141419;border-bottom:1px solid var(--line)}
+.wrap{width:min(1350px,calc(100% - 24px));margin:auto}
+h1{font-size:clamp(26px,5vw,40px);margin:8px 0}
+h2{font-size:20px;margin:0 0 15px}
+h3{font-size:16px}
+.orange{color:var(--hot)}
+.muted{color:var(--muted);line-height:1.5}
+.panel{border:1px solid var(--line);border-radius:17px;background:var(--card);padding:18px;margin:16px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:6px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{
+ font:inherit;color:var(--ink);background:var(--field);
+ border:1px solid var(--line);border-radius:10px;
+ padding:11px;min-width:0;width:100%
+}
+textarea{min-height:155px;resize:vertical}
+button{
+ font:inherit;cursor:pointer;border:0;border-radius:10px;
+ padding:11px 13px;background:var(--hot);color:#111;font-weight:850
+}
+button.secondary{background:var(--field);color:var(--ink);border:1px solid var(--line)}
+button.danger{background:#662626;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--field);padding:14px;border-radius:12px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{font-size:23px;color:var(--hot)}
+.scroll{overflow:auto}
+.table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--hot);font-size:12px}
+td{font-size:13px}
+.mini{width:84px;padding:8px}
+.notice{
+ color:#ffd3aa;background:#3a2717;
+ border:1px solid #835022;padding:12px;border-radius:10px
+}
+.gold{color:#ffc66b;font-weight:900}
+.empty{color:var(--muted);padding:20px;text-align:center}
+footer{text-align:center;color:var(--muted);padding:26px}
+@media(max-width:800px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+ .grid{grid-template-columns:1fr}
+ .panel{padding:13px}
+}
+@media print{
+ body{background:#fff;color:#000}
+ header,.editor,.actions,footer,.notice{display:none!important}
+ .panel{background:#fff;color:#000;border-color:#bbb}
+ th,td{color:#000;padding:5px;font-size:10px}
+ .table{min-width:0}
+ .scroll{overflow:visible}
+ .stat{background:#fff;color:#000;border:1px solid #ccc}
+ .stat strong,.gold{color:#000}
+ @page{size:A4 landscape;margin:9mm}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<strong class="orange">🎮 GAMING PRO</strong>
+<h1>📋 TABELA DE PONTOS PRO</h1>
+<p class="muted">Campeonatos • Quedas • Kills • Colocações • Classificação automática</p>
+</div>
+</header>
+
+<main class="wrap">
+<section class="panel editor">
+<h2>⚙️ Campeonato e equipes</h2>
+<div class="grid">
+<div class="field">
+<label>Nome do campeonato</label>
+<input id="title" maxlength="100" value="CAMPEONATO GAMING PRO">
+</div>
+<div class="field">
+<label>Modalidade</label>
+<select id="game">
+<option>Free Fire</option><option>PUBG</option>
+<option>Fortnite</option><option>Battle Royale</option>
+<option>Outro</option>
+</select>
+</div>
+<div class="field">
+<label>Pontos por kill</label>
+<input id="killWeight" type="number" min="0" max="1000" step="0.5" value="1">
+</div>
+<div class="field">
+<label>Critério de desempate</label>
+<select id="tie">
+<option value="wins">Mais BOOYAH / TOP 1</option>
+<option value="kills">Mais kills</option>
+<option value="last">Melhor última queda</option>
+</select>
+</div>
+</div>
+
+<div class="field" style="margin-top:14px">
+<label>Equipes — uma por linha (até 200)</label>
+<textarea id="teams">REAL MEDO
+COMPLEX
+SG STARFORGE
+ECLIPSE 091
+PARAENSE 091
+7K ELITE
+FURY
+TTK STREAM
+001 PRIME
+IMPLACÁVEIS</textarea>
+</div>
+<div class="actions">
+<button id="create">🏆 Criar campeonato</button>
+<button class="secondary" id="new">🗑️ Novo campeonato</button>
+</div>
+<p id="message" class="notice" hidden role="status"></p>
+</section>
+
+<section class="panel editor">
+<h2>🎯 Pontuação por colocação</h2>
+<p class="muted">Modelo editável. TOP 1 até TOP 200. Posições não preenchidas valem zero.</p>
+<div class="grid">
+<div class="field">
+<label>Carregar modelo</label>
+<select id="preset">
+<option value="ff">Free Fire — exemplo</option>
+<option value="pubg">PUBG — exemplo</option>
+<option value="flat">Somente kills</option>
+</select>
+</div>
+<div class="field">
+<label>Posição:pontos</label>
+<textarea id="scoring" style="min-height:140px">1:12
+2:9
+3:8
+4:7
+5:6
+6:5
+7:4
+8:3
+9:2
+10:1</textarea>
+</div>
+</div>
+<div class="actions">
+<button class="secondary" id="applyScoring">💾 Aplicar pontuação</button>
+</div>
+</section>
+
+<section class="panel editor" id="entryPanel" hidden>
+<h2>📝 Registrar queda</h2>
+<div class="grid">
+<div class="field">
+<label>Número da queda</label>
+<select id="round"></select>
+</div>
+<div class="field">
+<label>Nome do mapa / rodada</label>
+<input id="mapName" maxlength="70" placeholder="Bermuda">
+</div>
+<div class="field">
+<label>Equipes sem jogar</label>
+<p class="muted">Deixe TOP e kills vazios para não contabilizar a equipe.</p>
+</div>
+</div>
+<div class="scroll">
+<table class="table">
+<thead>
+<tr>
+<th>Equipe</th><th>TOP</th><th>Kills</th>
+<th>Bônus (+/-)</th><th>Pontos previstos</th>
+</tr>
+</thead>
+<tbody id="entryRows"></tbody>
+</table>
+</div>
+<div class="actions">
+<button id="saveRound">💾 Salvar queda</button>
+<button class="secondary" id="clearRound">Limpar campos</button>
+<button class="danger" id="deleteRound">Excluir queda</button>
+</div>
+</section>
+
+<section class="panel" id="resultPanel" hidden>
+<h2 id="displayTitle">🏆 Classificação geral</h2>
+<div class="stats" id="stats"></div>
+<div class="actions editor">
+<button class="secondary" id="csv">📊 Baixar CSV</button>
+<button class="secondary" id="json">💾 Backup JSON</button>
+<button class="secondary" id="print">🖨️ PDF / Imprimir</button>
+<button class="secondary" id="copy">📋 Copiar classificação</button>
+</div>
+<div class="scroll">
+<table class="table">
+<thead>
+<tr>
+<th>#</th><th>Equipe</th><th>PTS</th>
+<th>Colocação</th><th>Kills</th><th>Bônus</th>
+<th>Quedas</th><th>TOP 1</th><th>Melhor TOP</th>
+</tr>
+</thead>
+<tbody id="standings"></tbody>
+</table>
+</div>
+<h3>📅 Resultados por queda</h3>
+<div id="roundResults"></div>
+</section>
+
+<section class="panel editor">
+<h2>📂 Restaurar backup</h2>
+<input type="file" id="import" accept=".json,application/json">
+<p class="muted">Dados salvos neste navegador. Faça backups JSON para evitar perdas.</p>
+</section>
+</main>
+<footer>🎮 GAMING PRO · TABELA DE PONTOS PRO</footer>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_tabela_pontos_v1";
+let state=null;
+
+const defaults={
+ ff:{1:12,2:9,3:8,4:7,5:6,6:5,7:4,8:3,9:2,10:1},
+ pubg:{1:10,2:6,3:5,4:4,5:3,6:2,7:1,8:1},
+ flat:{}
+};
+
+const msg=s=>{
+ $("message").textContent=s;
+ $("message").hidden=!s;
+};
+const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:2});
+const escapeCsv=v=>'"'+String(v).replaceAll('"','""')+'"';
+
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(state))}
+ catch{msg("Não foi possível salvar. Faça backup JSON.")}
+}
+
+function parseScoring(){
+ const out={};
+ const lines=$("scoring").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ for(const line of lines){
+  const m=line.match(/^(\d{1,3})\s*[:=;,]\s*(\d+(?:[.,]\d+)?)$/);
+  if(!m)throw Error("Linha inválida na pontuação: "+line);
+  const pos=Number(m[1]);
+  const pts=Number(m[2].replace(",","."));
+  if(pos<1||pos>200||!Number.isFinite(pts)||pts>10000)
+   throw Error("Pontuação fora dos limites.");
+  if(Object.hasOwn(out,pos))throw Error("Posição repetida: "+pos);
+  out[pos]=pts;
+ }
+ return out;
+}
+
+function parseTeams(){
+ const names=$("teams").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(names.length<2||names.length>200)throw Error("Informe de 2 a 200 equipes.");
+ if(names.some(n=>n.length>80))throw Error("Nome com mais de 80 caracteres.");
+ if(new Set(names.map(n=>n.toLocaleLowerCase("pt-BR"))).size!==names.length)
+  throw Error("Existem equipes repetidas.");
+ return names;
+}
+
+function getWeight(){
+ const n=Number($("killWeight").value);
+ if(!Number.isFinite(n)||n<0||n>1000)
+  throw Error("Pontos por kill devem ficar entre 0 e 1000.");
+ return n;
+}
+
+function create(){
+ try{
+  if(state&&!confirm("Substituir o campeonato salvo?"))return;
+  state={
+   version:1,
+   title:$("title").value.trim()||"CAMPEONATO GAMING PRO",
+   game:$("game").value,
+   teams:parseTeams(),
+   scoring:parseScoring(),
+   killWeight:getWeight(),
+   tie:$("tie").value,
+   rounds:{}
+  };
+  save();msg("");render();
+ }catch(e){msg(e.message)}
+}
+
+function roundData(round){
+ return state.rounds[round]||{map:"",results:{}};
+}
+
+function renderEntry(){
+ const selected=Number($("round").value)||1;
+ const data=roundData(selected);
+ $("mapName").value=data.map||"";
+ const body=$("entryRows");
+ body.replaceChildren();
+
+ state.teams.forEach((name,i)=>{
+  const r=data.results[i]||{};
+  const tr=document.createElement("tr");
+  const td=document.createElement("td");
+  td.textContent=name;
+  tr.append(td);
+
+  for(const [key,placeholder] of [
+   ["top","1–200"],["kills","0"],["bonus","0"]
+  ]){
+   const cell=document.createElement("td");
+   const input=document.createElement("input");
+   input.type="number";
+   input.className="mini";
+   input.dataset.team=i;
+   input.dataset.key=key;
+   input.placeholder=placeholder;
+   input.step=key==="bonus"?"0.5":"1";
+   input.min=key==="bonus"?"-10000":key==="top"?"1":"0";
+   input.max=key==="top"?"200":"100000";
+   input.value=r[key]??"";
+   input.addEventListener("input",updatePreview);
+   cell.append(input);
+   tr.append(cell);
+  }
+
+  const preview=document.createElement("td");
+  preview.className="preview";
+  tr.append(preview);
+  body.append(tr);
+ });
+ updatePreview();
+}
+
+function collectRows(){
+ const rows={};
+ const inputs=[...document.querySelectorAll("#entryRows input")];
+
+ for(let i=0;i<state.teams.length;i++){
+  const fields=inputs.filter(el=>Number(el.dataset.team)===i);
+  const values=Object.fromEntries(
+   fields.map(el=>[el.dataset.key,el.value.trim()])
+  );
+  if(Object.values(values).every(v=>v===""))continue;
+  if(values.top==="")
+   throw Error("Informe o TOP da equipe "+state.teams[i]+" ou deixe a linha vazia.");
+
+  const top=Number(values.top);
+  const kills=values.kills===""?0:Number(values.kills);
+  const bonus=values.bonus===""?0:Number(values.bonus);
+
+  if(!Number.isInteger(top)||top<1||top>state.teams.length||
+     !Number.isInteger(kills)||kills<0||kills>100000||
+     !Number.isFinite(bonus)||Math.abs(bonus)>10000)
+   throw Error("Resultado inválido: "+state.teams[i]);
+
+  rows[i]={top,kills,bonus};
+ }
+
+ const positions=Object.values(rows).map(x=>x.top);
+ if(new Set(positions).size!==positions.length)
+  throw Error("Há posições TOP repetidas nesta queda.");
+ return rows;
+}
+
+function points(r){
+ return (state.scoring[r.top]||0)+r.kills*state.killWeight+r.bonus;
+}
+
+function updatePreview(){
+ try{
+  const rows=collectRows();
+  document.querySelectorAll("#entryRows tr").forEach((tr,i)=>{
+   tr.querySelector(".preview").textContent=
+    rows[i]?fmt(points(rows[i])):"—";
+  });
+  msg("");
+ }catch(e){
+  document.querySelectorAll(".preview").forEach(el=>el.textContent="—");
+ }
+}
+
+function saveRound(){
+ try{
+  const n=Number($("round").value);
+  const results=collectRows();
+  if(!Object.keys(results).length)
+   throw Error("Preencha ao menos uma equipe.");
+  state.rounds[n]={map:$("mapName").value.trim(),results};
+  save();msg("Queda "+n+" salva.");render();
+ }catch(e){msg(e.message)}
+}
+
+function statsForTeam(i){
+ const s={
+  name:state.teams[i],index:i,pts:0,placement:0,
+  kills:0,bonus:0,played:0,wins:0,best:201,last:201
+ };
+ const rounds=Object.keys(state.rounds).map(Number).sort((a,b)=>a-b);
+
+ for(const n of rounds){
+  const r=state.rounds[n].results[i];
+  if(!r)continue;
+  s.pts+=points(r);
+  s.placement+=state.scoring[r.top]||0;
+  s.kills+=r.kills;
+  s.bonus+=r.bonus;
+  s.played++;
+  s.wins+=Number(r.top===1);
+  s.best=Math.min(s.best,r.top);
+  s.last=r.top;
+ }
+ return s;
+}
+
+function standings(){
+ const list=state.teams.map((_,i)=>statsForTeam(i));
+ return list.sort((a,b)=>
+  b.pts-a.pts||
+  (state.tie==="kills"?b.kills-a.kills:
+   state.tie==="last"?a.last-b.last:b.wins-a.wins)||
+  b.wins-a.wins||
+  b.kills-a.kills||
+  a.best-b.best||
+  a.name.localeCompare(b.name,"pt-BR")
+ );
+}
+
+function cell(row,value,cls){
+ const td=document.createElement("td");
+ td.textContent=value;
+ if(cls)td.className=cls;
+ row.append(td);
+}
+
+function renderStandings(){
+ const body=$("standings");
+ body.replaceChildren();
+
+ standings().forEach((s,i)=>{
+  const tr=document.createElement("tr");
+  [
+   i+1,s.name,fmt(s.pts),fmt(s.placement),
+   s.kills,fmt(s.bonus),s.played,s.wins,
+   s.best===201?"—":s.best
+  ].forEach((v,j)=>cell(tr,v,j===0&&i<3?"gold":""));
+  body.append(tr);
+ });
+
+ const all=state.teams.map((_,i)=>statsForTeam(i));
+ $("stats").replaceChildren();
+
+ for(const [label,value] of [
+  ["Equipes",state.teams.length],
+  ["Quedas",Object.keys(state.rounds).length],
+  ["Kills totais",all.reduce((n,s)=>n+s.kills,0)],
+  ["Líder",standings()[0]?.name||"—"]
+ ]){
+  const div=document.createElement("div");
+  div.className="stat";
+  const small=document.createElement("small");
+  small.textContent=label;
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+  div.append(small,strong);
+  $("stats").append(div);
+ }
+ $("displayTitle").textContent="🏆 "+state.title+" — CLASSIFICAÇÃO";
+}
+
+function renderRoundResults(){
+ const root=$("roundResults");
+ root.replaceChildren();
+ const rounds=Object.keys(state.rounds).map(Number).sort((a,b)=>a-b);
+
+ if(!rounds.length){
+  const p=document.createElement("p");
+  p.className="empty";
+  p.textContent="Nenhuma queda registrada.";
+  root.append(p);
+  return;
+ }
+
+ for(const n of rounds){
+  const data=state.rounds[n];
+  const heading=document.createElement("h3");
+  heading.textContent="Queda "+n+(data.map?" — "+data.map:"");
+  root.append(heading);
+
+  const wrap=document.createElement("div");
+  wrap.className="scroll";
+  const table=document.createElement("table");
+  table.className="table";
+  const head=document.createElement("tr");
+
+  ["TOP","Equipe","Kills","Bônus","Pontos"].forEach(x=>{
+   const th=document.createElement("th");
+   th.textContent=x;
+   head.append(th);
+  });
+  table.append(head);
+
+  Object.entries(data.results)
+   .sort((a,b)=>a[1].top-b[1].top)
+   .forEach(([i,r])=>{
+    const tr=document.createElement("tr");
+    [r.top,state.teams[i],r.kills,fmt(r.bonus),fmt(points(r))]
+     .forEach(v=>cell(tr,v));
+    table.append(tr);
+   });
+
+  wrap.append(table);
+  root.append(wrap);
+ }
+}
+
+function render(){
+ if(!state){
+  $("entryPanel").hidden=true;
+  $("resultPanel").hidden=true;
+  return;
+ }
+
+ $("entryPanel").hidden=false;
+ $("resultPanel").hidden=false;
+ $("title").value=state.title;
+ $("game").value=state.game;
+ $("killWeight").value=state.killWeight;
+ $("tie").value=state.tie;
+ $("teams").value=state.teams.join("\n");
+ $("scoring").value=Object.entries(state.scoring)
+  .sort((a,b)=>Number(a[0])-Number(b[0]))
+  .map(([p,v])=>p+":"+v).join("\n");
+
+ const round=$("round");
+ const old=Number(round.value)||1;
+ round.replaceChildren();
+
+ for(let n=1;n<=100;n++){
+  const option=document.createElement("option");
+  option.value=n;
+  option.textContent="Queda "+n+(state.rounds[n]?" ✓":"");
+  round.append(option);
+ }
+ round.value=String(Math.min(old,100));
+ renderEntry();
+ renderStandings();
+ renderRoundResults();
+}
+
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.append(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+$("create").onclick=create;
+
+$("new").onclick=()=>{
+ if(!confirm("Apagar o campeonato salvo neste navegador?"))return;
+ state=null;
+ localStorage.removeItem(KEY);
+ render();
+ msg("Campeonato apagado.");
+};
+
+$("round").onchange=renderEntry;
+$("saveRound").onclick=saveRound;
+
+$("clearRound").onclick=()=>{
+ document.querySelectorAll("#entryRows input").forEach(el=>el.value="");
+ updatePreview();
+};
+
+$("deleteRound").onclick=()=>{
+ const n=Number($("round").value);
+ if(!state.rounds[n])return msg("Esta queda não está salva.");
+ if(!confirm("Excluir a queda "+n+"?"))return;
+ delete state.rounds[n];
+ save();render();
+};
+
+$("preset").onchange=()=>{
+ $("scoring").value=Object.entries(defaults[$("preset").value])
+  .map(([p,v])=>p+":"+v).join("\n");
+};
+
+$("applyScoring").onclick=()=>{
+ try{
+  const scoring=parseScoring();
+  if(state){
+   state.scoring=scoring;
+   state.killWeight=getWeight();
+   state.tie=$("tie").value;
+   save();render();
+  }
+  msg("Pontuação aplicada.");
+ }catch(e){msg(e.message)}
+};
+
+$("csv").onclick=()=>{
+ const rows=[
+  ["Posição","Equipe","Pontos","Colocação","Kills","Bônus","Quedas","TOP1","Melhor TOP"],
+  ...standings().map((s,i)=>[
+   i+1,s.name,s.pts,s.placement,s.kills,s.bonus,
+   s.played,s.wins,s.best===201?"":s.best
+  ])
+ ];
+ download(
+  "gaming-pro-tabela.csv",
+  "\uFEFF"+rows.map(r=>r.map(escapeCsv).join(";")).join("\r\n"),
+  "text/csv;charset=utf-8"
+ );
+};
+
+$("json").onclick=()=>download(
+ "gaming-pro-tabela-backup.json",
+ JSON.stringify(state,null,2),
+ "application/json"
+);
+
+$("print").onclick=()=>window.print();
+
+$("copy").onclick=async()=>{
+ const txt=[
+  state.title,
+  ...standings().map((s,i)=>
+   `${i+1}º ${s.name} — ${fmt(s.pts)} PTS | ${s.kills} KILLS`
+  )
+ ].join("\n");
+ try{
+  await navigator.clipboard.writeText(txt);
+  msg("Classificação copiada.");
+ }catch{msg("Não foi possível copiar.")}
+};
+
+function validate(d){
+ if(!d||d.version!==1||
+  typeof d.title!=="string"||d.title.length>100||
+  !["Free Fire","PUBG","Fortnite","Battle Royale","Outro"].includes(d.game)||
+  !Array.isArray(d.teams)||d.teams.length<2||d.teams.length>200||
+  d.teams.some(x=>typeof x!=="string"||!x.trim()||x.length>80)||
+  new Set(d.teams.map(x=>x.toLocaleLowerCase("pt-BR"))).size!==d.teams.length||
+  !d.scoring||typeof d.scoring!=="object"||
+  !Number.isFinite(d.killWeight)||d.killWeight<0||d.killWeight>1000||
+  !["wins","kills","last"].includes(d.tie)||
+  !d.rounds||typeof d.rounds!=="object")
+  throw Error("Backup inválido.");
+
+ for(const [pos,pts] of Object.entries(d.scoring)){
+  if(!/^\d+$/.test(pos)||Number(pos)<1||Number(pos)>200||
+     !Number.isFinite(pts)||pts<0||pts>10000)
+   throw Error("Pontuação inválida.");
+ }
+
+ if(Object.keys(d.rounds).length>100)throw Error("Quedas demais.");
+
+ for(const [n,round] of Object.entries(d.rounds)){
+  if(!/^\d+$/.test(n)||Number(n)<1||Number(n)>100||
+     !round||typeof round.map!=="string"||round.map.length>70||
+     !round.results||typeof round.results!=="object")
+   throw Error("Queda inválida.");
+
+  const tops=[];
+  for(const [i,r] of Object.entries(round.results)){
+   if(!/^\d+$/.test(i)||Number(i)>=d.teams.length||
+      !r||!Number.isInteger(r.top)||r.top<1||r.top>d.teams.length||
+      !Number.isInteger(r.kills)||r.kills<0||r.kills>100000||
+      !Number.isFinite(r.bonus)||Math.abs(r.bonus)>10000)
+    throw Error("Resultado inválido.");
+   tops.push(r.top);
+  }
+  if(new Set(tops).size!==tops.length)throw Error("TOP repetido.");
+ }
+ return d;
+}
+
+$("import").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  if(file.size>3000000)throw Error("Arquivo muito grande.");
+  const data=validate(JSON.parse(await file.text()));
+  if(!confirm("Substituir campeonato atual pelo backup?"))return;
+  state=data;
+  save();render();
+  msg("Backup restaurado.");
+ }catch(err){msg(err.message)}
+ finally{e.target.value=""}
+};
+
+try{
+ const raw=localStorage.getItem(KEY);
+ if(raw)state=validate(JSON.parse(raw));
+}catch(e){
+ console.warn(e);
+ msg("Não foi possível carregar o campeonato salvo.");
+}
+render();
+</script>
+</body>
+</html>
