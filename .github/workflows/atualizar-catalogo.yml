@@ -1,0 +1,96 @@
+
+name: Atualizar Catálogo Gaming Pro
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "catalogo.json"
+      - "*/index.html"
+      - ".github/workflows/atualizar-catalogo.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-catalogo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verificar módulos e atualizar catálogo
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          arquivo = Path("catalogo.json")
+
+          if not arquivo.exists():
+              raise SystemExit("ERRO: catalogo.json não encontrado.")
+
+          catalogo = json.loads(arquivo.read_text(encoding="utf-8"))
+
+          aplicativos = catalogo.get("aplicativos")
+
+          if not isinstance(aplicativos, list):
+              raise SystemExit("ERRO: lista aplicativos inválida.")
+
+          for app in aplicativos:
+              if not isinstance(app, dict):
+                  raise SystemExit("ERRO: aplicativo inválido.")
+
+              pasta = app.get("pasta", "")
+
+              if (
+                  not isinstance(pasta, str)
+                  or not pasta
+                  or "/" in pasta
+                  or "\\" in pasta
+                  or pasta in (".", "..")
+              ):
+                  raise SystemExit("ERRO: pasta inválida.")
+
+              caminho = Path(pasta) / "index.html"
+
+              existe = caminho.is_file()
+
+              app["ativo"] = existe
+
+              print(
+                  ("ATIVO" if existe else "EM DESENVOLVIMENTO")
+                  + " - " + app.get("nome", pasta)
+              )
+
+          arquivo.write_text(
+              json.dumps(catalogo, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+
+          print("Catálogo atualizado com sucesso.")
+          PY
+
+      - name: Publicar alterações
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add catalogo.json
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração necessária."
+          else
+            git commit -m "Atualizar disponibilidade dos módulos"
+            git push
+          fi
