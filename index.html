@@ -1431,7 +1431,41 @@ async function myAdsModal() {
       payment.textContent =
         "Pagamento: " + (ad.payment_status || "Pendente");
 
-      box.append(title,status,expires,payment);
+      const verificar = document.createElement("button");
+verificar.className = "btn";
+verificar.textContent = "🔄 Verificar pagamento";
+
+verificar.onclick = async () => {
+  verificar.disabled = true;
+  verificar.textContent = "Consultando Asaas...";
+
+  try {
+    const result = await apiRequest(
+      "/api/payment-status?adId=" +
+      encodeURIComponent(ad.id)
+    );
+
+    if (result.status === "active") {
+      status.textContent = "Situação: ATIVO ✅";
+      payment.textContent = "Pagamento: Confirmado";
+      expires.textContent =
+        "Vencimento: " + result.expiresAt;
+
+      verificar.textContent = "✅ Anúncio liberado";
+      await loadAds();
+    } else {
+      verificar.textContent = "🔄 Verificar novamente";
+      notify("Pagamento ainda não confirmado.");
+    }
+  } catch (err) {
+    verificar.textContent = "🔄 Tentar novamente";
+    notify("Erro: " + err.message);
+  } finally {
+    verificar.disabled = false;
+  }
+};
+
+box.append(title,status,expires,payment,verificar);
       container.append(box);
     }
   } catch (error) {
