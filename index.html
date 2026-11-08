@@ -1,693 +1,1027 @@
 
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#09090f">
-<title>GAMING PRO</title>
-<style>
-:root{--bg:#09090f;--panel:#171720;--edge:#373744;--orange:#ff791b;--muted:#b5b5c5}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:white;font-family:system-ui,Arial}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-a{color:inherit;text-decoration:none}
-.wrap{width:min(1250px,94%);margin:auto}
-header{position:sticky;top:0;z-index:10;background:#101018ef;border-bottom:1px solid var(--edge)}
-nav{display:flex;align-items:center;justify-content:space-between;padding:15px 0;gap:10px}
-h1{font-size:clamp(38px,7vw,70px);line-height:1.1}
-h2{font-size:30px}
-h3{margin:10px 0}
-.orange{color:var(--orange)}
-.btn{border:0;border-radius:12px;background:var(--orange);color:#151515;font-weight:900;padding:12px 17px;display:inline-block}
-.secondary{background:#282834;color:white;border:1px solid var(--edge)}
-.hero{padding:70px 0;background:linear-gradient(90deg,#09090ff2,#09090fb0),url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1500') center/cover}
-.hero p{max-width:650px;color:#d0d0db;line-height:1.8}
-.flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.between{justify-content:space-between}
-section{padding:35px 0}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.card{background:var(--panel);border:1px solid var(--edge);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
-.cover{height:190px;position:relative;background:linear-gradient(135deg,#632c13,#171720)}
-.cover img{width:100%;height:100%;object-fit:cover}
-.pill{position:absolute;top:12px;right:12px;background:#111d;color:#70efa4;border-radius:30px;padding:8px;font-size:11px;font-weight:900}
-.content{padding:20px;display:flex;flex:1;flex-direction:column;gap:10px}
-.content p{color:var(--muted);line-height:1.6;flex:1}
-.content .btn{width:100%;text-align:center}
-.tag{font-size:12px;font-weight:900;color:#ffbb7c;text-transform:uppercase}
-.promo{border:1px solid #ff791b80;background:linear-gradient(90deg,#54220e,#18151d);border-radius:20px;padding:25px;margin:20px 0}
-.field{width:100%;background:#242430;border:1px solid var(--edge);border-radius:10px;color:white;padding:12px}
-.field:focus{outline:1px solid var(--orange)}
-.modal-bg{position:fixed;inset:0;z-index:100;background:#000d;display:grid;place-items:center;padding:12px}
-.modal{width:min(750px,100%);max-height:93dvh;overflow:auto;background:#1b1b26;border:1px solid #4a4a58;border-radius:20px;padding:22px}
-.modal-head{display:flex;justify-content:space-between;align-items:center}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
-.wide{grid-column:1/-1}
-.notice{padding:14px;border:1px solid var(--edge);border-radius:12px;background:#11111a;margin:10px 0}
-.muted{color:var(--muted)}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
-.tools{margin:10px 0}
-.tools .field{max-width:400px}
-.result{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
-.qr{max-width:240px;width:100%;background:white;padding:10px;border-radius:10px;display:block;margin:10px auto}
-.hidden,[hidden]{display:none!important}
-.canvas{width:100%;max-width:650px;border-radius:12px;background:#101019}
-footer{border-top:1px solid var(--edge);padding:25px;color:var(--muted)}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.grid,.form{grid-template-columns:1fr}.hero{padding:40px 0}h2{font-size:25px}nav .btn{padding:9px;font-size:12px}}
-</style>
-</head>
-<body>
-<header>
-<nav class="wrap">
-<a href="#inicio"><b>🎮 GAMING <span class="orange">PRO</span></b></a>
-<div class="flex">
-<button class="btn secondary" id="login">Entrar</button>
-<button class="btn" id="publish">📢 Divulgar</button>
-</div>
-</nav>
-</header>
+/* GAMING PRO — FERRAMENTAS AVANÇADAS
+   Substitui bracket(), ranking() e prize().
+   Mantém o restante do portal intacto.
+*/
 
-<div class="hero" id="inicio">
-<div class="wrap">
-<div class="tag">PORTAL GAMING PRO</div>
-<h1>CAMPEONATOS<br><span class="orange">SEM LIMITES.</span></h1>
-<p>Divulgue campeonatos por R$ 10 durante 30 dias e utilize ferramentas para organizar seus torneios.</p>
-<div class="flex">
-<a class="btn" href="#campeonatos">🏆 Campeonatos</a>
-<a class="btn secondary" href="#ferramentas">🎮 Ferramentas</a>
-</div>
-</div>
-</div>
-
-<main class="wrap">
-<section id="campeonatos">
-<div class="flex between">
-<div>
-<div class="tag">PUBLICIDADE ESPORTS</div>
-<h2>Campeonatos <span class="orange">divulgados</span></h2>
-</div>
-<button class="btn secondary" id="myAds">📋 Meus anúncios</button>
-</div>
-<div class="promo flex between">
-<div>
-<h2>Divulgue seu campeonato</h2>
-<p class="muted">Pix R$ 10,00 · Divulgação por 30 dias após confirmação</p>
-</div>
-<button class="btn" id="publish2">Cadastrar campeonato →</button>
-</div>
-<div class="flex between">
-<p id="adCount" class="muted">Carregando...</p>
-<button class="btn secondary" id="refresh">↻ Atualizar</button>
-</div>
-<div class="grid" id="ads"></div>
-</section>
-
-<section id="ferramentas">
-<div class="tag">ECOSSISTEMA GAMING PRO</div>
-<h2>Nossas <span class="orange">ferramentas</span></h2>
-<div class="tools">
-<input class="field" id="search" placeholder="Pesquisar ferramentas">
-</div>
-<div class="grid" id="tools"></div>
-</section>
-</main>
-
-<footer>
-<div class="wrap">GAMING PRO · Os organizadores são responsáveis pelos links e informações divulgados.</div>
-</footer>
-
-<div class="modal-bg hidden" id="overlay">
-<div class="modal">
-<div class="modal-head">
-<h2 id="modalTitle"></h2>
-<button class="btn secondary" id="close">✕</button>
-</div>
-<div id="modalContent"></div>
-</div>
-</div>
-
-<script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
-import {
-getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,
-getRedirectResult,onAuthStateChanged,signOut
-} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-
-const API='https://empty-union-c098gaming-pro-api.junhodorval.workers.dev';
-const ANALISTA='https://oanalistapro.github.io/ANALISTA-PRO.github.io/';
-
-const app=initializeApp({
-apiKey:'AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q',
-authDomain:'gaming-pro-4325c.firebaseapp.com',
-projectId:'gaming-pro-4325c',
-storageBucket:'gaming-pro-4325c.firebasestorage.app',
-messagingSenderId:'931964630474',
-appId:'1:931964630474:web:43b0b4c6c2b27a8b2e4b33'
-});
-
-const auth=getAuth(app);
-const provider=new GoogleAuthProvider();
-let user=null,poll=null;
-
-const $=s=>document.querySelector(s);
-const E=(tag,text,cls)=>{
- let x=document.createElement(tag);
- if(text!==undefined)x.textContent=text;
- if(cls)x.className=cls;
- return x;
-};
-
-function show(title){
- $('#modalTitle').textContent=title;
- $('#modalContent').replaceChildren();
- $('#overlay').classList.remove('hidden');
-}
-function close(){
- clearInterval(poll);
- poll=null;
- $('#overlay').classList.add('hidden');
-}
-$('#close').onclick=close;
-$('#overlay').onclick=e=>{
- if(e.target===$('#overlay'))close();
-};
-document.addEventListener('keydown',e=>{
- if(e.key==='Escape')close();
-});
-function message(s){alert(s)}
-
-async function request(path,options={}){
- let r=await fetch(API+path,options);
- let j=await r.json().catch(()=>({}));
- if(!r.ok||j.ok===false)throw Error(j.error||'Falha na API');
- return j;
-}
-async function privateRequest(path,options={}){
- if(!user)throw Error('Entre com Google');
- return request(path,{
-  ...options,
-  headers:{
-   'Authorization':'Bearer '+await user.getIdToken(),
-   'Content-Type':'application/json',
-   ...(options.headers||{})
-  }
- });
-}
-async function login(){
- if(user)return true;
- try{
-  await signInWithPopup(auth,provider);
-  return true;
- }catch(e){
-  if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment'].includes(e.code)){
-   await signInWithRedirect(auth,provider);
-   return false;
-  }
-  message('Login: '+e.message);
-  return false;
- }
-}
-getRedirectResult(auth).catch(console.warn);
-onAuthStateChanged(auth,u=>{
- user=u;
- $('#login').textContent=u?(u.displayName?.split(' ')[0]||'Minha conta'):'Entrar';
-});
-$('#login').onclick=async()=>{
- if(!user){await login();return}
- show('Minha conta');
- let p=E('p','Conectado: '+user.email,'muted');
- let b=E('button','Sair','btn secondary');
- b.onclick=async()=>{await signOut(auth);close()};
- $('#modalContent').append(p,b);
-};
-
-const goodUrl=v=>{
- try{
-  let u=new URL(v);
-  return u.protocol==='https:'&&!u.username&&!u.password;
- }catch{return false}
-};
-const placeholder='https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900&q=80';
-
-function photo(src){
- let im=E('img');
- im.alt='Imagem do campeonato';
- im.loading='lazy';
- im.referrerPolicy='no-referrer';
- im.src=goodUrl(src)?src:placeholder;
- im.onerror=()=>{
-  im.onerror=null;
-  im.src=placeholder;
- };
- return im;
+function gpElement(tag, className = "", text = "") {
+  const el = document.createElement(tag);
+  el.className = className;
+  el.textContent = text;
+  return el;
 }
 
-async function loadAds(){
- let root=$('#ads');
- $('#adCount').textContent='Carregando campeonatos...';
- try{
-  let d=await request('/api/ads',{cache:'no-store'});
-  root.replaceChildren();
-  for(let a of d.ads||[]){
-   if(!goodUrl(a.target_url))continue;
-   let card=E('article',undefined,'card');
-   let cover=E('div',undefined,'cover');
-   let body=E('div',undefined,'content');
-   cover.append(photo(a.image_url),E('span','● DIVULGAÇÃO ATIVA','pill'));
-   body.append(
-    E('span',a.game||'Campeonato','tag'),
-    E('h3',a.title||'Campeonato'),
-    E('div','Organizador: '+(a.organizer||'Não informado'),'tag'),
-    E('p',a.description||'Acesse o link oficial para mais informações.','muted')
-   );
-   let link=E('a','Acessar campeonato →','btn');
-   link.href=a.target_url;
-   link.target='_blank';
-   link.rel='noopener noreferrer';
-   body.append(link);
-   card.append(cover,body);
-   root.append(card);
-  }
-  $('#adCount').textContent=root.children.length+' campeonato(s) divulgado(s)';
- }catch(e){
-  $('#adCount').textContent='Erro ao carregar: '+e.message;
- }
-}
-$('#refresh').onclick=loadAds;
-
-const toolData=[
-['analista','ANALISTA PRO','Campeonatos','📊','Gestão de campeonatos e análise de jogadores.','photo-1542751371-adc38448a05e'],
-['chaves','GERADOR DE CHAVES','Campeonatos','🗂️','Sorteie confrontos e monte uma chave eliminatória.','photo-1550745165-9bc0b252726f'],
-['ranking','RANKING DE JOGADORES','Jogadores','🥇','Cadastre pontuações e classifique jogadores.','photo-1593305841991-05c297ba4575'],
-['cards','GERADOR DE CARDS','Criatividade','🎨','Crie cards e baixe imagens PNG.','photo-1558655146-9f40138edfeb'],
-['premiacao','SIMULADOR DE PREMIAÇÃO PRO','Simuladores','🏆','Calcule premiações e divisões por colocação.','photo-1511512578047-dfb367046420'],
-['pontuacao','SIMULADOR DE PONTUAÇÃO','Simuladores','⚡','Calcule pontos de colocação e eliminações.','photo-1460925895917-afdab827c52f'],
-['equipes','GESTOR DE EQUIPES','Equipes','👥','Cadastre e organize equipes no navegador.','photo-1529156069898-49953e39b3ac'],
-['campeonato','SIMULADOR DE CAMPEONATO','Simuladores','🎯','Simule partidas e resultados.','photo-1535223289827-42f1e9919769'],
-['tabela','TABELA DE PONTOS','Campeonatos','📋','Organize classificações por equipe.','photo-1551288049-bebda4e38f71'],
-['estatisticas','ESTATÍSTICAS ESPORTS','Jogadores','📈','Visualize estatísticas de desempenho.','photo-1516321318423-f06f85e504b3'],
-['agenda','AGENDA DE TORNEIOS','Campeonatos','📅','Registre datas de torneios.','photo-1506784983877-45594efa4cbe'],
-['inscricoes','GESTOR DE INSCRIÇÕES','Equipes','📝','Gerencie lista de inscritos.','photo-1450101499163-c8848c66ca85']
-];
-
-function renderTools(){
- let root=$('#tools');
- root.replaceChildren();
- let search=$('#search').value.toLowerCase();
- for(let [id,name,cat,emoji,desc,img] of toolData){
-  if(!(name+' '+cat).toLowerCase().includes(search))continue;
-  let card=E('article',undefined,'card');
-  let cover=E('div',undefined,'cover');
-  let body=E('div',undefined,'content');
-  cover.append(
-   photo('https://images.unsplash.com/'+img+'?w=900&q=80'),
-   E('span','● DISPONÍVEL','pill')
+function gpButton(text, callback, secondary = false) {
+  const btn = gpElement(
+    "button",
+    secondary ? "btn secondary" : "btn",
+    text
   );
-  body.append(
-   E('div',emoji+' '+cat,'tag'),
-   E('h3',name),
-   E('p',desc)
-  );
-  let btn=E('button','Abrir ferramenta →','btn');
-  btn.onclick=()=>id==='analista'?location.assign(ANALISTA):openTool(id,name);
-  body.append(btn);
-  card.append(cover,body);
-  root.append(card);
- }
-}
-$('#search').oninput=renderTools;
-
-function input(label,type='text',value=''){
- let wrap=E('label',undefined,'wide');
- let title=E('span',label);
- let el=E('input',undefined,'field');
- el.type=type;
- el.value=value;
- wrap.append(title,el);
- return {wrap,el};
+  btn.type = "button";
+  btn.addEventListener("click", callback);
+  return btn;
 }
 
-function openTool(id,name){
- show(name);
- let root=$('#modalContent');
- root.append(E('p','Ferramenta integrada ao GAMING PRO. Os dados locais ficam neste navegador.','muted'));
- if(id==='chaves')return bracket(root);
- if(id==='ranking')return ranking(root);
- if(id==='cards')return cards(root);
- if(id==='premiacao')return prize(root);
- if(id==='pontuacao')return points(root);
- if(id==='campeonato')return championship(root);
- if(id==='estatisticas')return stats(root);
- if(['equipes','tabela','agenda','inscricoes'].includes(id))return records(root,id);
+function gpField(label, type = "text", value = "") {
+  const wrapper = gpElement("label", "gp-field");
+  const caption = gpElement("span", "", label);
+  const control = document.createElement("input");
+
+  control.className = "field";
+  control.type = type;
+  control.value = value;
+
+  wrapper.append(caption, control);
+
+  return { wrapper, control };
 }
 
-function bracket(root){
- let t=E('textarea',undefined,'field');
- t.rows=9;
- t.placeholder='Digite uma equipe por linha';
- let b=E('button','🎲 Sortear confrontos','btn');
- let out=E('pre',undefined,'result');
- root.append(t,b,out);
- b.onclick=()=>{
-  let a=t.value.split('\n').map(x=>x.trim()).filter(Boolean);
-  if(a.length<2)return message('Informe pelo menos 2 equipes');
-  for(let i=a.length-1;i>0;i--){
-   let j=Math.floor(Math.random()*(i+1));
-   [a[i],a[j]]=[a[j],a[i]];
-  }
-  let n=2**Math.ceil(Math.log2(a.length));
-  while(a.length<n)a.push('FOLGA');
-  out.textContent='CHAVE ELIMINATÓRIA\n\n'+
-   Array.from({length:a.length/2},(_,i)=>
-    `${i+1}. ${a[i*2]} × ${a[i*2+1]}`
-   ).join('\n');
- };
-}
+function gpDownload(name, content, mime = "text/plain") {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
 
-function ranking(root){
- let n=input('Jogador');
- let p=input('Pontos','number','0');
- let add=E('button','Adicionar jogador','btn');
- let out=E('div');
- root.append(n.wrap,p.wrap,add,out);
- let data=[];
- add.onclick=()=>{
-  if(!n.el.value.trim())return;
-  data.push({name:n.el.value.trim(),pts:Number(p.el.value)||0});
-  data.sort((a,b)=>b.pts-a.pts);
-  out.replaceChildren(...data.map((v,i)=>
-   E('div',`${i+1}º ${v.name} — ${v.pts} pontos`,'notice')
-  ));
-  n.el.value='';
- };
-}
-
-function cards(root){
- let name=input('Nome do jogador ou equipe');
- let subtitle=input('Descrição','text','CAMPEONATO GAMING PRO');
- let color=input('Cor principal','color','#ff791b');
- let canvas=E('canvas',undefined,'canvas');
- canvas.width=1200;
- canvas.height=675;
- let b=E('button','⬇ Baixar PNG','btn');
- root.append(name.wrap,subtitle.wrap,color.wrap,canvas,b);
- function draw(){
-  let c=canvas.getContext('2d');
-  let g=c.createLinearGradient(0,0,1200,675);
-  g.addColorStop(0,'#0b0b12');
-  g.addColorStop(1,color.el.value);
-  c.fillStyle=g;
-  c.fillRect(0,0,1200,675);
-  c.fillStyle='#fff';
-  c.font='bold 42px Arial';
-  c.fillText('GAMING PRO',70,110);
-  c.font='bold 74px Arial';
-  c.fillText((name.el.value||'SEU CAMPEONATO').slice(0,25),70,330);
-  c.font='32px Arial';
-  c.fillText(subtitle.el.value.slice(0,45),70,405);
-  c.fillStyle=color.el.value;
-  c.fillRect(70,475,450,9);
- }
- [name.el,subtitle.el,color.el].forEach(x=>x.oninput=draw);
- draw();
- b.onclick=()=>{
-  let a=document.createElement('a');
-  a.download='gaming-pro-card.png';
-  a.href=canvas.toDataURL('image/png');
+  a.href = url;
+  a.download = name;
+  document.body.append(a);
   a.click();
- };
+  a.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function prize(root){
- let total=input('Premiação total (R$)','number','100');
- let places=input('Quantidade de colocados','number','3');
- let out=E('pre',undefined,'result');
- let b=E('button','Calcular','btn');
- root.append(total.wrap,places.wrap,b,out);
- b.onclick=()=>{
-  let v=Number(total.el.value);
-  let n=Math.min(200,Math.max(1,Number(places.el.value)||1));
-  if(v<0)return;
-  let weights=Array.from({length:n},(_,i)=>n-i);
-  let sum=weights.reduce((a,b)=>a+b,0);
-  let cents=Math.round(v*100),allocated=0;
-  out.textContent=weights.map((w,i)=>{
-   let amount=i===n-1?cents-allocated:Math.floor(cents*w/sum);
-   allocated+=amount;
-   return `${i+1}º — R$ ${(amount/100).toFixed(2)}`;
-  }).join('\n');
- };
+function gpCsv(rows) {
+  return "\ufeff" + rows.map(row =>
+    row.map(value =>
+      '"' + String(value ?? "").replace(/"/g, '""') + '"'
+    ).join(";")
+  ).join("\r\n");
 }
 
-function points(root){
- let kills=input('Eliminações','number','5');
- let placement=input('Colocação','number','1');
- let killValue=input('Pontos por eliminação','number','1');
- let out=E('div',undefined,'notice');
- let b=E('button','Calcular pontos','btn');
- root.append(kills.wrap,placement.wrap,killValue.wrap,b,out);
- b.onclick=()=>{
-  let table=[12,9,8,7,6,5,4,3,2,1,0,0];
-  let p=Math.max(1,Math.floor(Number(placement.el.value)||1));
-  out.textContent='Total: '+
-   ((table[p-1]||0)+Math.max(0,Number(kills.el.value))*Number(killValue.el.value))+
-   ' pontos (tabela de exemplo editável no código)';
- };
-}
+function gpStyle() {
+  if (document.getElementById("gp-advanced-style")) return;
 
-function championship(root){
- let names=E('textarea',undefined,'field');
- names.rows=8;
- names.placeholder='Uma equipe por linha';
- let b=E('button','Simular partidas','btn');
- let out=E('pre',undefined,'result');
- root.append(names,b,out);
- b.onclick=()=>{
-  let a=names.value.split('\n').map(x=>x.trim()).filter(Boolean);
-  if(a.length<2)return;
-  out.textContent=a.flatMap((x,i)=>
-   a.slice(i+1).map(y=>
-    `${x} ${Math.floor(Math.random()*5)} × ${Math.floor(Math.random()*5)} ${y}`
-   )
-  ).join('\n');
- };
-}
-
-function stats(root){
- let text=E('textarea',undefined,'field');
- text.rows=8;
- text.placeholder='Jogador,pontos\nAna,15\nJoão,9';
- let b=E('button','Analisar','btn');
- let out=E('pre',undefined,'result');
- root.append(text,b,out);
- b.onclick=()=>{
-  let rows=text.value.trim().split('\n').map(s=>s.split(','));
-  let data=rows.slice(1).map(r=>({n:r[0],v:Number(r[1])}))
-   .filter(x=>Number.isFinite(x.v));
-  if(!data.length)return;
-  let total=data.reduce((s,x)=>s+x.v,0);
-  out.textContent=`Registros: ${data.length}\nTotal: ${total}\nMédia: ${(total/data.length).toFixed(2)}\nMelhor: ${data.sort((a,b)=>b.v-a.v)[0].n}`;
- };
-}
-
-function records(root,id){
- let key='gaming-pro-'+id;
- let items=[];
- try{
-  const saved=JSON.parse(localStorage.getItem(key)||'[]');
-  if(Array.isArray(saved))items=saved;
- }catch{}
- let label=id==='agenda'?'Evento e data':
-  id==='tabela'?'Equipe e pontos':
-  id==='inscricoes'?'Inscrito':'Equipe e integrantes';
- let field=input(label);
- let out=E('div');
- let add=E('button','Adicionar','btn');
- root.append(field.wrap,add,out);
- function draw(){
-  out.replaceChildren();
-  items.forEach((x,i)=>{
-   let box=E('div',undefined,'notice flex between');
-   let name=E('span',x);
-   let del=E('button','Excluir','btn secondary');
-   del.onclick=()=>{items.splice(i,1);save()};
-   box.append(name,del);
-   out.append(box);
-  });
- }
- function save(){
-  localStorage.setItem(key,JSON.stringify(items));
-  draw();
- }
- add.onclick=()=>{
-  if(field.el.value.trim()){
-   items.push(field.el.value.trim());
-   field.el.value='';
-   save();
-  }
- };
- draw();
-}
-
-async function verify(ad,box){
- let b=box.querySelector('button');
- b.disabled=true;
- b.textContent='Consultando Asaas...';
- try{
-  let d=await privateRequest('/api/payment-status?adId='+encodeURIComponent(ad.id));
-  if(d.status==='active'){
-   box.querySelector('.state').textContent='Situação: ATIVO ✅';
-   box.querySelector('.expires').textContent='Vencimento: '+(d.expiresAt||'Confirmado');
-   b.textContent='✅ Anúncio liberado';
-   await loadAds();
-  }else{
-   b.textContent='🔄 Verificar novamente';
-   message('Pagamento ainda não confirmado');
-  }
- }catch(e){
-  b.textContent='🔄 Tentar novamente';
-  message(e.message);
- }finally{
-  b.disabled=false;
- }
-}
-
-async function myAds(){
- if(!user&&!await login())return;
- show('Meus anúncios');
- let root=$('#modalContent');
- root.textContent='Carregando...';
- try{
-  let d=await privateRequest('/api/my-ads');
-  root.replaceChildren();
-  if(!d.ads?.length)root.textContent='Você ainda não cadastrou anúncios.';
-  for(let ad of d.ads||[]){
-   let box=E('div',undefined,'notice');
-   box.append(
-    E('h3',ad.title),
-    E('p','Situação: '+(ad.status==='active'?'ATIVO ✅':'Aguardando pagamento'),'state'),
-    E('p','Vencimento: '+(ad.expires_at||'Ainda não iniciado'),'expires'),
-    E('p','Pagamento: '+(ad.payment_status||'pending')),
-    E('p','ID: '+ad.id.slice(0,8),'muted')
-   );
-   if(ad.status!=='active'){
-    let b=E('button','🔄 Verificar pagamento','btn');
-    b.onclick=()=>verify(ad,box);
-    box.append(b);
-   }
-   root.append(box);
-  }
- }catch(e){
-  root.textContent=e.message;
- }
-}
-$('#myAds').onclick=myAds;
-
-async function publish(){
- if(!user&&!await login())return;
- show('Cadastrar campeonato');
- let root=$('#modalContent');
- let form=E('form',undefined,'form');
- let inputs={};
- for(let [key,label,type,req] of [
-  ['title','Campeonato','text',true],
-  ['organizer','Organizador','text',true],
-  ['game','Jogo','text',true],
-  ['event_date','Data do evento','date',false],
-  ['target_url','Link do campeonato (HTTPS)','url',true],
-  ['image_url','Link da foto (opcional)','url',false],
-  ['customerName','Nome do pagador','text',true],
-  ['cpfCnpj','CPF ou CNPJ do pagador','text',true]
- ]){
-  let f=input(label,type);
-  f.el.required=req;
-  inputs[key]=f.el;
-  form.append(f.wrap);
- }
- let desc=E('textarea',undefined,'field wide');
- desc.placeholder='Descrição do campeonato';
- form.append(desc);
- let submit=E('button','Gerar Pix R$ 10,00','btn wide');
- submit.type='submit';
- form.append(submit);
- root.append(form);
-
- form.onsubmit=async e=>{
-  e.preventDefault();
-  let payload=Object.fromEntries(
-   Object.entries(inputs).map(([k,v])=>[k,v.value.trim()])
-  );
-  payload.description=desc.value.trim();
-  if(!goodUrl(payload.target_url)||
-     (payload.image_url&&!goodUrl(payload.image_url))){
-   return message('Links precisam usar HTTPS');
-  }
-  submit.disabled=true;
-  try{
-   let d=await privateRequest('/api/ads',{
-    method:'POST',
-    body:JSON.stringify(payload)
-   });
-   root.replaceChildren(
-    E('h3','Pix de R$ 10,00'),
-    E('p','O anúncio será liberado após a confirmação no Asaas.','muted')
-   );
-   if(d.pix?.encodedImage){
-    let im=E('img',undefined,'qr');
-    im.src='data:image/png;base64,'+d.pix.encodedImage;
-    root.append(im);
-   }
-   if(d.pix?.payload){
-    let t=E('textarea',undefined,'field');
-    t.value=d.pix.payload;
-    t.readOnly=true;
-    let copy=E('button','Copiar Pix','btn secondary');
-    copy.onclick=()=>navigator.clipboard.writeText(t.value)
-     .then(()=>message('Pix copiado'));
-    root.append(t,copy);
-   }
-   let status=E('p','Aguardando confirmação...','muted');
-   let check=E('button','Verificar pagamento','btn secondary');
-   root.append(status,check);
-   let checking=false;
-   async function confirm(){
-    if(checking)return;
-    checking=true;
-    try{
-     let p=await privateRequest(
-      '/api/payment-status?adId='+encodeURIComponent(d.adId)
-     );
-     if(p.status==='active'){
-      status.textContent='✅ Pagamento confirmado. Anúncio liberado!';
-      check.disabled=true;
-      clearInterval(poll);
-      await loadAds();
-     }else{
-      status.textContent='Ainda não confirmado no Asaas.';
-     }
-    }catch(err){
-     status.textContent=err.message;
-    }finally{
-     checking=false;
+  const css = document.createElement("style");
+  css.id = "gp-advanced-style";
+  css.textContent = `
+    .modal:has(.gp-workspace) {
+      width: min(1250px, 98vw);
+      max-height: 96dvh;
     }
-   }
-   check.onclick=confirm;
-   poll=setInterval(confirm,15000);
-  }catch(err){
-   message(err.message);
-   submit.disabled=false;
-  }
- };
+    .gp-workspace {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .gp-panel {
+      background: #11121b;
+      border: 1px solid #363644;
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .gp-panel h3 {
+      margin: 0 0 16px;
+      font-size: 21px;
+    }
+    .gp-fields {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .gp-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      color: #ddd;
+      font-weight: 650;
+    }
+    .gp-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .gp-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .gp-stat {
+      background: #21212d;
+      border: 1px solid #383847;
+      padding: 17px;
+      border-radius: 14px;
+    }
+    .gp-stat strong {
+      display: block;
+      color: #ff791b;
+      font-size: 24px;
+      margin-top: 8px;
+    }
+    .gp-scroll {
+      overflow-x: auto;
+      width: 100%;
+    }
+    .gp-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 580px;
+    }
+    .gp-table th,
+    .gp-table td {
+      padding: 13px;
+      border-bottom: 1px solid #353541;
+      text-align: left;
+    }
+    .gp-table th {
+      color: #ffab72;
+      background: #22222d;
+    }
+    .gp-table input {
+      width: 95px;
+    }
+    .gp-bracket {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding: 15px 4px 25px;
+      align-items: stretch;
+    }
+    .gp-round {
+      min-width: 225px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .gp-round h4 {
+      color: #ff9a55;
+      text-align: center;
+      margin: 5px 0 12px;
+    }
+    .gp-matches {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 18px;
+    }
+    .gp-match {
+      background: #20202b;
+      border: 1px solid #494956;
+      border-radius: 12px;
+      padding: 9px;
+    }
+    .gp-team {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: #292936;
+      color: #fff;
+      border: 1px solid #40404f;
+      border-radius: 8px;
+      padding: 12px 10px;
+      margin: 4px 0;
+      text-align: left;
+      cursor: pointer;
+      overflow-wrap: anywhere;
+    }
+    .gp-team:hover {
+      border-color: #ff791b;
+    }
+    .gp-team.winner {
+      background: #5c2a10;
+      border-color: #ff791b;
+    }
+    .gp-team:disabled {
+      opacity: .55;
+      cursor: default;
+    }
+    .gp-champion {
+      background: linear-gradient(120deg,#7c3b0e,#25150d);
+      border: 1px solid #ff791b;
+      padding: 22px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 23px;
+      font-weight: 900;
+    }
+    .gp-muted {
+      color: #aaaabb;
+      line-height: 1.6;
+    }
+    @media(max-width:700px) {
+      .gp-fields,.gp-stats {
+        grid-template-columns: 1fr;
+      }
+      .gp-panel {
+        padding: 13px;
+      }
+      .modal:has(.gp-workspace) {
+        padding: 13px;
+      }
+    }
+  `;
+  document.head.append(css);
 }
 
-$('#publish').onclick=publish;
-$('#publish2').onclick=publish;
-renderTools();
-loadAds();
-</script>
-</body>
-</html>
+/* =====================================
+   1. GERADOR DE CHAVES PROFISSIONAL
+===================================== */
+
+function bracket(root) {
+  gpStyle();
+
+  const workspace = gpElement("div", "gp-workspace");
+  root.replaceChildren(workspace);
+
+  const setup = gpElement("section", "gp-panel");
+  setup.append(gpElement("h3", "", "🏆 Configurar campeonato"));
+
+  const title = gpField(
+    "Nome do campeonato",
+    "text",
+    "COPA GAMING PRO"
+  );
+
+  const size = gpField(
+    "Quantidade de equipes",
+    "number",
+    "8"
+  );
+
+  size.control.min = "2";
+  size.control.max = "64";
+
+  const fields = gpElement("div", "gp-fields");
+  fields.append(title.wrapper, size.wrapper);
+
+  const names = document.createElement("textarea");
+  names.className = "field";
+  names.rows = 9;
+  names.placeholder =
+    "Uma equipe por linha\n" +
+    "TRUPE FANTASMA\n" +
+    "REAL MEDO\n" +
+    "COMPLEX\n" +
+    "FURY";
+
+  const actions = gpElement("div", "gp-actions");
+  const stage = gpElement("section", "gp-panel");
+  const champion = gpElement("div");
+
+  setup.append(
+    fields,
+    gpElement("p", "gp-muted",
+      "Digite as equipes, sorteie os confrontos e clique no vencedor de cada partida."
+    ),
+    names,
+    actions
+  );
+
+  workspace.append(setup, stage, champion);
+
+  const key = "gaming-pro-bracket-v2";
+  let tournament = null;
+
+  function save() {
+    localStorage.setItem(key, JSON.stringify(tournament));
+  }
+
+  function createTournament() {
+    const teams = names.value
+      .split("\n")
+      .map(x => x.trim())
+      .filter(Boolean);
+
+    const unique = new Set(teams.map(x => x.toLowerCase()));
+
+    if (teams.length < 2 || teams.length > 64) {
+      alert("Informe entre 2 e 64 equipes.");
+      return;
+    }
+
+    if (unique.size !== teams.length) {
+      alert("Existem equipes com nomes repetidos.");
+      return;
+    }
+
+    const shuffled = [...teams];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    const capacity = 2 ** Math.ceil(Math.log2(shuffled.length));
+
+    // Folgas distribuídas para avançar equipes automaticamente.
+    const byes = capacity - shuffled.length;
+    const first = [];
+
+    let pos = 0;
+
+    for (let i = 0; i < capacity / 2; i++) {
+      if (i < byes) {
+        first.push({
+          teams: [shuffled[pos++], null],
+          winner: 0
+        });
+      } else {
+        first.push({
+          teams: [shuffled[pos++], shuffled[pos++]],
+          winner: null
+        });
+      }
+    }
+
+    const rounds = [first];
+    let count = first.length;
+
+    while (count > 1) {
+      count = Math.ceil(count / 2);
+      rounds.push(
+        Array.from({ length: count }, () => ({
+          teams: [null, null],
+          winner: null
+        }))
+      );
+    }
+
+    if (rounds[0].length === 1) {
+      // Final direta.
+    }
+
+    tournament = {
+      title: title.control.value.trim() || "CAMPEONATO",
+      rounds,
+      created: new Date().toISOString()
+    };
+
+    propagate();
+    save();
+    render();
+  }
+
+  function propagate() {
+    if (!tournament) return;
+
+    const rounds = tournament.rounds;
+
+    for (let r = 1; r < rounds.length; r++) {
+      for (let m = 0; m < rounds[r].length; m++) {
+        const current = rounds[r][m];
+
+        const previousA = rounds[r - 1][m * 2];
+        const previousB = rounds[r - 1][m * 2 + 1];
+
+        const a = previousA?.winner == null
+          ? null
+          : previousA.teams[previousA.winner];
+
+        const b = previousB?.winner == null
+          ? null
+          : previousB.teams[previousB.winner];
+
+        if (
+          current.teams[0] !== a ||
+          current.teams[1] !== b
+        ) {
+          current.teams = [a, b];
+          current.winner = null;
+        }
+      }
+    }
+  }
+
+  function chooseWinner(roundIndex, matchIndex, teamIndex) {
+    const match = tournament.rounds[roundIndex][matchIndex];
+
+    if (!match.teams[teamIndex]) return;
+
+    if (
+      roundIndex > 0 &&
+      (!match.teams[0] || !match.teams[1])
+    ) return;
+
+    match.winner = teamIndex;
+    propagate();
+    save();
+    render();
+  }
+
+  function render() {
+    stage.replaceChildren();
+    champion.replaceChildren();
+
+    if (!tournament) {
+      stage.append(
+        gpElement("p", "gp-muted",
+          "Cadastre as equipes e clique em Gerar chave."
+        )
+      );
+      return;
+    }
+
+    stage.append(
+      gpElement("h3", "", tournament.title)
+    );
+
+    const board = gpElement("div", "gp-bracket");
+
+    tournament.rounds.forEach((round, ri) => {
+      const column = gpElement("div", "gp-round");
+
+      const labels = [
+        "FINAL",
+        "SEMIFINAL",
+        "QUARTAS DE FINAL",
+        "OITAVAS DE FINAL"
+      ];
+
+      const remaining = tournament.rounds.length - ri - 1;
+
+      const heading =
+        remaining < labels.length
+          ? labels[remaining]
+          : `RODADA ${ri + 1}`;
+
+      column.append(gpElement("h4", "", heading));
+
+      const matches = gpElement("div", "gp-matches");
+
+      round.forEach((match, mi) => {
+        const card = gpElement("div", "gp-match");
+
+        card.append(
+          gpElement("small", "gp-muted", `Partida ${mi + 1}`)
+        );
+
+        match.teams.forEach((team, ti) => {
+          const button = gpElement(
+            "button",
+            "gp-team" + (match.winner === ti ? " winner" : ""),
+            team || (ri === 0 ? "FOLGA" : "A definir")
+          );
+
+          button.type = "button";
+          button.disabled =
+            !team ||
+            (ri > 0 && !match.teams.every(Boolean));
+
+          if (match.winner === ti) {
+            button.append(gpElement("span", "", "✓"));
+          }
+
+          button.onclick = () => chooseWinner(ri, mi, ti);
+
+          card.append(button);
+        });
+
+        matches.append(card);
+      });
+
+      column.append(matches);
+      board.append(column);
+    });
+
+    stage.append(board);
+
+    const lastRound = tournament.rounds.at(-1);
+    const final = lastRound[0];
+
+    if (final?.winner != null) {
+      champion.append(
+        gpElement(
+          "div",
+          "gp-champion",
+          "🏆 CAMPEÃO: " + final.teams[final.winner]
+        )
+      );
+    }
+  }
+
+  actions.append(
+    gpButton("🎲 Gerar chave", createTournament),
+
+    gpButton("💾 Salvar", () => {
+      if (!tournament) return;
+      save();
+      alert("Campeonato salvo neste navegador.");
+    }, true),
+
+    gpButton("⬇ Exportar JSON", () => {
+      if (!tournament) return;
+      gpDownload(
+        "chave-gaming-pro.json",
+        JSON.stringify(tournament, null, 2),
+        "application/json"
+      );
+    }, true),
+
+    gpButton("🖨 Imprimir / PDF", () => {
+      if (!tournament) return;
+      window.print();
+    }, true),
+
+    gpButton("🗑 Nova chave", () => {
+      if (!confirm("Apagar a chave atual?")) return;
+      tournament = null;
+      localStorage.removeItem(key);
+      render();
+    }, true)
+  );
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (saved?.rounds?.length) {
+      tournament = saved;
+      title.control.value = saved.title;
+    }
+  } catch {}
+
+  render();
+}
+
+/* =====================================
+   2. RANKING DE JOGADORES
+===================================== */
+
+function ranking(root) {
+  gpStyle();
+
+  const workspace = gpElement("div", "gp-workspace");
+  root.replaceChildren(workspace);
+
+  const panel = gpElement("section", "gp-panel");
+  const results = gpElement("section", "gp-panel");
+
+  panel.append(
+    gpElement("h3", "", "🥇 Cadastro e desempenho dos jogadores")
+  );
+
+  const player = gpField("Nome do jogador");
+  const team = gpField("Equipe");
+  const kills = gpField("Kills", "number", "0");
+  const matches = gpField("Partidas", "number", "1");
+  const points = gpField("Pontos extras", "number", "0");
+  const wins = gpField("Vitórias", "number", "0");
+
+  const fields = gpElement("div", "gp-fields");
+
+  [
+    player, team, kills,
+    matches, points, wins
+  ].forEach(f => fields.append(f.wrapper));
+
+  const actions = gpElement("div", "gp-actions");
+  const stats = gpElement("div", "gp-stats");
+  const tableArea = gpElement("div", "gp-scroll");
+
+  results.append(
+    gpElement("h3", "", "🏅 Classificação geral"),
+    stats,
+    tableArea
+  );
+
+  panel.append(fields, actions);
+  workspace.append(panel, results);
+
+  const key = "gaming-pro-ranking-v2";
+
+  let players = [];
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(key) || "[]");
+    if (Array.isArray(saved)) players = saved;
+  } catch {}
+
+  function score(p) {
+    return (
+      Number(p.kills || 0) +
+      Number(p.points || 0) +
+      Number(p.wins || 0) * 5
+    );
+  }
+
+  function save() {
+    localStorage.setItem(key, JSON.stringify(players));
+    render();
+  }
+
+  function addPlayer() {
+    const name = player.control.value.trim();
+
+    if (!name) {
+      alert("Informe o nome do jogador.");
+      return;
+    }
+
+    const data = {
+      id: crypto.randomUUID(),
+      name,
+      team: team.control.value.trim() || "SEM EQUIPE",
+      kills: Math.max(0, Number(kills.control.value) || 0),
+      matches: Math.max(0, Number(matches.control.value) || 0),
+      points: Number(points.control.value) || 0,
+      wins: Math.max(0, Number(wins.control.value) || 0)
+    };
+
+    players.push(data);
+    player.control.value = "";
+    save();
+  }
+
+  function render() {
+    stats.replaceChildren();
+    tableArea.replaceChildren();
+
+    const totalKills = players.reduce(
+      (sum, p) => sum + Number(p.kills || 0), 0
+    );
+
+    const sorted = [...players].sort(
+      (a, b) =>
+        score(b) - score(a) ||
+        Number(b.kills) - Number(a.kills)
+    );
+
+    const values = [
+      ["Jogadores", players.length],
+      ["Total de kills", totalKills],
+      ["Maior pontuação", sorted.length ? score(sorted[0]) : 0]
+    ];
+
+    values.forEach(([label, value]) => {
+      const box = gpElement("div", "gp-stat");
+      box.append(
+        gpElement("span", "", label),
+        gpElement("strong", "", String(value))
+      );
+      stats.append(box);
+    });
+
+    const table = gpElement("table", "gp-table");
+    const head = document.createElement("thead");
+    const hr = document.createElement("tr");
+
+    [
+      "TOP", "JOGADOR", "EQUIPE", "KILLS",
+      "PARTIDAS", "VITÓRIAS", "K/D", "PONTOS", "AÇÃO"
+    ].forEach(label => {
+      hr.append(gpElement("th", "", label));
+    });
+
+    head.append(hr);
+    table.append(head);
+
+    const tbody = document.createElement("tbody");
+
+    sorted.forEach((p, index) => {
+      const tr = document.createElement("tr");
+
+      const kd = p.matches > 0
+        ? (p.kills / p.matches).toFixed(2)
+        : "0.00";
+
+      [
+        index === 0 ? "🥇 1" :
+        index === 1 ? "🥈 2" :
+        index === 2 ? "🥉 3" :
+        String(index + 1),
+        p.name,
+        p.team,
+        p.kills,
+        p.matches,
+        p.wins,
+        kd,
+        score(p)
+      ].forEach(value => {
+        tr.append(gpElement("td", "", String(value)));
+      });
+
+      const cell = document.createElement("td");
+
+      cell.append(
+        gpButton("Editar", () => {
+          const next = prompt("Nome do jogador:", p.name);
+          if (next === null) return;
+
+          const nextKills = prompt("Kills:", p.kills);
+          if (nextKills === null) return;
+
+          const nextPoints = prompt("Pontos extras:", p.points);
+          if (nextPoints === null) return;
+
+          p.name = next.trim() || p.name;
+          p.kills = Math.max(0, Number(nextKills) || 0);
+          p.points = Number(nextPoints) || 0;
+          save();
+        }, true),
+
+        gpButton("Excluir", () => {
+          if (!confirm("Excluir " + p.name + "?")) return;
+          players = players.filter(x => x.id !== p.id);
+          save();
+        }, true)
+      );
+
+      tr.append(cell);
+      tbody.append(tr);
+    });
+
+    table.append(tbody);
+    tableArea.append(table);
+  }
+
+  actions.append(
+    gpButton("➕ Adicionar jogador", addPlayer),
+
+    gpButton("⬇ Exportar CSV", () => {
+      const sorted = [...players].sort(
+        (a, b) => score(b) - score(a)
+      );
+
+      gpDownload(
+        "ranking-gaming-pro.csv",
+        gpCsv([
+          [
+            "Posição", "Jogador", "Equipe",
+            "Kills", "Partidas", "Vitórias", "Pontos"
+          ],
+          ...sorted.map((p, i) => [
+            i + 1, p.name, p.team,
+            p.kills, p.matches, p.wins, score(p)
+          ])
+        ]),
+        "text/csv;charset=utf-8"
+      );
+    }, true),
+
+    gpButton("🗑 Limpar ranking", () => {
+      if (!confirm("Excluir todos os jogadores?")) return;
+      players = [];
+      save();
+    }, true)
+  );
+
+  render();
+}
+
+/* =====================================
+   3. SIMULADOR DE PREMIAÇÃO PRO
+===================================== */
+
+function prize(root) {
+  gpStyle();
+
+  const workspace = gpElement("div", "gp-workspace");
+  root.replaceChildren(workspace);
+
+  const panel = gpElement("section", "gp-panel");
+  const results = gpElement("section", "gp-panel");
+
+  panel.append(
+    gpElement("h3", "", "🏆 Planejamento financeiro do campeonato")
+  );
+
+  const registration = gpField(
+    "Valor da inscrição (R$)", "number", "20"
+  );
+
+  const teams = gpField(
+    "Equipes inscritas", "number", "12"
+  );
+
+  const sponsors = gpField(
+    "Patrocínios (R$)", "number", "100"
+  );
+
+  const extra = gpField(
+    "Receitas adicionais (R$)", "number", "0"
+  );
+
+  const expenses = gpField(
+    "Despesas (R$)", "number", "50"
+  );
+
+  const reserve = gpField(
+    "Reserva administrativa (%)", "number", "10"
+  );
+
+  const places = gpField(
+    "Colocados premiados (1 a 200)", "number", "3"
+  );
+
+  const guaranteed = gpField(
+    "Premiação adicional garantida (R$)", "number", "0"
+  );
+
+  const fields = gpElement("div", "gp-fields");
+
+  [
+    registration, teams, sponsors, extra,
+    expenses, reserve, places, guaranteed
+  ].forEach(f => fields.append(f.wrapper));
+
+  panel.append(fields);
+
+  const actions = gpElement("div", "gp-actions");
+  const stats = gpElement("div", "gp-stats");
+  const tableArea = gpElement("div", "gp-scroll");
+  const note = gpElement("p", "gp-muted");
+
+  results.append(
+    gpElement("h3", "", "💰 Distribuição da premiação"),
+    stats,
+    note,
+    tableArea
+  );
+
+  panel.append(actions);
+  workspace.append(panel, results);
+
+  let lastRows = [];
+  let lastSummary = null;
+
+  function money(cents) {
+    return (cents / 100).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  function cents(field) {
+    return Math.round(
+      Math.max(0, Number(field.control.value) || 0) * 100
+    );
+  }
+
+  function calculate() {
+    const count = Math.floor(Number(places.control.value));
+
+    if (!Number.isInteger(count) || count < 1 || count > 200) {
+      alert("Informe entre 1 e 200 colocados.");
+      return;
+    }
+
+    const registrations =
+      cents(registration) *
+      Math.max(0, Math.floor(Number(teams.control.value) || 0));
+
+    const revenue =
+      registrations + cents(sponsors) + cents(extra);
+
+    const costs = cents(expenses);
+
+    const reservePct = Math.min(
+      100,
+      Math.max(0, Number(reserve.control.value) || 0)
+    );
+
+    const afterCosts = Math.max(0, revenue - costs);
+
+    const adminReserve = Math.round(
+      afterCosts * reservePct / 100
+    );
+
+    const available = afterCosts - adminReserve;
+
+    const prizePool = available + cents(guaranteed);
+
+    const weights = Array.from(
+      { length: count },
+      (_, i) => count - i
+    );
+
+    const weightTotal = weights.reduce(
+      (sum, value) => sum + value, 0
+    );
+
+    let remaining = prizePool;
+
+    lastRows = weights.map((weight, i) => {
+      const amount = i === weights.length - 1
+        ? remaining
+        : Math.floor(prizePool * weight / weightTotal);
+
+      remaining -= amount;
+
+      return {
+        place: i + 1,
+        amount,
+        percent: prizePool
+          ? amount / prizePool * 100
+          : 0
+      };
+    });
+
+    lastSummary = {
+      registrations,
+      revenue,
+      costs,
+      adminReserve,
+      available,
+      prizePool,
+      guaranteed: cents(guaranteed)
+    };
+
+    render();
+  }
+
+  function render() {
+    stats.replaceChildren();
+    tableArea.replaceChildren();
+
+    if (!lastSummary) return;
+
+    [
+      ["Receita total", money(lastSummary.revenue)],
+      ["Despesas", money(lastSummary.costs)],
+      ["Reserva administrativa", money(lastSummary.adminReserve)],
+      ["Premiação total", money(lastSummary.prizePool)],
+      ["Colocados", lastRows.length],
+      [
+        "Saldo após despesas e reserva",
+        money(lastSummary.available)
+      ]
+    ].forEach(([label, value]) => {
+      const card = gpElement("div", "gp-stat");
+      card.append(
+        gpElement("span", "", label),
+        gpElement("strong", "", String(value))
+      );
+      stats.append(card);
+    });
+
+    note.textContent =
+      "Distribuição proporcional decrescente. " +
+      "O primeiro colocado recebe a maior parcela. " +
+      "A soma é ajustada em centavos para fechar exatamente.";
+
+    if (lastSummary.guaranteed > 0) {
+      note.textContent +=
+        " Atenção: a premiação adicional garantida " +
+        "é somada ao orçamento disponível e deve ter " +
+        "financiamento próprio.";
+    }
+
+    const table = gpElement("table", "gp-table");
+
+    const head = document.createElement("thead");
+    const hr = document.createElement("tr");
+
+    ["COLOCAÇÃO", "PERCENTUAL", "PRÊMIO"].forEach(x => {
+      hr.append(gpElement("th", "", x));
+    });
+
+    head.append(hr);
+    table.append(head);
+
+    const body = document.createElement("tbody");
+
+    lastRows.forEach(row => {
+      const tr = document.createElement("tr");
+
+      tr.append(
+        gpElement("td", "", row.place + "º lugar"),
+        gpElement("td", "", row.percent.toFixed(2) + "%"),
+        gpElement("td", "", money(row.amount))
+      );
+
+      body.append(tr);
+    });
+
+    table.append(body);
+    tableArea.append(table);
+  }
+
+  actions.append(
+    gpButton("🧮 Calcular premiação", calculate),
+
+    gpButton("⬇ Exportar CSV", () => {
+      if (!lastRows.length) return calculate();
+
+      gpDownload(
+        "premiacao-gaming-pro.csv",
+        gpCsv([
+          ["Colocação", "Percentual", "Prêmio (R$)"],
+          ...lastRows.map(row => [
+            row.place,
+            row.percent.toFixed(2),
+            (row.amount / 100).toFixed(2)
+          ])
+        ]),
+        "text/csv;charset=utf-8"
+      );
+    }, true),
+
+    gpButton("🖨 Imprimir / PDF", () => {
+      if (!lastRows.length) calculate();
+      window.print();
+    }, true)
+  );
+
+  calculate();
+}
