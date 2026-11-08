@@ -1,0 +1,615 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Ranking de Jogadores PRO | Gaming Pro</title>
+<style>
+:root{--bg:#0b0b0f;--panel:#17171f;--field:#24242f;--line:#383843;--text:#f8f8fa;--muted:#aaaab8;--orange:#ff791b;--green:#86e5a2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5}
+.wrap{width:min(1250px,calc(100% - 24px));margin:auto}
+header{background:#141419;border-bottom:1px solid var(--line);padding:24px 0}
+h1{font-size:clamp(27px,5vw,43px);margin:7px 0}
+h2{font-size:20px;margin:0 0 16px}
+h3{font-size:16px;margin:0 0 12px}
+.orange{color:var(--orange)}
+.muted{color:var(--muted);line-height:1.6}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:19px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select{width:100%;min-width:0;background:var(--field);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:12px}
+input:focus,select:focus{outline:2px solid var(--orange)}
+.btn{background:var(--orange);color:#111;border:0;border-radius:11px;padding:12px 15px;font-weight:850}
+.btn.alt{background:var(--field);color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#602626;color:white}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.stat{background:var(--field);border-radius:13px;padding:15px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{display:block;font-size:23px;color:var(--orange);margin-top:5px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:880px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}
+th{color:var(--orange);white-space:nowrap}
+td{white-space:nowrap}
+tr:hover td{background:#ffffff07}
+.rank{font-weight:900;color:var(--orange)}
+.name{font-weight:850}
+.tag{background:#49301c;color:#ffc38b;padding:5px 9px;border-radius:20px;font-size:11px}
+.small-btn{padding:7px 9px;border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:8px}
+.top-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.top-card{background:linear-gradient(135deg,#33200f,#1d1b20);border:1px solid #70411d;border-radius:15px;padding:17px;overflow-wrap:anywhere}
+.top-card b{font-size:22px}
+.top-card strong{display:block;font-size:25px;color:var(--orange);margin:8px 0}
+.top-card small{color:var(--muted)}
+.compare-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.compare-box{padding:15px;border-radius:13px;background:var(--field)}
+.compare-box p{border-bottom:1px solid var(--line);padding-bottom:8px}
+.notice{padding:12px;border:1px solid #78411d;background:#382316;border-radius:12px;color:#ffd0a5}
+.empty{text-align:center;padding:25px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){.top-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}.panel{padding:14px}}
+@media print{
+ body{background:white;color:black}
+ header,.editor,.actions,.filters,.compare-section,footer,.small-btn{display:none!important}
+ .panel,.stat,.top-card{background:white;color:black;border-color:#bbb}
+ .table-wrap{overflow:visible}
+ table{min-width:0}
+ th,td{color:black;font-size:10px;padding:6px}
+ .orange,.rank{color:#a44b00}
+ @page{size:A4 landscape;margin:10mm}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <strong class="orange">🎮 GAMING PRO</strong>
+  <h1>🥇 RANKING DE JOGADORES PRO</h1>
+  <p class="muted">Estatísticas, MVP, K/D, KDA, classificação e comparação de jogadores.</p>
+ </div>
+</header>
+
+<main class="wrap">
+<section class="panel editor">
+ <h2>👤 Cadastro de jogadores</h2>
+ <div class="grid">
+  <div class="field">
+   <label>Nome do jogador</label>
+   <input id="playerName" maxlength="60" placeholder="Ex.: PLAYER PRO">
+  </div>
+  <div class="field">
+   <label>Equipe</label>
+   <input id="teamName" maxlength="60" placeholder="Ex.: TRUPE FANTASMA">
+  </div>
+  <div class="field">
+   <label>Modalidade</label>
+   <select id="game">
+    <option>Free Fire</option><option>Valorant</option>
+    <option>Counter-Strike 2</option><option>Fortnite</option>
+    <option>League of Legends</option><option>Call of Duty</option>
+    <option>PUBG</option><option>Mobile Legends</option>
+    <option>Outro</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Função</label>
+   <select id="role">
+    <option>Jogador</option><option>Rush</option>
+    <option>Suporte</option><option>IGL / Capitão</option>
+    <option>Sniper</option><option>Flex</option>
+   </select>
+  </div>
+ </div>
+ <div class="actions">
+  <button class="btn" id="addPlayer">➕ Cadastrar jogador</button>
+  <button class="btn alt" id="cancelEdit" hidden>Cancelar edição</button>
+ </div>
+ <p class="muted">Cadastre primeiro o jogador. Depois registre seus resultados.</p>
+</section>
+
+<section class="panel editor">
+ <h2>🎯 Registrar desempenho</h2>
+ <div class="grid">
+  <div class="field">
+   <label>Jogador</label>
+   <select id="resultPlayer"></select>
+  </div>
+  <div class="field">
+   <label>Campeonato / Evento</label>
+   <input id="eventName" maxlength="100" placeholder="Ex.: X-TREINO">
+  </div>
+  <div class="field">
+   <label>Partidas jogadas</label>
+   <input id="matches" type="number" min="1" max="100000" value="4">
+  </div>
+  <div class="field">
+   <label>Vitórias</label>
+   <input id="wins" type="number" min="0" max="100000" value="0">
+  </div>
+  <div class="field">
+   <label>Kills</label>
+   <input id="kills" type="number" min="0" max="1000000" value="0">
+  </div>
+  <div class="field">
+   <label>Mortes</label>
+   <input id="deaths" type="number" min="0" max="1000000" value="0">
+  </div>
+  <div class="field">
+   <label>Assistências</label>
+   <input id="assists" type="number" min="0" max="1000000" value="0">
+  </div>
+  <div class="field">
+   <label>MVPs conquistados</label>
+   <input id="mvps" type="number" min="0" max="100000" value="0">
+  </div>
+ </div>
+ <div class="actions">
+  <button class="btn" id="addResult">💾 Salvar desempenho</button>
+ </div>
+ <p id="message" class="notice" hidden role="alert"></p>
+</section>
+
+<section class="panel editor">
+ <h2>⚙️ Fórmula do ranking</h2>
+ <p class="muted">Defina o peso de cada estatística. A pontuação é calculada a partir dos totais registrados.</p>
+ <div class="grid">
+  <div class="field"><label>Pontos por kill</label><input id="weightKill" type="number" min="0" max="1000" value="1"></div>
+  <div class="field"><label>Pontos por vitória</label><input id="weightWin" type="number" min="0" max="1000" value="10"></div>
+  <div class="field"><label>Pontos por assistência</label><input id="weightAssist" type="number" min="0" max="1000" value="0.5" step=".1"></div>
+  <div class="field"><label>Pontos por MVP</label><input id="weightMvp" type="number" min="0" max="1000" value="5"></div>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>📊 Visão geral</h2>
+ <div class="stats" id="stats"></div>
+</section>
+
+<section class="panel">
+ <h2>🏆 Destaques</h2>
+ <div class="top-grid" id="topCards"></div>
+</section>
+
+<section class="panel">
+ <h2>🥇 Classificação geral</h2>
+ <div class="grid filters">
+  <div class="field">
+   <label>Pesquisar</label>
+   <input id="search" type="search" placeholder="Jogador ou equipe">
+  </div>
+  <div class="field">
+   <label>Modalidade</label>
+   <select id="filterGame"><option value="">Todas</option></select>
+  </div>
+  <div class="field">
+   <label>Ordenar por</label>
+   <select id="sort">
+    <option value="score">Pontuação</option>
+    <option value="kills">Kills</option>
+    <option value="kd">K/D</option>
+    <option value="kda">KDA</option>
+    <option value="wr">Taxa de vitória</option>
+    <option value="mvps">MVP</option>
+    <option value="matches">Partidas</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Mínimo de partidas</label>
+   <input id="minimum" type="number" min="0" max="100000" value="0">
+  </div>
+ </div>
+ <div class="table-wrap">
+  <table>
+   <thead><tr>
+    <th>TOP</th><th>Jogador</th><th>Equipe</th>
+    <th>J</th><th>V</th><th>K</th><th>D</th>
+    <th>A</th><th>K/D</th><th>KDA</th>
+    <th>WR</th><th>MVP</th><th>Pontos</th><th class="editor">Ações</th>
+   </tr></thead>
+   <tbody id="ranking"></tbody>
+  </table>
+ </div>
+ <p class="muted" id="count"></p>
+</section>
+
+<section class="panel compare-section">
+ <h2>⚔️ Comparar jogadores</h2>
+ <div class="grid">
+  <div class="field"><label>Jogador A</label><select id="compareA"></select></div>
+  <div class="field"><label>Jogador B</label><select id="compareB"></select></div>
+ </div>
+ <div class="compare-grid" id="comparison" style="margin-top:15px"></div>
+</section>
+
+<section class="panel editor">
+ <h2>📜 Histórico de resultados</h2>
+ <div class="table-wrap">
+  <table>
+   <thead><tr><th>Data</th><th>Jogador</th><th>Evento</th><th>J</th><th>V</th><th>K</th><th>D</th><th>A</th><th>MVP</th><th>Ação</th></tr></thead>
+   <tbody id="history"></tbody>
+  </table>
+ </div>
+</section>
+
+<section class="panel">
+ <h2>📥 Exportação e backup</h2>
+ <div class="actions">
+  <button class="btn" id="copy">📋 Copiar ranking</button>
+  <button class="btn alt" id="csv">📊 CSV</button>
+  <button class="btn alt" id="print">🖨️ PDF / Imprimir</button>
+  <button class="btn alt" id="backup">💾 Backup JSON</button>
+ </div>
+ <div class="field editor" style="margin-top:18px">
+  <label>Restaurar backup JSON</label>
+  <input id="import" type="file" accept=".json,application/json">
+ </div>
+ <p class="muted">Os dados ficam neste navegador. Use o backup para transferi-los ou evitar perdas.</p>
+</section>
+</main>
+<footer>🎮 GAMING PRO · RANKING DE JOGADORES PRO</footer>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_ranking_v1";
+const games=["Free Fire","Valorant","Counter-Strike 2","Fortnite","League of Legends","Call of Duty","PUBG","Mobile Legends","Outro"];
+let db={version:1,players:[],results:[],weights:{kills:1,wins:10,assists:.5,mvps:5}};
+let editing=null;
+const fmt=n=>Number(n).toLocaleString("pt-BR",{maximumFractionDigits:2});
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2);
+
+function message(text){
+ $("message").textContent=text;
+ $("message").hidden=!text;
+}
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(db))}
+ catch(e){message("Armazenamento indisponível. Exporte um backup.");}
+}
+function validInt(value,max=1000000){
+ const n=Number(value);
+ if(!Number.isSafeInteger(n)||n<0||n>max)throw Error("Informe quantidades inteiras válidas.");
+ return n;
+}
+function addOption(select,value,label){
+ const opt=document.createElement("option");
+ opt.value=value;opt.textContent=label;
+ select.append(opt);
+}
+function playerStats(p){
+ const totals={matches:0,wins:0,kills:0,deaths:0,assists:0,mvps:0};
+ for(const r of db.results){
+  if(r.playerId!==p.id)continue;
+  for(const k of Object.keys(totals))totals[k]+=r[k];
+ }
+ const {matches,wins,kills,deaths,assists,mvps}=totals;
+ return {
+  ...p,...totals,
+  kd:deaths?kills/deaths:kills,
+  kda:deaths?(kills+assists)/deaths:kills+assists,
+  wr:matches?wins/matches*100:0,
+  score:kills*db.weights.kills+wins*db.weights.wins+
+   assists*db.weights.assists+mvps*db.weights.mvps
+ };
+}
+function allStats(){return db.players.map(playerStats)}
+function refreshSelects(){
+ const ids=["resultPlayer","compareA","compareB"];
+ ids.forEach(id=>{
+  const el=$(id),old=el.value;
+  el.replaceChildren();
+  if(id!=="resultPlayer")addOption(el,"","Selecionar jogador");
+  db.players.forEach(p=>addOption(el,p.id,p.name+" — "+p.team));
+  if([...el.options].some(o=>o.value===old))el.value=old;
+ });
+ const filter=$("filterGame"),old=filter.value;
+ filter.replaceChildren();addOption(filter,"","Todas");
+ [...new Set(db.players.map(p=>p.game))].sort().forEach(g=>addOption(filter,g,g));
+ filter.value=old;
+}
+function statCard(label,value){
+ const el=document.createElement("div");el.className="stat";
+ const small=document.createElement("small");small.textContent=label;
+ const strong=document.createElement("strong");strong.textContent=value;
+ el.append(small,strong);return el;
+}
+function topCard(title,p,value){
+ const el=document.createElement("div");el.className="top-card";
+ const label=document.createElement("small");label.textContent=title;
+ const name=document.createElement("strong");name.textContent=p?p.name:"—";
+ const detail=document.createElement("small");
+ detail.textContent=p?p.team+" · "+value:"Nenhum jogador cadastrado";
+ el.append(label,name,detail);return el;
+}
+function ranked(){
+ const query=$("search").value.toLocaleLowerCase("pt-BR");
+ const game=$("filterGame").value;
+ const min=Number($("minimum").value)||0;
+ const metric=$("sort").value;
+ return allStats().filter(p=>
+  (!game||p.game===game)&&p.matches>=min&&
+  (p.name+" "+p.team).toLocaleLowerCase("pt-BR").includes(query)
+ ).sort((a,b)=>
+  b[metric]-a[metric]||b.score-a.score||
+  a.name.localeCompare(b.name,"pt-BR")
+ );
+}
+function renderRanking(){
+ const list=ranked(),body=$("ranking");
+ body.replaceChildren();
+ list.forEach((p,i)=>{
+  const tr=document.createElement("tr");
+  const values=[
+   i+1,p.name,p.team,p.matches,p.wins,p.kills,
+   p.deaths,p.assists,fmt(p.kd),fmt(p.kda),
+   fmt(p.wr)+"%",p.mvps,fmt(p.score)
+  ];
+  values.forEach((v,j)=>{
+   const td=document.createElement("td");
+   td.textContent=v;
+   if(j===0)td.className="rank";
+   if(j===1)td.className="name";
+   tr.append(td);
+  });
+  const actions=document.createElement("td");
+  actions.className="editor";
+  const edit=document.createElement("button");
+  edit.className="small-btn";edit.textContent="Editar";
+  edit.onclick=()=>editPlayer(p.id);
+  const remove=document.createElement("button");
+  remove.className="small-btn";remove.textContent="Excluir";
+  remove.onclick=()=>removePlayer(p.id);
+  actions.append(edit,document.createTextNode(" "),remove);
+  tr.append(actions);body.append(tr);
+ });
+ $("count").textContent=list.length+" jogadores exibidos.";
+}
+function renderTop(){
+ const list=allStats();
+ const by=key=>[...list].filter(p=>p.matches>0)
+  .sort((a,b)=>b[key]-a[key]||b.score-a.score)[0];
+ const kills=by("kills"),score=by("score"),mvp=by("mvps");
+ $("topCards").replaceChildren(
+  topCard("🏆 Líder em pontos",score,score?fmt(score.score)+" pontos":""),
+  topCard("🎯 Maior eliminador",kills,kills?kills.kills+" kills":""),
+  topCard("🥇 Mais MVPs",mvp,mvp?mvp.mvps+" MVPs":"")
+ );
+ $("stats").replaceChildren(
+  statCard("Jogadores",db.players.length),
+  statCard("Equipes",new Set(db.players.map(p=>p.team)).size),
+  statCard("Partidas registradas",fmt(list.reduce((s,p)=>s+p.matches,0))),
+  statCard("Kills registradas",fmt(list.reduce((s,p)=>s+p.kills,0)))
+ );
+}
+function renderHistory(){
+ const body=$("history");body.replaceChildren();
+ [...db.results].reverse().forEach(r=>{
+  const p=db.players.find(p=>p.id===r.playerId);
+  const tr=document.createElement("tr");
+  [r.date.slice(0,10),p?.name||"Excluído",r.event,r.matches,
+   r.wins,r.kills,r.deaths,r.assists,r.mvps].forEach(v=>{
+    const td=document.createElement("td");td.textContent=v;tr.append(td);
+   });
+  const td=document.createElement("td");
+  const btn=document.createElement("button");
+  btn.className="small-btn";btn.textContent="Excluir";
+  btn.onclick=()=>{
+   if(!confirm("Excluir este registro de desempenho?"))return;
+   db.results=db.results.filter(x=>x.id!==r.id);
+   save();render();
+  };
+  td.append(btn);tr.append(td);body.append(tr);
+ });
+}
+function renderCompare(){
+ const a=allStats().find(p=>p.id===$("compareA").value);
+ const b=allStats().find(p=>p.id===$("compareB").value);
+ const root=$("comparison");root.replaceChildren();
+ for(const p of [a,b]){
+  const box=document.createElement("div");box.className="compare-box";
+  if(!p){box.textContent="Selecione um jogador.";root.append(box);continue;}
+  const h=document.createElement("h3");h.textContent=p.name;
+  box.append(h);
+  const metrics=[
+   ["Equipe",p.team],["Pontos",fmt(p.score)],
+   ["Partidas",p.matches],["Vitórias",p.wins],
+   ["Kills",p.kills],["Mortes",p.deaths],
+   ["Assistências",p.assists],["MVP",p.mvps],
+   ["K/D",fmt(p.kd)],["KDA",fmt(p.kda)],
+   ["Win Rate",fmt(p.wr)+"%"]
+  ];
+  metrics.forEach(([label,value])=>{
+   const line=document.createElement("p");
+   line.textContent=label+": "+value;box.append(line);
+  });
+  root.append(box);
+ }
+}
+function render(){
+ refreshSelects();renderRanking();renderTop();renderHistory();renderCompare();
+}
+function editPlayer(id){
+ const p=db.players.find(p=>p.id===id);if(!p)return;
+ editing=id;
+ $("playerName").value=p.name;
+ $("teamName").value=p.team;
+ $("game").value=p.game;
+ $("role").value=p.role;
+ $("addPlayer").textContent="💾 Salvar alterações";
+ $("cancelEdit").hidden=false;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function cancelEdit(){
+ editing=null;
+ $("playerName").value="";$("teamName").value="";
+ $("game").value="Free Fire";$("role").value="Jogador";
+ $("addPlayer").textContent="➕ Cadastrar jogador";
+ $("cancelEdit").hidden=true;
+}
+function removePlayer(id){
+ if(!confirm("Excluir jogador e todos os resultados dele?"))return;
+ db.players=db.players.filter(p=>p.id!==id);
+ db.results=db.results.filter(r=>r.playerId!==id);
+ if(editing===id)cancelEdit();
+ save();render();
+}
+$("addPlayer").onclick=()=>{
+ const name=$("playerName").value.trim();
+ const team=$("teamName").value.trim();
+ if(!name||!team)return message("Informe jogador e equipe.");
+ if(db.players.some(p=>p.id!==editing&&
+  p.name.toLocaleLowerCase("pt-BR")===name.toLocaleLowerCase("pt-BR")&&
+  p.team.toLocaleLowerCase("pt-BR")===team.toLocaleLowerCase("pt-BR")&&
+  p.game===$("game").value))
+  return message("Este jogador já existe nesta equipe e modalidade.");
+ if(!editing&&db.players.length>=2000)
+  return message("Limite de 2.000 jogadores atingido.");
+ const p={id:editing||uid(),name,team,game:$("game").value,role:$("role").value};
+ if(editing){
+  db.players=db.players.map(x=>x.id===editing?p:x);
+ }else db.players.push(p);
+ cancelEdit();message("");save();render();
+};
+$("cancelEdit").onclick=cancelEdit;
+
+$("addResult").onclick=()=>{
+ try{
+  const playerId=$("resultPlayer").value;
+  if(!db.players.some(p=>p.id===playerId))throw Error("Selecione um jogador.");
+  const matches=validInt($("matches").value,100000);
+  const wins=validInt($("wins").value,100000);
+  const kills=validInt($("kills").value);
+  const deaths=validInt($("deaths").value);
+  const assists=validInt($("assists").value);
+  const mvps=validInt($("mvps").value,100000);
+  if(matches<1||wins>matches||mvps>matches)
+   throw Error("Vitórias e MVPs não podem superar as partidas.");
+  if(db.results.length>=100000)throw Error("Limite de registros atingido.");
+  db.results.push({
+   id:uid(),playerId,
+   event:$("eventName").value.trim()||"PARTIDAS",
+   date:new Date().toISOString(),
+   matches,wins,kills,deaths,assists,mvps
+  });
+  save();render();message("Desempenho registrado com sucesso.");
+ }catch(e){message(e.message)}
+};
+function updateWeights(){
+ const values={
+  kills:Number($("weightKill").value),
+  wins:Number($("weightWin").value),
+  assists:Number($("weightAssist").value),
+  mvps:Number($("weightMvp").value)
+ };
+ if(Object.values(values).some(v=>!Number.isFinite(v)||v<0||v>1000)){
+  message("Os pesos devem estar entre 0 e 1000.");return;
+ }
+ db.weights=values;save();render();
+}
+["weightKill","weightWin","weightAssist","weightMvp"]
+ .forEach(id=>$(id).addEventListener("change",updateWeights));
+["search","filterGame","sort","minimum"]
+ .forEach(id=>$(id).addEventListener("input",renderRanking));
+["compareA","compareB"]
+ .forEach(id=>$(id).addEventListener("change",renderCompare));
+
+function download(filename,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=filename;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function exportRows(){
+ return ranked().map((p,i)=>[
+  i+1,p.name,p.team,p.game,p.role,p.matches,p.wins,
+  p.kills,p.deaths,p.assists,p.mvps,
+  p.kd.toFixed(3),p.kda.toFixed(3),
+  p.wr.toFixed(2),p.score.toFixed(2)
+ ]);
+}
+$("csv").onclick=()=>{
+ const rows=[["Posição","Jogador","Equipe","Jogo","Função","Partidas",
+ "Vitórias","Kills","Mortes","Assistências","MVP","KD","KDA","WR%","Pontos"],
+ ...exportRows()];
+ const csv="\uFEFF"+rows.map(row=>row.map(v=>
+  '"'+String(v).replaceAll('"','""')+'"').join(";")).join("\r\n");
+ download("gaming-pro-ranking.csv",csv,"text/csv;charset=utf-8");
+};
+$("copy").onclick=async()=>{
+ const text=["GAMING PRO — RANKING DE JOGADORES",
+ ...exportRows().map(r=>`${r[0]}º ${r[1]} (${r[2]}) | ${r[14]} pts | ${r[7]} kills`)].join("\n");
+ try{await navigator.clipboard.writeText(text);alert("Ranking copiado!")}
+ catch{alert("Não foi possível copiar.");}
+};
+$("print").onclick=()=>window.print();
+$("backup").onclick=()=>download("gaming-pro-ranking-backup.json",
+ JSON.stringify(db,null,2),"application/json");
+
+function validateBackup(data){
+ if(!data||data.version!==1||
+  !Array.isArray(data.players)||!Array.isArray(data.results)||
+  data.players.length>2000||data.results.length>100000||
+  !data.weights||typeof data.weights!=="object")
+  throw Error("Backup inválido.");
+ for(const k of ["kills","wins","assists","mvps"]){
+  if(!Number.isFinite(data.weights[k])||data.weights[k]<0||data.weights[k]>1000)
+   throw Error("Pesos inválidos.");
+ }
+ const ids=new Set();
+ for(const p of data.players){
+  if(!p||typeof p.id!=="string"||!p.id||ids.has(p.id)||
+   typeof p.name!=="string"||!p.name.trim()||p.name.length>60||
+   typeof p.team!=="string"||!p.team.trim()||p.team.length>60||
+   !games.includes(p.game)||typeof p.role!=="string"||p.role.length>60)
+   throw Error("Dados de jogador inválidos.");
+  ids.add(p.id);
+ }
+ const resultIds=new Set();
+ for(const r of data.results){
+  if(!r||typeof r.id!=="string"||!r.id||resultIds.has(r.id)||
+   !ids.has(r.playerId)||typeof r.event!=="string"||r.event.length>100||
+   typeof r.date!=="string"||!Number.isFinite(Date.parse(r.date)))
+   throw Error("Registro de desempenho inválido.");
+  resultIds.add(r.id);
+  for(const k of ["matches","wins","kills","deaths","assists","mvps"]){
+   if(!Number.isSafeInteger(r[k])||r[k]<0||r[k]>1000000)
+    throw Error("Estatística inválida.");
+  }
+  if(r.matches<1||r.wins>r.matches||r.mvps>r.matches)
+   throw Error("Quantidade de partidas inválida.");
+ }
+ return data;
+}
+$("import").onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  if(file.size>15000000)throw Error("Arquivo muito grande.");
+  const data=validateBackup(JSON.parse(await file.text()));
+  if(!confirm("Substituir todos os dados atuais pelo backup?"))return;
+  db=data;save();render();message("Backup restaurado.");
+ }catch(err){message("Erro na importação: "+err.message)}
+ finally{e.target.value=""}
+};
+
+try{
+ const saved=localStorage.getItem(KEY);
+ if(saved)db=validateBackup(JSON.parse(saved));
+}catch(e){console.warn("Dados locais não carregados:",e);message("Dados locais inválidos. Faça backup antes de continuar.");}
+
+for(const k of ["kills","wins","assists","mvps"]){
+ const id={kills:"weightKill",wins:"weightWin",assists:"weightAssist",mvps:"weightMvp"}[k];
+ $(id).value=db.weights[k];
+}
+render();
+</script>
+</body>
+</html>
