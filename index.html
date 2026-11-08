@@ -1,1497 +1,693 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a0a10">
-<meta name="description" content="GAMING PRO: ferramentas esports e divulgação de campeonatos por R$ 10 durante 30 dias.">
-<title>GAMING PRO | Portal de Campeonatos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090f">
+<title>GAMING PRO</title>
 <style>
-:root{
-  --bg:#09090e;
-  --panel:#15151e;
-  --panel2:#20202b;
-  --border:#343440;
-  --orange:#ff791b;
-  --gold:#ffbf70;
-  --white:#fafafe;
-  --muted:#aaaabb;
-  --green:#76e9a3;
-  --red:#ff7777;
-}
+:root{--bg:#09090f;--panel:#171720;--edge:#373744;--orange:#ff791b;--muted:#b5b5c5}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-  font-family:system-ui,Segoe UI,Arial,sans-serif;
-}
-button,input,textarea,select{font:inherit}
+body{margin:0;background:var(--bg);color:white;font-family:system-ui,Arial}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-[hidden]{display:none!important}
-.container{width:min(1400px,calc(100% - 32px));margin:auto}
-header{
-  position:sticky;top:0;z-index:50;
-  background:#0c0c12ef;
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid #ffffff18;
-}
-.nav{
-  min-height:74px;
-  display:flex;justify-content:space-between;
-  align-items:center;gap:12px;
-}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{
-  width:49px;height:49px;border-radius:14px;
-  background:linear-gradient(135deg,#ff9a38,#b94700);
-  display:grid;place-items:center;font-size:27px;
-}
-.brand strong{font-size:22px;letter-spacing:-.7px}
-.brand strong span,.orange{color:var(--orange)}
-.brand small{
-  display:block;color:var(--muted);
-  font-size:10px;letter-spacing:1.5px;
-}
-.nav-actions{display:flex;gap:9px;flex-wrap:wrap}
-.btn{
-  border:0;border-radius:12px;
-  padding:13px 18px;
-  background:var(--orange);color:#111;
-  font-weight:900;
-  display:inline-flex;align-items:center;
-  justify-content:center;gap:8px;
-  transition:.2s;text-align:center;
-}
-.btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-2px)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn.secondary{
-  background:#22222d;
-  border:1px solid var(--border);
-  color:white;
-}
-.btn.small{padding:10px 13px;font-size:12px}
-.hero{
-  min-height:470px;display:flex;align-items:center;
-  background:
-    linear-gradient(90deg,#09090efd,#09090ee0 58%,#151016ac),
-    url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&q=85")
-    center/cover;
-  border-bottom:1px solid #ffffff16;
-}
-.hero-content{padding:70px 0}
-.kicker{
-  color:var(--gold);font-size:12px;
-  font-weight:950;letter-spacing:2px;
-}
-.hero h1{
-  font-size:clamp(42px,7vw,78px);
-  line-height:1.05;letter-spacing:-2px;
-  margin:18px 0;
-}
-.hero h1 span{color:var(--orange)}
-.hero p{
-  max-width:660px;color:#d0d0dc;
-  font-size:17px;line-height:1.8;
-}
-.hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:25px}
-.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:30px}
-.hero-tags span{
-  background:#ffffff12;
-  border:1px solid #ffffff25;
-  border-radius:30px;padding:9px 13px;font-size:12px;
-}
-main{padding:45px 0}
-.section{margin-bottom:70px}
-.section-head{
-  display:flex;align-items:end;justify-content:space-between;
-  gap:18px;flex-wrap:wrap;margin-bottom:22px;
-}
-h2{font-size:clamp(28px,4vw,42px);margin:10px 0}
-.muted{color:var(--muted);line-height:1.7}
-.search,.field{
-  width:100%;padding:15px;
-  border-radius:13px;
-  border:1px solid var(--border);
-  background:var(--panel2);color:white;
-  outline:none;
-}
-.search{max-width:390px}
-.search:focus,.field:focus{border-color:var(--orange)}
-.toolbar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;margin:22px 0;
-}
-.filters{display:flex;gap:9px;overflow-x:auto;padding:4px 0 10px}
-.filter{
-  white-space:nowrap;border:1px solid var(--border);
-  background:var(--panel);color:white;
-  padding:11px 16px;border-radius:30px;font-weight:800;
-}
-.filter.active{
-  background:var(--orange);
-  border-color:var(--orange);color:#111;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:21px;
-}
-.card{
-  display:flex;flex-direction:column;min-width:0;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:23px;overflow:hidden;
-  transition:.25s;
-}
-.card:hover{
-  transform:translateY(-4px);
-  border-color:#ff791ba0;
-}
-.cover{
-  height:205px;position:relative;
-  background:#24202b center/cover no-repeat;
-}
-.cover:after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(0deg,#09090ebc,transparent 75%);
-  pointer-events:none;
-}
-.icon-box{
-  position:absolute;z-index:1;
-  left:19px;bottom:17px;
-  width:65px;height:65px;border-radius:18px;
-  background:#171720e8;
-  border:1px solid #ffffff48;
-  display:grid;place-items:center;font-size:31px;
-}
-.status{
-  position:absolute;z-index:1;
-  right:15px;top:15px;
-  background:#101014e9;
-  border-radius:30px;padding:9px 12px;
-  color:#ffb56b;font-size:10px;font-weight:950;
-}
-.status.ready{color:var(--green)}
-.card-content{
-  display:flex;flex-direction:column;
-  flex:1;padding:23px;
-}
-.category{
-  color:var(--gold);font-size:11px;
-  letter-spacing:1px;text-transform:uppercase;
-  font-weight:950;
-}
-.card h3{
-  font-size:22px;line-height:1.3;
-  margin:12px 0;min-height:57px;
-}
-.card p{
-  color:var(--muted);font-size:14px;
-  line-height:1.75;flex:1;
-  overflow-wrap:anywhere;
-}
-.actions{display:flex;gap:10px;margin-top:20px}
-.actions .btn{flex:1;min-width:0}
-.favorite{
-  width:52px;min-width:52px;
-  border:1px solid var(--border);
-  border-radius:13px;background:var(--panel2);
-  color:var(--gold);font-size:26px;
-}
-.empty{
-  text-align:center;padding:40px;
-  border:1px dashed var(--border);
-  border-radius:20px;color:var(--muted);
-}
-.ad-banner{
-  background:linear-gradient(120deg,#4b210b,#19131c 65%);
-  border:1px solid #ff791b88;
-  border-radius:22px;
-  padding:25px;
-  display:flex;justify-content:space-between;
-  align-items:center;gap:20px;flex-wrap:wrap;
-  margin-bottom:24px;
-}
-.ad-banner strong{font-size:28px}
-.ad-banner p{color:#ddd}
-.price{
-  font-size:34px;font-weight:950;
-  color:var(--orange);
-}
-.ad-cover{
-  height:190px;
-  background:linear-gradient(135deg,#51220d,#181821);
-  position:relative;
-}
-.ad-cover img{
-  width:100%;height:100%;object-fit:cover;
-}
-.ad-cover .status{top:12px;right:12px}
-.ad-meta{
-  color:var(--gold);
-  font-size:12px;
-  font-weight:800;
-  margin:8px 0;
-}
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.form-group{display:flex;flex-direction:column;gap:7px}
-.form-group.full{grid-column:1/-1}
-.form-group label{font-size:13px;font-weight:800}
-.form-note{
-  color:var(--muted);
-  font-size:12px;line-height:1.7;
-}
-.form-error{color:var(--red);font-size:13px}
-.form-success{color:var(--green);font-size:13px}
-.payment-box{
-  background:#111119;
-  border:1px solid var(--border);
-  padding:18px;border-radius:17px;
-  margin-top:18px;
-}
-.pix-image{
-  display:block;width:min(230px,100%);
-  margin:15px auto;background:white;
-  padding:10px;border-radius:12px;
-}
-.copy-area{
-  width:100%;height:95px;resize:vertical;
-  background:#20202b;color:white;
-  border:1px solid var(--border);
-  border-radius:10px;padding:10px;
-  overflow-wrap:anywhere;
-}
-.modal-overlay{
-  position:fixed;inset:0;z-index:100;
-  background:#000d;
-  display:grid;place-items:center;padding:15px;
-}
-.modal{
-  width:min(700px,100%);
-  max-height:92dvh;overflow:auto;
-  border-radius:22px;padding:24px;
-  background:#1a1a24;
-  border:1px solid var(--border);
-}
-.modal-head{
-  display:flex;align-items:center;
-  justify-content:space-between;gap:10px;
-  margin-bottom:15px;
-}
-.modal-head h2{font-size:24px}
-.toast{
-  position:fixed;bottom:22px;left:50%;
-  transform:translateX(-50%);
-  z-index:150;background:#252532;
-  border:1px solid #555;border-radius:12px;
-  padding:14px 18px;max-width:90%;
-  text-align:center;
-}
-.my-ad{
-  background:#12121a;
-  border:1px solid var(--border);
-  padding:15px;border-radius:13px;
-  margin-bottom:12px;
-}
-.my-ad h3{margin:0 0 7px}
-.my-ad p{font-size:13px;margin:5px 0;color:var(--muted)}
-footer{
-  background:#101016;
-  border-top:1px solid var(--border);
-  padding:30px 0;color:var(--muted);
-}
-.footer-row{
-  display:flex;justify-content:space-between;
-  gap:15px;flex-wrap:wrap;
-}
-.footer-row strong{color:white}
-@media(max-width:980px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:650px){
-  .grid{grid-template-columns:1fr}
-  .container{width:calc(100% - 24px)}
-  .brand strong{font-size:17px}
-  .brand small{font-size:8px}
-  .logo{width:43px;height:43px}
-  .nav-actions .btn{padding:10px;font-size:12px}
-  .hero{min-height:440px}
-  .hero-content{padding:50px 0}
-  .hero h1{letter-spacing:-1px}
-  .hero p{font-size:15px}
-  main{padding:32px 0}
-  .cover{height:185px}
-  .card-content{padding:20px}
-  .card h3{min-height:auto}
-  .form-grid{grid-template-columns:1fr}
-}
+button:disabled{opacity:.5;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1250px,94%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:#101018ef;border-bottom:1px solid var(--edge)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:15px 0;gap:10px}
+h1{font-size:clamp(38px,7vw,70px);line-height:1.1}
+h2{font-size:30px}
+h3{margin:10px 0}
+.orange{color:var(--orange)}
+.btn{border:0;border-radius:12px;background:var(--orange);color:#151515;font-weight:900;padding:12px 17px;display:inline-block}
+.secondary{background:#282834;color:white;border:1px solid var(--edge)}
+.hero{padding:70px 0;background:linear-gradient(90deg,#09090ff2,#09090fb0),url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1500') center/cover}
+.hero p{max-width:650px;color:#d0d0db;line-height:1.8}
+.flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+section{padding:35px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.cover{height:190px;position:relative;background:linear-gradient(135deg,#632c13,#171720)}
+.cover img{width:100%;height:100%;object-fit:cover}
+.pill{position:absolute;top:12px;right:12px;background:#111d;color:#70efa4;border-radius:30px;padding:8px;font-size:11px;font-weight:900}
+.content{padding:20px;display:flex;flex:1;flex-direction:column;gap:10px}
+.content p{color:var(--muted);line-height:1.6;flex:1}
+.content .btn{width:100%;text-align:center}
+.tag{font-size:12px;font-weight:900;color:#ffbb7c;text-transform:uppercase}
+.promo{border:1px solid #ff791b80;background:linear-gradient(90deg,#54220e,#18151d);border-radius:20px;padding:25px;margin:20px 0}
+.field{width:100%;background:#242430;border:1px solid var(--edge);border-radius:10px;color:white;padding:12px}
+.field:focus{outline:1px solid var(--orange)}
+.modal-bg{position:fixed;inset:0;z-index:100;background:#000d;display:grid;place-items:center;padding:12px}
+.modal{width:min(750px,100%);max-height:93dvh;overflow:auto;background:#1b1b26;border:1px solid #4a4a58;border-radius:20px;padding:22px}
+.modal-head{display:flex;justify-content:space-between;align-items:center}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.wide{grid-column:1/-1}
+.notice{padding:14px;border:1px solid var(--edge);border-radius:12px;background:#11111a;margin:10px 0}
+.muted{color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.tools{margin:10px 0}
+.tools .field{max-width:400px}
+.result{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
+.qr{max-width:240px;width:100%;background:white;padding:10px;border-radius:10px;display:block;margin:10px auto}
+.hidden,[hidden]{display:none!important}
+.canvas{width:100%;max-width:650px;border-radius:12px;background:#101019}
+footer{border-top:1px solid var(--edge);padding:25px;color:var(--muted)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.grid,.form{grid-template-columns:1fr}.hero{padding:40px 0}h2{font-size:25px}nav .btn{padding:9px;font-size:12px}}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="container nav">
-    <a class="brand" href="#inicio">
-      <div class="logo">🎮</div>
-      <div>
-        <strong>GAMING <span>PRO</span></strong>
-        <small>GLOBAL ESPORTS PLATFORM</small>
-      </div>
-    </a>
-    <div class="nav-actions">
-      <button class="btn secondary small" id="loginBtn">Entrar</button>
-      <button class="btn small" id="topPublishBtn">Divulgar</button>
-    </div>
-  </div>
+<nav class="wrap">
+<a href="#inicio"><b>🎮 GAMING <span class="orange">PRO</span></b></a>
+<div class="flex">
+<button class="btn secondary" id="login">Entrar</button>
+<button class="btn" id="publish">📢 Divulgar</button>
+</div>
+</nav>
 </header>
 
-<section class="hero" id="inicio">
-  <div class="container hero-content">
-    <div class="kicker">◆ GAMING PRO · ESPORTS WORLD</div>
-    <h1>SEU UNIVERSO<br><span>COMPETITIVO.</span></h1>
-    <p>
-      Descubra campeonatos, divulgue seu torneio e explore
-      ferramentas para jogadores e organizadores.
-    </p>
-    <div class="hero-actions">
-      <button class="btn" id="heroPublishBtn">
-        📢 Divulgar campeonato
-      </button>
-      <a href="#campeonatos" class="btn secondary">
-        🏆 Ver campeonatos
-      </a>
-      <a href="#ferramentas" class="btn secondary">
-        🎮 Ferramentas
-      </a>
-    </div>
-    <div class="hero-tags">
-      <span>🌎 Multijogos</span>
-      <span>💰 R$ 10 por anúncio</span>
-      <span>📅 30 dias</span>
-      <span>📱 Celular e PC</span>
-    </div>
-  </div>
+<div class="hero" id="inicio">
+<div class="wrap">
+<div class="tag">PORTAL GAMING PRO</div>
+<h1>CAMPEONATOS<br><span class="orange">SEM LIMITES.</span></h1>
+<p>Divulgue campeonatos por R$ 10 durante 30 dias e utilize ferramentas para organizar seus torneios.</p>
+<div class="flex">
+<a class="btn" href="#campeonatos">🏆 Campeonatos</a>
+<a class="btn secondary" href="#ferramentas">🎮 Ferramentas</a>
+</div>
+</div>
+</div>
+
+<main class="wrap">
+<section id="campeonatos">
+<div class="flex between">
+<div>
+<div class="tag">PUBLICIDADE ESPORTS</div>
+<h2>Campeonatos <span class="orange">divulgados</span></h2>
+</div>
+<button class="btn secondary" id="myAds">📋 Meus anúncios</button>
+</div>
+<div class="promo flex between">
+<div>
+<h2>Divulgue seu campeonato</h2>
+<p class="muted">Pix R$ 10,00 · Divulgação por 30 dias após confirmação</p>
+</div>
+<button class="btn" id="publish2">Cadastrar campeonato →</button>
+</div>
+<div class="flex between">
+<p id="adCount" class="muted">Carregando...</p>
+<button class="btn secondary" id="refresh">↻ Atualizar</button>
+</div>
+<div class="grid" id="ads"></div>
 </section>
 
-<main class="container">
-
-  <section class="section" id="campeonatos">
-    <div class="section-head">
-      <div>
-        <div class="kicker">PUBLICIDADE DE CAMPEONATOS</div>
-        <h2>Campeonatos <span class="orange">divulgados</span></h2>
-        <p class="muted">
-          Clique em um campeonato para acessar seu link oficial.
-        </p>
-      </div>
-      <button class="btn secondary" id="myAdsBtn">
-        📋 Meus anúncios
-      </button>
-    </div>
-
-    <div class="ad-banner">
-      <div>
-        <div class="kicker">ANUNCIE NO GAMING PRO</div>
-        <strong>Seu campeonato merece destaque.</strong>
-        <p>
-          Divulgue seu campeonato por 30 dias após a
-          confirmação do pagamento.
-        </p>
-      </div>
-      <div>
-        <div class="price">R$ 10,00</div>
-        <p>Por anúncio · 30 dias</p>
-        <button class="btn" id="bannerPublishBtn">
-          Cadastrar campeonato →
-        </button>
-      </div>
-    </div>
-
-    <div class="toolbar">
-      <p class="muted" id="adsCounter">
-        Carregando campeonatos...
-      </p>
-      <button class="btn secondary small" id="refreshAdsBtn">
-        ↻ Atualizar anúncios
-      </button>
-    </div>
-
-    <div class="grid" id="adsGrid"></div>
-    <div class="empty" id="adsEmpty" hidden>
-      Ainda não há campeonatos anunciados.
-    </div>
-  </section>
-
-  <section class="section" id="ferramentas">
-    <div class="section-head">
-      <div>
-        <div class="kicker">FERRAMENTAS GAMING PRO</div>
-        <h2>Explore o <span class="orange">ecossistema</span></h2>
-        <p class="muted" id="toolsCounter">
-          Carregando ferramentas...
-        </p>
-      </div>
-      <input
-        class="search"
-        id="search"
-        type="search"
-        placeholder="🔎 Pesquisar ferramentas..."
-        aria-label="Pesquisar ferramentas"
-      >
-    </div>
-
-    <div class="toolbar">
-      <div class="filters" id="filters"></div>
-      <button class="btn secondary small" id="refreshToolsBtn">
-        ↻ Atualizar catálogo
-      </button>
-    </div>
-
-    <div class="grid" id="toolsGrid"></div>
-    <div class="empty" id="toolsEmpty" hidden>
-      Nenhuma ferramenta encontrada.
-    </div>
-  </section>
-
+<section id="ferramentas">
+<div class="tag">ECOSSISTEMA GAMING PRO</div>
+<h2>Nossas <span class="orange">ferramentas</span></h2>
+<div class="tools">
+<input class="field" id="search" placeholder="Pesquisar ferramentas">
+</div>
+<div class="grid" id="tools"></div>
+</section>
 </main>
 
 <footer>
-  <div class="container footer-row">
-    <div>
-      <strong>GAMING PRO</strong>
-      <p>Portal de campeonatos e ferramentas esports.</p>
-    </div>
-    <div>
-      <p>© <span id="year"></span> Gaming Pro</p>
-      <p>Os anúncios são de responsabilidade dos organizadores.</p>
-    </div>
-  </div>
+<div class="wrap">GAMING PRO · Os organizadores são responsáveis pelos links e informações divulgados.</div>
 </footer>
 
-<div class="modal-overlay" id="modalOverlay" hidden>
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head">
-      <h2 id="modalTitle">GAMING PRO</h2>
-      <button class="btn secondary small" id="closeModalBtn">
-        ✕
-      </button>
-    </div>
-    <div id="modalBody"></div>
-  </div>
+<div class="modal-bg hidden" id="overlay">
+<div class="modal">
+<div class="modal-head">
+<h2 id="modalTitle"></h2>
+<button class="btn secondary" id="close">✕</button>
+</div>
+<div id="modalContent"></div>
+</div>
 </div>
 
-<div class="toast" id="toast" hidden role="status"></div>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import {
+getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,
+getRedirectResult,onAuthStateChanged,signOut
+} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
 
-<script>
-"use strict";
+const API='https://empty-union-c098gaming-pro-api.junhodorval.workers.dev';
+const ANALISTA='https://oanalistapro.github.io/ANALISTA-PRO.github.io/';
 
-const $ = id => document.getElementById(id);
-const ROOT = new URL("./", location.href);
+const app=initializeApp({
+apiKey:'AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q',
+authDomain:'gaming-pro-4325c.firebaseapp.com',
+projectId:'gaming-pro-4325c',
+storageBucket:'gaming-pro-4325c.firebasestorage.app',
+messagingSenderId:'931964630474',
+appId:'1:931964630474:web:43b0b4c6c2b27a8b2e4b33'
+});
 
-const API =
-  "https://empty-union-c098gaming-pro-api.junhodorval.workers.dev";
+const auth=getAuth(app);
+const provider=new GoogleAuthProvider();
+let user=null,poll=null;
 
-const ANALISTA_URL =
-  "https://oanalistapro.github.io/ANALISTA-PRO.github.io/";
+const $=s=>document.querySelector(s);
+const E=(tag,text,cls)=>{
+ let x=document.createElement(tag);
+ if(text!==undefined)x.textContent=text;
+ if(cls)x.className=cls;
+ return x;
+};
 
-const DEFAULT_APPS = [
-  {
-    id:"analista-pro",
-    nome:"ANALISTA PRO",
-    categoria:"Campeonatos",
-    icone:"📊",
-    descricao:"Gestão de campeonatos, tabelas e análise de jogadores.",
-    url:ANALISTA_URL,
-    foto:"https://images.unsplash.com/photo-1542751371-adc38448a05e?w=900&q=80"
-  },
-  {
-    id:"simulador-premiacao",
-    nome:"SIMULADOR DE PREMIAÇÃO PRO",
-    categoria:"Simuladores",
-    icone:"🏆",
-    descricao:"Calcule premiações, inscrições e distribuições.",
-    url:"./simulador-premiacao/index.html",
-    foto:"https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900&q=80"
-  },
-  {
-    id:"simulador-campeonato",
-    nome:"SIMULADOR DE CAMPEONATO",
-    categoria:"Simuladores",
-    icone:"🎯",
-    descricao:"Planeje formatos, equipes e confrontos.",
-    url:"./simulador-campeonato/index.html",
-    foto:"https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=900&q=80"
-  },
-  {
-    id:"gerador-chaves",
-    nome:"GERADOR DE CHAVES",
-    categoria:"Campeonatos",
-    icone:"🗂️",
-    descricao:"Monte chaves eliminatórias para torneios.",
-    url:"./gerador-chaves/index.html",
-    foto:"https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=900&q=80"
-  },
-  {
-    id:"ranking-jogadores",
-    nome:"RANKING DE JOGADORES",
-    categoria:"Jogadores",
-    icone:"🥇",
-    descricao:"Classificações e desempenho individual.",
-    url:"./ranking-jogadores/index.html",
-    foto:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=900&q=80"
-  },
-  {
-    id:"gerador-cards",
-    nome:"GERADOR DE CARDS",
-    categoria:"Criatividade",
-    icone:"🎨",
-    descricao:"Crie artes para jogadores e campeonatos.",
-    url:"./gerador-cards/index.html",
-    foto:"https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=900&q=80"
-  },
-  {
-    id:"gestor-equipes",
-    nome:"GESTOR DE EQUIPES",
-    categoria:"Equipes",
-    icone:"👥",
-    descricao:"Cadastre equipes e seus integrantes.",
-    url:"./gestor-equipes/index.html",
-    foto:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
-  },
-  {
-    id:"tabela-pontos",
-    nome:"TABELA DE PONTOS",
-    categoria:"Campeonatos",
-    icone:"📋",
-    descricao:"Organize posições, eliminações e pontuações.",
-    url:"./tabela-pontos/index.html",
-    foto:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80"
-  },
-  {
-    id:"estatisticas-esports",
-    nome:"ESTATÍSTICAS ESPORTS",
-    categoria:"Jogadores",
-    icone:"📈",
-    descricao:"Analise resultados e desempenho.",
-    url:"./estatisticas-esports/index.html",
-    foto:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80"
-  },
-  {
-    id:"agenda-torneios",
-    nome:"AGENDA DE TORNEIOS PRO",
-    categoria:"Campeonatos",
-    icone:"📅",
-    descricao:"Organize datas e horários de torneios.",
-    url:"./agenda-torneios/index.html",
-    foto:"https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=80"
-  },
-  {
-    id:"gestor-inscricoes",
-    nome:"GESTOR DE INSCRIÇÕES PRO",
-    categoria:"Equipes",
-    icone:"📝",
-    descricao:"Gerencie inscrições e participantes.",
-    url:"./gestor-inscricoes/index.html",
-    foto:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80"
-  },
-  {
-    id:"simulador-pontuacao",
-    nome:"SIMULADOR DE PONTUAÇÃO PRO",
-    categoria:"Simuladores",
-    icone:"⚡",
-    descricao:"Teste regras e sistemas de pontos.",
-    url:"./simulador-pontuacao/index.html",
-    foto:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80"
+function show(title){
+ $('#modalTitle').textContent=title;
+ $('#modalContent').replaceChildren();
+ $('#overlay').classList.remove('hidden');
+}
+function close(){
+ clearInterval(poll);
+ poll=null;
+ $('#overlay').classList.add('hidden');
+}
+$('#close').onclick=close;
+$('#overlay').onclick=e=>{
+ if(e.target===$('#overlay'))close();
+};
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape')close();
+});
+function message(s){alert(s)}
+
+async function request(path,options={}){
+ let r=await fetch(API+path,options);
+ let j=await r.json().catch(()=>({}));
+ if(!r.ok||j.ok===false)throw Error(j.error||'Falha na API');
+ return j;
+}
+async function privateRequest(path,options={}){
+ if(!user)throw Error('Entre com Google');
+ return request(path,{
+  ...options,
+  headers:{
+   'Authorization':'Bearer '+await user.getIdToken(),
+   'Content-Type':'application/json',
+   ...(options.headers||{})
   }
+ });
+}
+async function login(){
+ if(user)return true;
+ try{
+  await signInWithPopup(auth,provider);
+  return true;
+ }catch(e){
+  if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment'].includes(e.code)){
+   await signInWithRedirect(auth,provider);
+   return false;
+  }
+  message('Login: '+e.message);
+  return false;
+ }
+}
+getRedirectResult(auth).catch(console.warn);
+onAuthStateChanged(auth,u=>{
+ user=u;
+ $('#login').textContent=u?(u.displayName?.split(' ')[0]||'Minha conta'):'Entrar';
+});
+$('#login').onclick=async()=>{
+ if(!user){await login();return}
+ show('Minha conta');
+ let p=E('p','Conectado: '+user.email,'muted');
+ let b=E('button','Sair','btn secondary');
+ b.onclick=async()=>{await signOut(auth);close()};
+ $('#modalContent').append(p,b);
+};
+
+const goodUrl=v=>{
+ try{
+  let u=new URL(v);
+  return u.protocol==='https:'&&!u.username&&!u.password;
+ }catch{return false}
+};
+const placeholder='https://images.unsplash.com/photo-1511512578047-dfb367046420?w=900&q=80';
+
+function photo(src){
+ let im=E('img');
+ im.alt='Imagem do campeonato';
+ im.loading='lazy';
+ im.referrerPolicy='no-referrer';
+ im.src=goodUrl(src)?src:placeholder;
+ im.onerror=()=>{
+  im.onerror=null;
+  im.src=placeholder;
+ };
+ return im;
+}
+
+async function loadAds(){
+ let root=$('#ads');
+ $('#adCount').textContent='Carregando campeonatos...';
+ try{
+  let d=await request('/api/ads',{cache:'no-store'});
+  root.replaceChildren();
+  for(let a of d.ads||[]){
+   if(!goodUrl(a.target_url))continue;
+   let card=E('article',undefined,'card');
+   let cover=E('div',undefined,'cover');
+   let body=E('div',undefined,'content');
+   cover.append(photo(a.image_url),E('span','● DIVULGAÇÃO ATIVA','pill'));
+   body.append(
+    E('span',a.game||'Campeonato','tag'),
+    E('h3',a.title||'Campeonato'),
+    E('div','Organizador: '+(a.organizer||'Não informado'),'tag'),
+    E('p',a.description||'Acesse o link oficial para mais informações.','muted')
+   );
+   let link=E('a','Acessar campeonato →','btn');
+   link.href=a.target_url;
+   link.target='_blank';
+   link.rel='noopener noreferrer';
+   body.append(link);
+   card.append(cover,body);
+   root.append(card);
+  }
+  $('#adCount').textContent=root.children.length+' campeonato(s) divulgado(s)';
+ }catch(e){
+  $('#adCount').textContent='Erro ao carregar: '+e.message;
+ }
+}
+$('#refresh').onclick=loadAds;
+
+const toolData=[
+['analista','ANALISTA PRO','Campeonatos','📊','Gestão de campeonatos e análise de jogadores.','photo-1542751371-adc38448a05e'],
+['chaves','GERADOR DE CHAVES','Campeonatos','🗂️','Sorteie confrontos e monte uma chave eliminatória.','photo-1550745165-9bc0b252726f'],
+['ranking','RANKING DE JOGADORES','Jogadores','🥇','Cadastre pontuações e classifique jogadores.','photo-1593305841991-05c297ba4575'],
+['cards','GERADOR DE CARDS','Criatividade','🎨','Crie cards e baixe imagens PNG.','photo-1558655146-9f40138edfeb'],
+['premiacao','SIMULADOR DE PREMIAÇÃO PRO','Simuladores','🏆','Calcule premiações e divisões por colocação.','photo-1511512578047-dfb367046420'],
+['pontuacao','SIMULADOR DE PONTUAÇÃO','Simuladores','⚡','Calcule pontos de colocação e eliminações.','photo-1460925895917-afdab827c52f'],
+['equipes','GESTOR DE EQUIPES','Equipes','👥','Cadastre e organize equipes no navegador.','photo-1529156069898-49953e39b3ac'],
+['campeonato','SIMULADOR DE CAMPEONATO','Simuladores','🎯','Simule partidas e resultados.','photo-1535223289827-42f1e9919769'],
+['tabela','TABELA DE PONTOS','Campeonatos','📋','Organize classificações por equipe.','photo-1551288049-bebda4e38f71'],
+['estatisticas','ESTATÍSTICAS ESPORTS','Jogadores','📈','Visualize estatísticas de desempenho.','photo-1516321318423-f06f85e504b3'],
+['agenda','AGENDA DE TORNEIOS','Campeonatos','📅','Registre datas de torneios.','photo-1506784983877-45594efa4cbe'],
+['inscricoes','GESTOR DE INSCRIÇÕES','Equipes','📝','Gerencie lista de inscritos.','photo-1450101499163-c8848c66ca85']
 ];
 
-let apps = DEFAULT_APPS.map(a => ({...a}));
-let selectedCategory = "Todas";
-let favorites = [];
-
-try {
-  const saved = JSON.parse(
-    localStorage.getItem("gamingpro_favorites_v1") || "[]"
+function renderTools(){
+ let root=$('#tools');
+ root.replaceChildren();
+ let search=$('#search').value.toLowerCase();
+ for(let [id,name,cat,emoji,desc,img] of toolData){
+  if(!(name+' '+cat).toLowerCase().includes(search))continue;
+  let card=E('article',undefined,'card');
+  let cover=E('div',undefined,'cover');
+  let body=E('div',undefined,'content');
+  cover.append(
+   photo('https://images.unsplash.com/'+img+'?w=900&q=80'),
+   E('span','● DISPONÍVEL','pill')
   );
-  if (Array.isArray(saved)) favorites = saved;
-} catch {}
-
-function notify(message) {
-  $("toast").textContent = message;
-  $("toast").hidden = false;
-  clearTimeout(notify.timer);
-  notify.timer = setTimeout(() => {
-    $("toast").hidden = true;
-  }, 4000);
-}
-
-function openModal(title, content) {
-  $("modalTitle").textContent = title;
-  $("modalBody").replaceChildren();
-  if (typeof content === "string") {
-    const p = document.createElement("p");
-    p.textContent = content;
-    $("modalBody").append(p);
-  } else {
-    $("modalBody").append(content);
-  }
-  $("modalOverlay").hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal() {
-  $("modalOverlay").hidden = true;
-  document.body.style.overflow = "";
-}
-
-$("closeModalBtn").onclick = closeModal;
-$("modalOverlay").onclick = event => {
-  if (event.target === $("modalOverlay")) closeModal();
-};
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeModal();
-});
-
-function validToolUrl(value) {
-  try {
-    const url = new URL(value, ROOT);
-    if (url.protocol !== "https:") return false;
-
-    if (url.origin === ROOT.origin) {
-      return url.pathname.startsWith(ROOT.pathname);
-    }
-
-    return url.href.replace(/\/+$/, "") ===
-      ANALISTA_URL.replace(/\/+$/, "");
-  } catch {
-    return false;
-  }
-}
-
-async function moduleExists(value) {
-  try {
-    const url = new URL(value, ROOT);
-    if (url.origin !== ROOT.origin) return false;
-    if (!url.pathname.startsWith(ROOT.pathname)) return false;
-
-    const response = await fetch(url.href, {cache:"no-store"});
-    if (!response.ok) return false;
-
-    const type = response.headers.get("content-type") || "";
-    if (!type.includes("text/html")) return false;
-
-    const html = (await response.text()).slice(0,3000).toLowerCase();
-    return html.includes("<html") ||
-      html.includes("<!doctype html");
-  } catch {
-    return false;
-  }
-}
-
-async function loadCatalog() {
-  $("toolsCounter").textContent = "Verificando ferramentas...";
-
-  const map = new Map(
-    DEFAULT_APPS.map(app => [app.id, {...app}])
+  body.append(
+   E('div',emoji+' '+cat,'tag'),
+   E('h3',name),
+   E('p',desc)
   );
+  let btn=E('button','Abrir ferramenta →','btn');
+  btn.onclick=()=>id==='analista'?location.assign(ANALISTA):openTool(id,name);
+  body.append(btn);
+  card.append(cover,body);
+  root.append(card);
+ }
+}
+$('#search').oninput=renderTools;
 
-  try {
-    const response = await fetch(
-      new URL("catalogo.json?v=" + Date.now(), ROOT),
-      {cache:"no-store"}
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-
-      if (Array.isArray(data.aplicativos)) {
-        for (const item of data.aplicativos) {
-          if (!item?.id) continue;
-
-          const id = String(item.id);
-          const previous = map.get(id) || {};
-
-          map.set(id, {
-            ...previous,
-            id,
-            nome:String(item.nome || previous.nome || id),
-            categoria:String(
-              item.categoria || previous.categoria || "Outros"
-            ),
-            icone:String(item.icone || previous.icone || "🎮"),
-            descricao:String(
-              item.descricao || previous.descricao ||
-              "Ferramenta Gaming Pro"
-            ),
-            url:String(item.url || previous.url || ""),
-            foto:String(item.foto || previous.foto || ""),
-            ativo:item.ativo !== false
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.warn("Catálogo:",error.message);
-  }
-
-  apps = [...map.values()];
-
-  await Promise.all(apps.map(async app => {
-    if (app.id === "analista-pro") {
-      app.url = ANALISTA_URL;
-      app.ready = true;
-      return;
-    }
-
-    app.ready =
-      app.ativo !== false &&
-      validToolUrl(app.url) &&
-      await moduleExists(app.url);
-  }));
-
-  renderFilters();
-  renderTools();
+function input(label,type='text',value=''){
+ let wrap=E('label',undefined,'wide');
+ let title=E('span',label);
+ let el=E('input',undefined,'field');
+ el.type=type;
+ el.value=value;
+ wrap.append(title,el);
+ return {wrap,el};
 }
 
-function renderFilters() {
-  const container = $("filters");
-  container.replaceChildren();
+function openTool(id,name){
+ show(name);
+ let root=$('#modalContent');
+ root.append(E('p','Ferramenta integrada ao GAMING PRO. Os dados locais ficam neste navegador.','muted'));
+ if(id==='chaves')return bracket(root);
+ if(id==='ranking')return ranking(root);
+ if(id==='cards')return cards(root);
+ if(id==='premiacao')return prize(root);
+ if(id==='pontuacao')return points(root);
+ if(id==='campeonato')return championship(root);
+ if(id==='estatisticas')return stats(root);
+ if(['equipes','tabela','agenda','inscricoes'].includes(id))return records(root,id);
+}
 
-  const categories = [
-    "Todas",
-    ...new Set(apps.map(app => app.categoria))
-  ];
+function bracket(root){
+ let t=E('textarea',undefined,'field');
+ t.rows=9;
+ t.placeholder='Digite uma equipe por linha';
+ let b=E('button','🎲 Sortear confrontos','btn');
+ let out=E('pre',undefined,'result');
+ root.append(t,b,out);
+ b.onclick=()=>{
+  let a=t.value.split('\n').map(x=>x.trim()).filter(Boolean);
+  if(a.length<2)return message('Informe pelo menos 2 equipes');
+  for(let i=a.length-1;i>0;i--){
+   let j=Math.floor(Math.random()*(i+1));
+   [a[i],a[j]]=[a[j],a[i]];
+  }
+  let n=2**Math.ceil(Math.log2(a.length));
+  while(a.length<n)a.push('FOLGA');
+  out.textContent='CHAVE ELIMINATÓRIA\n\n'+
+   Array.from({length:a.length/2},(_,i)=>
+    `${i+1}. ${a[i*2]} × ${a[i*2+1]}`
+   ).join('\n');
+ };
+}
 
-  categories.forEach(category => {
-    const button = document.createElement("button");
-    button.className =
-      "filter" +
-      (selectedCategory === category ? " active" : "");
-    button.textContent = category;
+function ranking(root){
+ let n=input('Jogador');
+ let p=input('Pontos','number','0');
+ let add=E('button','Adicionar jogador','btn');
+ let out=E('div');
+ root.append(n.wrap,p.wrap,add,out);
+ let data=[];
+ add.onclick=()=>{
+  if(!n.el.value.trim())return;
+  data.push({name:n.el.value.trim(),pts:Number(p.el.value)||0});
+  data.sort((a,b)=>b.pts-a.pts);
+  out.replaceChildren(...data.map((v,i)=>
+   E('div',`${i+1}º ${v.name} — ${v.pts} pontos`,'notice')
+  ));
+  n.el.value='';
+ };
+}
 
-    button.onclick = () => {
-      selectedCategory = category;
-      renderFilters();
-      renderTools();
-    };
+function cards(root){
+ let name=input('Nome do jogador ou equipe');
+ let subtitle=input('Descrição','text','CAMPEONATO GAMING PRO');
+ let color=input('Cor principal','color','#ff791b');
+ let canvas=E('canvas',undefined,'canvas');
+ canvas.width=1200;
+ canvas.height=675;
+ let b=E('button','⬇ Baixar PNG','btn');
+ root.append(name.wrap,subtitle.wrap,color.wrap,canvas,b);
+ function draw(){
+  let c=canvas.getContext('2d');
+  let g=c.createLinearGradient(0,0,1200,675);
+  g.addColorStop(0,'#0b0b12');
+  g.addColorStop(1,color.el.value);
+  c.fillStyle=g;
+  c.fillRect(0,0,1200,675);
+  c.fillStyle='#fff';
+  c.font='bold 42px Arial';
+  c.fillText('GAMING PRO',70,110);
+  c.font='bold 74px Arial';
+  c.fillText((name.el.value||'SEU CAMPEONATO').slice(0,25),70,330);
+  c.font='32px Arial';
+  c.fillText(subtitle.el.value.slice(0,45),70,405);
+  c.fillStyle=color.el.value;
+  c.fillRect(70,475,450,9);
+ }
+ [name.el,subtitle.el,color.el].forEach(x=>x.oninput=draw);
+ draw();
+ b.onclick=()=>{
+  let a=document.createElement('a');
+  a.download='gaming-pro-card.png';
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+ };
+}
 
-    container.append(button);
+function prize(root){
+ let total=input('Premiação total (R$)','number','100');
+ let places=input('Quantidade de colocados','number','3');
+ let out=E('pre',undefined,'result');
+ let b=E('button','Calcular','btn');
+ root.append(total.wrap,places.wrap,b,out);
+ b.onclick=()=>{
+  let v=Number(total.el.value);
+  let n=Math.min(200,Math.max(1,Number(places.el.value)||1));
+  if(v<0)return;
+  let weights=Array.from({length:n},(_,i)=>n-i);
+  let sum=weights.reduce((a,b)=>a+b,0);
+  let cents=Math.round(v*100),allocated=0;
+  out.textContent=weights.map((w,i)=>{
+   let amount=i===n-1?cents-allocated:Math.floor(cents*w/sum);
+   allocated+=amount;
+   return `${i+1}º — R$ ${(amount/100).toFixed(2)}`;
+  }).join('\n');
+ };
+}
+
+function points(root){
+ let kills=input('Eliminações','number','5');
+ let placement=input('Colocação','number','1');
+ let killValue=input('Pontos por eliminação','number','1');
+ let out=E('div',undefined,'notice');
+ let b=E('button','Calcular pontos','btn');
+ root.append(kills.wrap,placement.wrap,killValue.wrap,b,out);
+ b.onclick=()=>{
+  let table=[12,9,8,7,6,5,4,3,2,1,0,0];
+  let p=Math.max(1,Math.floor(Number(placement.el.value)||1));
+  out.textContent='Total: '+
+   ((table[p-1]||0)+Math.max(0,Number(kills.el.value))*Number(killValue.el.value))+
+   ' pontos (tabela de exemplo editável no código)';
+ };
+}
+
+function championship(root){
+ let names=E('textarea',undefined,'field');
+ names.rows=8;
+ names.placeholder='Uma equipe por linha';
+ let b=E('button','Simular partidas','btn');
+ let out=E('pre',undefined,'result');
+ root.append(names,b,out);
+ b.onclick=()=>{
+  let a=names.value.split('\n').map(x=>x.trim()).filter(Boolean);
+  if(a.length<2)return;
+  out.textContent=a.flatMap((x,i)=>
+   a.slice(i+1).map(y=>
+    `${x} ${Math.floor(Math.random()*5)} × ${Math.floor(Math.random()*5)} ${y}`
+   )
+  ).join('\n');
+ };
+}
+
+function stats(root){
+ let text=E('textarea',undefined,'field');
+ text.rows=8;
+ text.placeholder='Jogador,pontos\nAna,15\nJoão,9';
+ let b=E('button','Analisar','btn');
+ let out=E('pre',undefined,'result');
+ root.append(text,b,out);
+ b.onclick=()=>{
+  let rows=text.value.trim().split('\n').map(s=>s.split(','));
+  let data=rows.slice(1).map(r=>({n:r[0],v:Number(r[1])}))
+   .filter(x=>Number.isFinite(x.v));
+  if(!data.length)return;
+  let total=data.reduce((s,x)=>s+x.v,0);
+  out.textContent=`Registros: ${data.length}\nTotal: ${total}\nMédia: ${(total/data.length).toFixed(2)}\nMelhor: ${data.sort((a,b)=>b.v-a.v)[0].n}`;
+ };
+}
+
+function records(root,id){
+ let key='gaming-pro-'+id;
+ let items=[];
+ try{
+  const saved=JSON.parse(localStorage.getItem(key)||'[]');
+  if(Array.isArray(saved))items=saved;
+ }catch{}
+ let label=id==='agenda'?'Evento e data':
+  id==='tabela'?'Equipe e pontos':
+  id==='inscricoes'?'Inscrito':'Equipe e integrantes';
+ let field=input(label);
+ let out=E('div');
+ let add=E('button','Adicionar','btn');
+ root.append(field.wrap,add,out);
+ function draw(){
+  out.replaceChildren();
+  items.forEach((x,i)=>{
+   let box=E('div',undefined,'notice flex between');
+   let name=E('span',x);
+   let del=E('button','Excluir','btn secondary');
+   del.onclick=()=>{items.splice(i,1);save()};
+   box.append(name,del);
+   out.append(box);
   });
+ }
+ function save(){
+  localStorage.setItem(key,JSON.stringify(items));
+  draw();
+ }
+ add.onclick=()=>{
+  if(field.el.value.trim()){
+   items.push(field.el.value.trim());
+   field.el.value='';
+   save();
+  }
+ };
+ draw();
 }
 
-function createToolCard(app) {
-  const card = document.createElement("article");
-  card.className = "card";
-
-  const cover = document.createElement("div");
-  cover.className = "cover";
-
-  if (app.foto) {
-    try {
-      const photo = new URL(app.foto, ROOT);
-      if (photo.protocol === "https:") {
-        cover.style.backgroundImage =
-          `linear-gradient(0deg,#09090eaa,transparent 70%),url("${photo.href}")`;
-      }
-    } catch {}
+async function verify(ad,box){
+ let b=box.querySelector('button');
+ b.disabled=true;
+ b.textContent='Consultando Asaas...';
+ try{
+  let d=await privateRequest('/api/payment-status?adId='+encodeURIComponent(ad.id));
+  if(d.status==='active'){
+   box.querySelector('.state').textContent='Situação: ATIVO ✅';
+   box.querySelector('.expires').textContent='Vencimento: '+(d.expiresAt||'Confirmado');
+   b.textContent='✅ Anúncio liberado';
+   await loadAds();
+  }else{
+   b.textContent='🔄 Verificar novamente';
+   message('Pagamento ainda não confirmado');
   }
+ }catch(e){
+  b.textContent='🔄 Tentar novamente';
+  message(e.message);
+ }finally{
+  b.disabled=false;
+ }
+}
 
-  const icon = document.createElement("div");
-  icon.className = "icon-box";
-  icon.textContent = app.icone;
+async function myAds(){
+ if(!user&&!await login())return;
+ show('Meus anúncios');
+ let root=$('#modalContent');
+ root.textContent='Carregando...';
+ try{
+  let d=await privateRequest('/api/my-ads');
+  root.replaceChildren();
+  if(!d.ads?.length)root.textContent='Você ainda não cadastrou anúncios.';
+  for(let ad of d.ads||[]){
+   let box=E('div',undefined,'notice');
+   box.append(
+    E('h3',ad.title),
+    E('p','Situação: '+(ad.status==='active'?'ATIVO ✅':'Aguardando pagamento'),'state'),
+    E('p','Vencimento: '+(ad.expires_at||'Ainda não iniciado'),'expires'),
+    E('p','Pagamento: '+(ad.payment_status||'pending')),
+    E('p','ID: '+ad.id.slice(0,8),'muted')
+   );
+   if(ad.status!=='active'){
+    let b=E('button','🔄 Verificar pagamento','btn');
+    b.onclick=()=>verify(ad,box);
+    box.append(b);
+   }
+   root.append(box);
+  }
+ }catch(e){
+  root.textContent=e.message;
+ }
+}
+$('#myAds').onclick=myAds;
 
-  const status = document.createElement("div");
-  status.className =
-    "status" + (app.ready ? " ready" : "");
-  status.textContent =
-    app.ready ? "● DISPONÍVEL" : "EM DESENVOLVIMENTO";
+async function publish(){
+ if(!user&&!await login())return;
+ show('Cadastrar campeonato');
+ let root=$('#modalContent');
+ let form=E('form',undefined,'form');
+ let inputs={};
+ for(let [key,label,type,req] of [
+  ['title','Campeonato','text',true],
+  ['organizer','Organizador','text',true],
+  ['game','Jogo','text',true],
+  ['event_date','Data do evento','date',false],
+  ['target_url','Link do campeonato (HTTPS)','url',true],
+  ['image_url','Link da foto (opcional)','url',false],
+  ['customerName','Nome do pagador','text',true],
+  ['cpfCnpj','CPF ou CNPJ do pagador','text',true]
+ ]){
+  let f=input(label,type);
+  f.el.required=req;
+  inputs[key]=f.el;
+  form.append(f.wrap);
+ }
+ let desc=E('textarea',undefined,'field wide');
+ desc.placeholder='Descrição do campeonato';
+ form.append(desc);
+ let submit=E('button','Gerar Pix R$ 10,00','btn wide');
+ submit.type='submit';
+ form.append(submit);
+ root.append(form);
 
-  cover.append(icon,status);
-
-  const content = document.createElement("div");
-  content.className = "card-content";
-
-  const category = document.createElement("span");
-  category.className = "category";
-  category.textContent = app.categoria;
-
-  const title = document.createElement("h3");
-  title.textContent = app.nome;
-
-  const description = document.createElement("p");
-  description.textContent = app.descricao;
-
-  const actions = document.createElement("div");
-  actions.className = "actions";
-
-  const open = document.createElement("button");
-  open.className = "btn";
-  open.textContent =
-    app.ready ? "Abrir ferramenta →" : "Em breve";
-  open.disabled = !app.ready;
-
-  open.onclick = () => {
-    if (!app.ready || !validToolUrl(app.url)) return;
-    window.location.assign(new URL(app.url, ROOT).href);
-  };
-
-  const favorite = document.createElement("button");
-  favorite.className = "favorite";
-  favorite.textContent =
-    favorites.includes(app.id) ? "★" : "☆";
-
-  favorite.onclick = () => {
-    if (favorites.includes(app.id)) {
-      favorites = favorites.filter(id => id !== app.id);
-    } else {
-      favorites.push(app.id);
+ form.onsubmit=async e=>{
+  e.preventDefault();
+  let payload=Object.fromEntries(
+   Object.entries(inputs).map(([k,v])=>[k,v.value.trim()])
+  );
+  payload.description=desc.value.trim();
+  if(!goodUrl(payload.target_url)||
+     (payload.image_url&&!goodUrl(payload.image_url))){
+   return message('Links precisam usar HTTPS');
+  }
+  submit.disabled=true;
+  try{
+   let d=await privateRequest('/api/ads',{
+    method:'POST',
+    body:JSON.stringify(payload)
+   });
+   root.replaceChildren(
+    E('h3','Pix de R$ 10,00'),
+    E('p','O anúncio será liberado após a confirmação no Asaas.','muted')
+   );
+   if(d.pix?.encodedImage){
+    let im=E('img',undefined,'qr');
+    im.src='data:image/png;base64,'+d.pix.encodedImage;
+    root.append(im);
+   }
+   if(d.pix?.payload){
+    let t=E('textarea',undefined,'field');
+    t.value=d.pix.payload;
+    t.readOnly=true;
+    let copy=E('button','Copiar Pix','btn secondary');
+    copy.onclick=()=>navigator.clipboard.writeText(t.value)
+     .then(()=>message('Pix copiado'));
+    root.append(t,copy);
+   }
+   let status=E('p','Aguardando confirmação...','muted');
+   let check=E('button','Verificar pagamento','btn secondary');
+   root.append(status,check);
+   let checking=false;
+   async function confirm(){
+    if(checking)return;
+    checking=true;
+    try{
+     let p=await privateRequest(
+      '/api/payment-status?adId='+encodeURIComponent(d.adId)
+     );
+     if(p.status==='active'){
+      status.textContent='✅ Pagamento confirmado. Anúncio liberado!';
+      check.disabled=true;
+      clearInterval(poll);
+      await loadAds();
+     }else{
+      status.textContent='Ainda não confirmado no Asaas.';
+     }
+    }catch(err){
+     status.textContent=err.message;
+    }finally{
+     checking=false;
     }
-
-    localStorage.setItem(
-      "gamingpro_favorites_v1",
-      JSON.stringify(favorites)
-    );
-
-    renderTools();
-  };
-
-  actions.append(open,favorite);
-  content.append(category,title,description,actions);
-  card.append(cover,content);
-
-  return card;
-}
-
-function renderTools() {
-  const query = $("search").value.trim().toLowerCase();
-  const grid = $("toolsGrid");
-  grid.replaceChildren();
-
-  let displayed = 0;
-
-  for (const app of apps) {
-    if (
-      selectedCategory !== "Todas" &&
-      app.categoria !== selectedCategory
-    ) continue;
-
-    const text =
-      `${app.nome} ${app.categoria} ${app.descricao}`.toLowerCase();
-
-    if (!text.includes(query)) continue;
-
-    grid.append(createToolCard(app));
-    displayed++;
+   }
+   check.onclick=confirm;
+   poll=setInterval(confirm,15000);
+  }catch(err){
+   message(err.message);
+   submit.disabled=false;
   }
-
-  $("toolsEmpty").hidden = displayed > 0;
-  $("toolsCounter").textContent =
-    `${displayed} ferramentas · ` +
-    `${apps.filter(app => app.ready).length} disponíveis`;
+ };
 }
 
-function validAdLink(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
-
-async function loadAds() {
-  $("adsCounter").textContent = "Atualizando campeonatos...";
-  const grid = $("adsGrid");
-  grid.replaceChildren();
-
-  try {
-    const response = await fetch(API + "/api/ads", {
-      cache:"no-store"
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.ok) {
-      throw new Error(data.error || "Falha ao carregar.");
-    }
-
-    const ads = Array.isArray(data.ads) ? data.ads : [];
-
-    ads.forEach(ad => {
-      if (!validAdLink(ad.target_url)) return;
-
-      const card = document.createElement("article");
-      card.className = "card";
-
-      const cover = document.createElement("div");
-      cover.className = "ad-cover";
-
-      if (validAdLink(ad.image_url)) {
-        const image = document.createElement("img");
-        image.src = ad.image_url;
-        image.alt = "Imagem do campeonato " + ad.title;
-        image.loading = "lazy";
-        image.referrerPolicy = "no-referrer";
-        cover.append(image);
-      }
-
-      const badge = document.createElement("div");
-      badge.className = "status ready";
-      badge.textContent = "● DIVULGAÇÃO ATIVA";
-      cover.append(badge);
-
-      const content = document.createElement("div");
-      content.className = "card-content";
-
-      const game = document.createElement("span");
-      game.className = "category";
-      game.textContent = ad.game;
-
-      const title = document.createElement("h3");
-      title.textContent = ad.title;
-
-      const organizer = document.createElement("div");
-      organizer.className = "ad-meta";
-      organizer.textContent = "Organizador: " + ad.organizer;
-
-      const description = document.createElement("p");
-      description.textContent = ad.description || "";
-
-      const event = document.createElement("p");
-      event.textContent =
-        ad.event_date ? "📅 Evento: " + ad.event_date : "";
-
-      const button = document.createElement("a");
-      button.className = "btn";
-      button.textContent = "Acessar campeonato →";
-      button.href = ad.target_url;
-      button.target = "_blank";
-      button.rel = "noopener noreferrer";
-
-      content.append(
-        game,title,organizer,description,event,button
-      );
-
-      card.append(cover,content);
-      grid.append(card);
-    });
-
-    $("adsEmpty").hidden = grid.children.length > 0;
-    $("adsCounter").textContent =
-      grid.children.length + " campeonatos divulgados";
-
-  } catch (error) {
-    $("adsCounter").textContent =
-      "Não foi possível carregar os campeonatos.";
-    notify(error.message);
-  }
-}
-
-$("search").addEventListener("input",renderTools);
-$("refreshToolsBtn").onclick = loadCatalog;
-$("refreshAdsBtn").onclick = loadAds;
-$("year").textContent = new Date().getFullYear();
-
-loadCatalog();
+$('#publish').onclick=publish;
+$('#publish2').onclick=publish;
+renderTools();
 loadAds();
 </script>
-
-<script type="module">
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey:"AIzaSyBI6RopCzEXzQ6DrlBTcmznIolPjO9fB1Q",
-  authDomain:"gaming-pro-4325c.firebaseapp.com",
-  projectId:"gaming-pro-4325c",
-  storageBucket:"gaming-pro-4325c.firebasestorage.app",
-  messagingSenderId:"931964630474",
-  appId:"1:931964630474:web:43b0b4c6c2b27a8b2e4b33",
-  measurementId:"G-KY2YHLMH32"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const google = new GoogleAuthProvider();
-
-let currentUser = null;
-let paymentTimer = null;
-
-async function getToken() {
-  if (!currentUser) throw new Error("Entre com Google primeiro.");
-  return currentUser.getIdToken();
-}
-
-async function apiRequest(path,options={}) {
-  const token = await getToken();
-
-  const response = await fetch(API + path,{
-    ...options,
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer " + token,
-      ...(options.headers || {})
-    }
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok || !data.ok) {
-    throw new Error(data.error || "Erro na solicitação.");
-  }
-
-  return data;
-}
-
-async function login() {
-  if (currentUser) return currentUser;
-
-  try {
-    const result = await signInWithPopup(auth,google);
-    return result.user;
-  } catch (error) {
-    if (
-      error.code === "auth/popup-blocked" ||
-      error.code ===
-      "auth/operation-not-supported-in-this-environment"
-    ) {
-      await signInWithRedirect(auth,google);
-      return null;
-    }
-    throw error;
-  }
-}
-
-function accountModal() {
-  const body = document.createElement("div");
-
-  const description = document.createElement("p");
-  description.className = "muted";
-
-  const button = document.createElement("button");
-  button.className = "btn";
-
-  const message = document.createElement("p");
-  message.className = "form-error";
-
-  if (currentUser) {
-    description.textContent =
-      "Conectado como " +
-      (currentUser.displayName || currentUser.email);
-
-    button.textContent = "Sair da conta";
-
-    button.onclick = async () => {
-      await signOut(auth);
-      closeModal();
-      notify("Você saiu da conta.");
-    };
-  } else {
-    description.textContent =
-      "Entre com Google para cadastrar e acompanhar seus anúncios.";
-
-    button.textContent = "Continuar com Google";
-
-    button.onclick = async () => {
-      button.disabled = true;
-      try {
-        await login();
-        closeModal();
-        notify("Login realizado.");
-      } catch (error) {
-        message.textContent =
-          "Erro no login: " + (error.code || error.message);
-      } finally {
-        button.disabled = false;
-      }
-    };
-  }
-
-  body.append(description,button,message);
-  openModal("Minha conta",body);
-}
-
-function createField(label,type,name,required=false,placeholder="") {
-  const group = document.createElement("div");
-  group.className = "form-group";
-
-  const text = document.createElement("label");
-  text.textContent = label;
-
-  const input = document.createElement("input");
-  input.className = "field";
-  input.type = type;
-  input.name = name;
-  input.required = required;
-  input.placeholder = placeholder;
-
-  group.append(text,input);
-
-  return {group,input};
-}
-
-async function publishModal() {
-  if (!currentUser) {
-    try {
-      const user = await login();
-      if (!user) return;
-    } catch (error) {
-      notify("Não foi possível entrar com Google.");
-      return;
-    }
-  }
-
-  const wrapper = document.createElement("div");
-
-  const intro = document.createElement("p");
-  intro.className = "muted";
-  intro.textContent =
-    "Cadastre seu campeonato. O anúncio custa R$ 10 " +
-    "e ficará público por 30 dias após o pagamento confirmado.";
-
-  const form = document.createElement("form");
-  form.className = "form-grid";
-
-  const fields = [
-    ["Nome do campeonato","text","title",true,"Ex.: Copa Gaming Pro"],
-    ["Organizador","text","organizer",true,"Nome do organizador"],
-    ["Jogo ou modalidade","text","game",true,"Ex.: Free Fire"],
-    ["Data do evento","date","event_date",false,""],
-    ["Link do campeonato","url","target_url",true,"https://..."],
-    ["Link da imagem ou logo","url","image_url",false,"https://..."],
-    ["Nome do pagador","text","customerName",true,"Nome completo"],
-    ["CPF ou CNPJ do pagador","text","cpfCnpj",true,"Somente números"]
-  ];
-
-  const inputs = {};
-
-  for (const [label,type,name,required,placeholder] of fields) {
-    const field = createField(
-      label,type,name,required,placeholder
-    );
-    inputs[name] = field.input;
-
-    if (name === "target_url" || name === "image_url") {
-      field.group.classList.add("full");
-    }
-
-    form.append(field.group);
-  }
-
-  const descriptionGroup = document.createElement("div");
-  descriptionGroup.className = "form-group full";
-
-  const descriptionLabel = document.createElement("label");
-  descriptionLabel.textContent = "Descrição do campeonato";
-
-  const descriptionInput = document.createElement("textarea");
-  descriptionInput.className = "field";
-  descriptionInput.rows = 4;
-  descriptionInput.maxLength = 1000;
-  descriptionInput.placeholder =
-    "Inscrições, regras, horários e outras informações.";
-
-  descriptionGroup.append(
-    descriptionLabel,descriptionInput
-  );
-
-  const note = document.createElement("p");
-  note.className = "form-note full";
-  note.textContent =
-    "Use links HTTPS. Não divulgue links fraudulentos ou " +
-    "conteúdo ilegal. O CPF/CNPJ é enviado apenas ao servidor " +
-    "para criar a cobrança no Asaas.";
-
-  const message = document.createElement("p");
-  message.className = "form-error full";
-
-  const submit = document.createElement("button");
-  submit.className = "btn";
-  submit.type = "submit";
-  submit.textContent = "Gerar Pix de R$ 10";
-
-  const paymentContainer = document.createElement("div");
-  paymentContainer.className = "full";
-
-  form.append(
-    descriptionGroup,note,message,submit,paymentContainer
-  );
-
-  wrapper.append(intro,form);
-  openModal("Divulgar meu campeonato",wrapper);
-
-  form.onsubmit = async event => {
-    event.preventDefault();
-
-    const payload = {};
-
-    for (const [name,input] of Object.entries(inputs)) {
-      payload[name] = input.value.trim();
-    }
-
-    payload.description = descriptionInput.value.trim();
-
-    if (!validAdLink(payload.target_url)) {
-      message.textContent =
-        "Informe um link HTTPS válido para o campeonato.";
-      return;
-    }
-
-    if (
-      payload.image_url &&
-      !validAdLink(payload.image_url)
-    ) {
-      message.textContent =
-        "O link da imagem precisa começar com https://";
-      return;
-    }
-
-    submit.disabled = true;
-    submit.textContent = "Gerando cobrança...";
-    message.textContent = "";
-
-    try {
-      const result = await apiRequest("/api/ads",{
-        method:"POST",
-        body:JSON.stringify(payload)
-      });
-
-      showPix(paymentContainer,result);
-      submit.hidden = true;
-
-    } catch (error) {
-      message.textContent = error.message;
-      submit.disabled = false;
-      submit.textContent = "Gerar Pix de R$ 10";
-    }
-  };
-}
-
-function showPix(container,result) {
-  if (paymentTimer) clearInterval(paymentTimer);
-
-  container.replaceChildren();
-
-  const box = document.createElement("div");
-  box.className = "payment-box";
-
-  const title = document.createElement("h3");
-  title.textContent = "Pix de R$ 10,00";
-
-  const instructions = document.createElement("p");
-  instructions.className = "muted";
-  instructions.textContent =
-    "Pague no aplicativo do seu banco. " +
-    "A divulgação será liberada após a confirmação do Asaas.";
-
-  box.append(title,instructions);
-
-  if (result.pix?.encodedImage) {
-    const image = document.createElement("img");
-    image.className = "pix-image";
-    image.alt = "QR Code Pix";
-    image.src =
-      "data:image/png;base64," +
-      result.pix.encodedImage;
-    box.append(image);
-  }
-
-  if (result.pix?.payload) {
-    const textarea = document.createElement("textarea");
-    textarea.className = "copy-area";
-    textarea.readOnly = true;
-    textarea.value = result.pix.payload;
-
-    const copy = document.createElement("button");
-    copy.className = "btn secondary";
-    copy.textContent = "Copiar código Pix";
-
-    copy.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(
-          result.pix.payload
-        );
-        notify("Código Pix copiado.");
-      } catch {
-        textarea.select();
-        notify("Selecione e copie o código Pix.");
-      }
-    };
-
-    box.append(textarea,copy);
-  }
-
-  const status = document.createElement("p");
-  status.className = "muted";
-  status.textContent = "Aguardando confirmação do pagamento...";
-
-  const check = document.createElement("button");
-  check.className = "btn secondary";
-  check.textContent = "Verificar pagamento";
-
-  const verify = async () => {
-    try {
-      const data = await apiRequest(
-        "/api/payment-status?adId=" +
-        encodeURIComponent(result.adId)
-      );
-
-      if (data.status === "active") {
-        status.className = "form-success";
-        status.textContent =
-          "Pagamento confirmado! Seu anúncio está ativo.";
-        check.disabled = true;
-
-        if (paymentTimer) clearInterval(paymentTimer);
-        loadAds();
-      } else {
-        status.textContent =
-          "Pagamento ainda não confirmado. " +
-          "Aguarde a atualização do Asaas.";
-      }
-    } catch (error) {
-      status.textContent = error.message;
-    }
-  };
-
-  check.onclick = verify;
-  box.append(status,check);
-  container.append(box);
-
-  paymentTimer = setInterval(verify,15000);
-}
-
-async function myAdsModal() {
-  if (!currentUser) {
-    try {
-      const user = await login();
-      if (!user) return;
-    } catch {
-      notify("Entre com Google primeiro.");
-      return;
-    }
-  }
-
-  const container = document.createElement("div");
-  const loading = document.createElement("p");
-  loading.textContent = "Carregando seus anúncios...";
-  container.append(loading);
-
-  openModal("Meus anúncios",container);
-
-  try {
-    const result = await apiRequest("/api/my-ads");
-    container.replaceChildren();
-
-    if (!result.ads?.length) {
-      const empty = document.createElement("p");
-      empty.textContent = "Você ainda não cadastrou anúncios.";
-      container.append(empty);
-      return;
-    }
-
-    for (const ad of result.ads) {
-      const box = document.createElement("div");
-      box.className = "my-ad";
-
-      const title = document.createElement("h3");
-      title.textContent = ad.title;
-
-      const status = document.createElement("p");
-      status.textContent =
-        "Situação: " +
-        (ad.status === "active"
-          ? "Ativo"
-          : "Aguardando pagamento");
-
-      const expires = document.createElement("p");
-      expires.textContent =
-        "Vencimento: " + (ad.expires_at || "Ainda não iniciado");
-
-      const payment = document.createElement("p");
-      payment.textContent =
-        "Pagamento: " + (ad.payment_status || "Pendente");
-
-      const verificar = document.createElement("button");
-verificar.className = "btn";
-verificar.textContent = "🔄 Verificar pagamento";
-
-verificar.onclick = async () => {
-  verificar.disabled = true;
-  verificar.textContent = "Consultando Asaas...";
-
-  try {
-    const result = await apiRequest(
-      "/api/payment-status?adId=" +
-      encodeURIComponent(ad.id)
-    );
-
-    if (result.status === "active") {
-      status.textContent = "Situação: ATIVO ✅";
-      payment.textContent = "Pagamento: Confirmado";
-      expires.textContent =
-        "Vencimento: " + result.expiresAt;
-
-      verificar.textContent = "✅ Anúncio liberado";
-      await loadAds();
-    } else {
-      verificar.textContent = "🔄 Verificar novamente";
-      notify("Pagamento ainda não confirmado.");
-    }
-  } catch (err) {
-    verificar.textContent = "🔄 Tentar novamente";
-    notify("Erro: " + err.message);
-  } finally {
-    verificar.disabled = false;
-  }
-};
-
-box.append(title,status,expires,payment,verificar);
-      container.append(box);
-    }
-  } catch (error) {
-    loading.textContent = error.message;
-  }
-}
-
-$("loginBtn").onclick = accountModal;
-$("topPublishBtn").onclick = publishModal;
-$("heroPublishBtn").onclick = publishModal;
-$("bannerPublishBtn").onclick = publishModal;
-$("myAdsBtn").onclick = myAdsModal;
-
-getRedirectResult(auth).catch(error => {
-  console.warn("Redirect Google:",error.code);
-});
-
-onAuthStateChanged(auth,user => {
-  currentUser = user;
-
-  $("loginBtn").textContent =
-    user
-      ? (user.displayName?.split(" ")[0] || "Minha conta")
-      : "Entrar";
-});
-</script>
-
 </body>
 </html>
