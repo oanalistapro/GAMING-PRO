@@ -1,0 +1,758 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0e">
+<title>Simulador de Campeonato PRO | Gaming Pro</title>
+<style>
+:root{
+ --bg:#0b0b0e;--panel:#18181f;--panel2:#24242d;
+ --line:#393943;--text:#f8f8fa;--muted:#a9a9b7;
+ --orange:#ff791b;--green:#75e3a0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:system-ui,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.wrap{width:min(1200px,calc(100% - 24px));margin:auto}
+header{padding:22px 0;background:#141419;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(25px,5vw,39px);margin:7px 0}
+h2{font-size:20px;margin:0 0 16px}
+h3{font-size:16px}
+.orange{color:var(--orange)}
+.muted{color:var(--muted);line-height:1.6}
+.panel{background:var(--panel);border:1px solid var(--line);
+ border-radius:19px;padding:20px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{
+ width:100%;min-width:0;padding:12px;background:var(--panel2);
+ border:1px solid var(--line);border-radius:11px;color:var(--text)
+}
+textarea{min-height:175px;resize:vertical;line-height:1.7}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{background:var(--orange);color:#111;border:0;
+ border-radius:11px;padding:12px 16px;font-weight:850}
+.btn.alt{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+.actions .btn{flex-grow:1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--panel2);padding:14px;border-radius:13px}
+.stat small{color:var(--muted);display:block}
+.stat strong{display:block;color:var(--orange);font-size:23px;margin-top:5px}
+.match{display:grid;grid-template-columns:minmax(0,1fr) 65px 22px 65px minmax(0,1fr);
+ align-items:center;gap:8px;padding:12px;border:1px solid var(--line);
+ border-radius:12px;background:var(--panel2);margin:9px 0}
+.match .team{font-weight:750;overflow-wrap:anywhere}
+.match .team:last-child{text-align:right}
+.match input{text-align:center;padding:9px 4px}
+.match.done{border-color:#387d56}
+.match .winner{color:var(--green)}
+.round{margin:19px 0;padding:15px;border:1px solid var(--line);border-radius:15px}
+.round h3{color:var(--orange);margin:0 0 12px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:590px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--orange);font-size:12px}
+tr:first-child td{color:var(--green)}
+.group-title{padding:11px 0;color:var(--orange);font-weight:900}
+.notice{background:#332113;border:1px solid #704019;
+ padding:12px;border-radius:11px;color:#ffce9a}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:750px){
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .panel{padding:14px}
+ .match{grid-template-columns:minmax(0,1fr) 48px 12px 48px minmax(0,1fr);gap:4px;padding:9px}
+ .match .team{font-size:11px}
+ .match input{padding:8px 2px;font-size:13px}
+}
+@media print{
+ body{background:white;color:black}
+ header,.config,.actions,footer{display:none!important}
+ .panel,.round,.match{background:white;color:black;border-color:#bbb}
+ input{color:black;background:white;border:0}
+ th,.round h3{color:#b45100}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="wrap">
+  <strong class="orange">🎮 GAMING PRO</strong>
+  <h1>🏆 SIMULADOR DE CAMPEONATO PRO</h1>
+  <p class="muted">Organize torneios, simule confrontos e acompanhe resultados.</p>
+ </div>
+</header>
+
+<main class="wrap">
+<section class="panel config">
+ <h2>⚙️ Configuração do campeonato</h2>
+ <div class="grid">
+  <div class="field">
+   <label>Nome do campeonato</label>
+   <input id="name" value="CAMPEONATO GAMING PRO" maxlength="100">
+  </div>
+  <div class="field">
+   <label>Modalidade</label>
+   <select id="format">
+    <option value="knockout">Mata-mata</option>
+    <option value="league">Todos contra todos</option>
+    <option value="groups">Fase de grupos</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Distribuição</label>
+   <select id="seed">
+    <option value="order">Ordem informada</option>
+    <option value="random">Aleatória</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Pontos por vitória</label>
+   <input id="winPoints" type="number" min="0" max="100" value="3">
+  </div>
+  <div class="field">
+   <label>Pontos por empate</label>
+   <input id="drawPoints" type="number" min="0" max="100" value="1">
+  </div>
+  <div class="field">
+   <label>Quantidade de grupos</label>
+   <input id="groupCount" type="number" min="2" max="32" value="4">
+  </div>
+ </div>
+
+ <div class="field" style="margin-top:16px">
+  <label>Equipes — uma por linha (2 a 200)</label>
+  <textarea id="teams" spellcheck="false">EQUIPE ALPHA
+EQUIPE BRAVO
+EQUIPE CHARLIE
+EQUIPE DELTA
+EQUIPE ECHO
+EQUIPE FOXTROT
+EQUIPE GAMMA
+EQUIPE OMEGA</textarea>
+ </div>
+
+ <div class="actions">
+  <button class="btn" id="generate">⚡ Gerar campeonato</button>
+  <button class="btn alt" id="shuffle">🔀 Embaralhar equipes</button>
+  <button class="btn alt" id="clear">🗑️ Novo campeonato</button>
+ </div>
+ <p id="error" class="notice" hidden></p>
+</section>
+
+<section class="panel" id="dashboard" hidden>
+ <h2>📊 Painel do campeonato</h2>
+ <h3 id="championshipName"></h3>
+ <div class="stats" id="stats"></div>
+ <p class="muted" id="progress"></p>
+ <div class="actions">
+  <button class="btn alt" id="save">💾 Salvar</button>
+  <button class="btn alt" id="export">📦 Backup JSON</button>
+  <button class="btn alt" id="csv">📊 Exportar CSV</button>
+  <button class="btn alt" id="print">🖨️ PDF / Imprimir</button>
+ </div>
+</section>
+
+<section class="panel" id="fixturesPanel" hidden>
+ <h2>🎮 Partidas e resultados</h2>
+ <p class="muted">
+  Digite os placares. No mata-mata, o vencedor avança automaticamente.
+  Em caso de empate no mata-mata, informe o vencedor do desempate.
+ </p>
+ <div id="fixtures"></div>
+</section>
+
+<section class="panel" id="standingsPanel" hidden>
+ <h2>🥇 Classificação</h2>
+ <div id="standings"></div>
+</section>
+
+<section class="panel config">
+ <h2>📂 Restaurar campeonato</h2>
+ <p class="muted">
+  O progresso é salvo automaticamente neste navegador.
+  Você também pode importar um backup JSON exportado pelo simulador.
+ </p>
+ <input type="file" id="import" accept=".json,application/json">
+</section>
+</main>
+
+<footer>🎮 GAMING PRO · Simulador de Campeonato PRO</footer>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const STORAGE="gaming_pro_campeonato_v1";
+let state=null;
+
+function error(message){
+ $("error").textContent=message;
+ $("error").hidden=!message;
+}
+
+function shuffleArray(arr){
+ const result=[...arr];
+ for(let i=result.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [result[i],result[j]]=[result[j],result[i]];
+ }
+ return result;
+}
+
+function getTeams(){
+ const teams=$("teams").value.split(/\r?\n/)
+  .map(x=>x.trim()).filter(Boolean);
+ if(teams.length<2||teams.length>200)
+  throw Error("Informe de 2 a 200 equipes.");
+ if(new Set(teams.map(x=>x.toLocaleLowerCase("pt-BR"))).size!==teams.length)
+  throw Error("Existem equipes com nomes repetidos.");
+ return teams;
+}
+
+function makeMatch(a,b,id,round,group=""){
+ return {id,a,b,sa:null,sb:null,winner:null,round,group};
+}
+
+function leagueMatches(teams,group=""){
+ const result=[];
+ const list=[...teams];
+ if(list.length%2)list.push(null);
+ const size=list.length;
+
+ for(let r=0;r<size-1;r++){
+  for(let i=0;i<size/2;i++){
+   const a=list[i],b=list[size-1-i];
+   if(a!==null&&b!==null){
+    result.push(makeMatch(
+     a,b,`m${result.length}`,r+1,group
+    ));
+   }
+  }
+  list.splice(1,0,list.pop());
+ }
+ return result;
+}
+
+function knockoutFirstRound(teams){
+ const size=2**Math.ceil(Math.log2(teams.length));
+ const byes=size-teams.length;
+ const matches=[];
+ const seeded=[...teams];
+
+ // Distribuição simples de folgas na primeira rodada.
+ for(let i=0;i<byes;i++)seeded.push(null);
+
+ for(let i=0;i<size;i+=2){
+  matches.push(makeMatch(
+   seeded[i],seeded[i+1],
+   "k0-"+(i/2),1
+  ));
+ }
+ return matches;
+}
+
+function createChampionship(){
+ try{
+  const teams=getTeams();
+  const format=$("format").value;
+  const selected=$("seed").value==="random"
+   ?shuffleArray(teams):teams;
+
+  const win=Number($("winPoints").value);
+  const draw=Number($("drawPoints").value);
+  const groupCount=Number($("groupCount").value);
+
+  if(!Number.isFinite(win)||!Number.isFinite(draw)||
+     win<0||draw<0||win>100||draw>100)
+   throw Error("Confira a pontuação configurada.");
+
+  const data={
+   version:1,
+   name:$("name").value.trim()||"CAMPEONATO",
+   format,teams:selected,
+   winPoints:win,drawPoints:draw,
+   groups:[],matches:[],rounds:[],
+   createdAt:new Date().toISOString()
+  };
+
+  if(format==="league"){
+   data.matches=leagueMatches(selected);
+  }else if(format==="groups"){
+   if(!Number.isInteger(groupCount)||groupCount<2||
+      groupCount>32||groupCount>selected.length)
+    throw Error("Quantidade de grupos inválida.");
+
+   data.groups=Array.from({length:groupCount},()=>[]);
+   selected.forEach((team,i)=>
+    data.groups[i%groupCount].push(team)
+   );
+
+   data.groups.forEach((group,i)=>{
+    data.matches.push(...leagueMatches(group,"Grupo "+(i+1))
+     .map(m=>({...m,id:"g"+i+"-"+m.id})));
+   });
+  }else{
+   data.rounds=[knockoutFirstRound(selected)];
+  }
+
+  state=data;
+  saveState();
+  error("");
+  render();
+ }catch(e){error(e.message)}
+}
+
+function saveState(){
+ if(!state)return;
+ try{localStorage.setItem(STORAGE,JSON.stringify(state))}
+ catch(e){console.warn("Armazenamento indisponível",e)}
+}
+
+function matchFinished(m){
+ if(m.a===null&&m.b===null)return true;
+ if(m.a===null||m.b===null)return true;
+ if(!Number.isInteger(m.sa)||!Number.isInteger(m.sb))return false;
+ if(m.sa<0||m.sb<0)return false;
+ if(state.format==="knockout"&&m.sa===m.sb)
+  return !!m.winner;
+ return true;
+}
+
+function matchWinner(m){
+ if(m.a===null)return m.b;
+ if(m.b===null)return m.a;
+ if(!matchFinished(m))return null;
+ if(m.sa>m.sb)return m.a;
+ if(m.sb>m.sa)return m.b;
+ return m.winner;
+}
+
+function rebuildKnockout(){
+ if(state.format!=="knockout")return;
+
+ const first=state.rounds[0];
+ const old=state.rounds;
+ const rounds=[first];
+ let previous=first;
+ let index=1;
+
+ while(previous.length>1){
+  const next=[];
+  for(let i=0;i<previous.length;i+=2){
+   const a=matchWinner(previous[i]);
+   const b=matchWinner(previous[i+1]);
+   const id="k"+index+"-"+(i/2);
+   const existing=old[index]?.find(m=>m.id===id);
+
+   if(existing&&existing.a===a&&existing.b===b){
+    next.push(existing);
+   }else{
+    next.push(makeMatch(a,b,id,index+1));
+   }
+  }
+  rounds.push(next);
+  previous=next;
+  index++;
+ }
+ state.rounds=rounds;
+}
+
+function updateScore(id,side,value){
+ const all=state.format==="knockout"
+  ?state.rounds.flat():state.matches;
+ const m=all.find(x=>x.id===id);
+ if(!m)return;
+
+ if(value===""||value===null){
+  m[side]=null;
+ }else{
+  const n=Number(value);
+  if(!Number.isInteger(n)||n<0||n>9999)return;
+  m[side]=n;
+ }
+
+ m.winner=null;
+ if(state.format==="knockout")rebuildKnockout();
+ saveState();
+ render();
+}
+
+function chooseTieWinner(id,winner){
+ const m=state.rounds.flat().find(x=>x.id===id);
+ if(!m||m.sa!==m.sb||
+    !Number.isInteger(m.sa)||!Number.isInteger(m.sb))
+  return;
+ if(winner!==m.a&&winner!==m.b)return;
+ m.winner=winner;
+ rebuildKnockout();
+ saveState();
+ render();
+}
+
+function createMatchElement(m){
+ const div=document.createElement("div");
+ div.className="match"+(matchFinished(m)?" done":"");
+
+ const a=document.createElement("span");
+ a.className="team";
+ a.textContent=m.a||"FOLGA / A DEFINIR";
+
+ const b=document.createElement("span");
+ b.className="team";
+ b.textContent=m.b||"FOLGA / A DEFINIR";
+
+ const sa=document.createElement("input");
+ const sb=document.createElement("input");
+
+ for(const [input,side] of [[sa,"sa"],[sb,"sb"]]){
+  input.type="number";
+  input.min="0";input.max="9999";
+  input.placeholder="-";
+  input.value=m[side]??"";
+  input.disabled=!m.a||!m.b;
+  input.setAttribute("aria-label","Placar de "+(side==="sa"?m.a:m.b));
+  input.addEventListener("change",()=>{
+   updateScore(m.id,side,input.value);
+  });
+ }
+
+ const dash=document.createElement("span");
+ dash.textContent="×";
+ dash.style.textAlign="center";
+
+ const winner=matchWinner(m);
+ if(winner===m.a)a.classList.add("winner");
+ if(winner===m.b)b.classList.add("winner");
+
+ div.append(a,sa,dash,sb,b);
+
+ if(state.format==="knockout"&&m.a&&m.b&&
+    Number.isInteger(m.sa)&&Number.isInteger(m.sb)&&
+    m.sa===m.sb){
+  const tie=document.createElement("div");
+  tie.className="actions";
+  tie.style.gridColumn="1/-1";
+
+  const label=document.createElement("span");
+  label.className="muted";
+  label.textContent="Desempate: ";
+  tie.append(label);
+
+  for(const team of [m.a,m.b]){
+   const button=document.createElement("button");
+   button.className="btn alt";
+   button.textContent=team;
+   if(m.winner===team)button.style.borderColor="var(--green)";
+   button.onclick=()=>chooseTieWinner(m.id,team);
+   tie.append(button);
+  }
+  div.append(tie);
+ }
+ return div;
+}
+
+function renderMatches(){
+ const target=$("fixtures");
+ target.replaceChildren();
+
+ if(state.format==="knockout"){
+  state.rounds.forEach((matches,index)=>{
+   const section=document.createElement("div");
+   section.className="round";
+
+   const title=document.createElement("h3");
+   title.textContent=matches.length===1
+    ?"🏆 FINAL":"RODADA "+(index+1);
+   section.append(title);
+
+   matches.forEach(m=>section.append(createMatchElement(m)));
+   target.append(section);
+  });
+ }else{
+  const groups=state.format==="groups"
+   ?state.groups.map((_,i)=>"Grupo "+(i+1))
+   :[""];
+
+  groups.forEach(group=>{
+   const section=document.createElement("div");
+   section.className="round";
+   const title=document.createElement("h3");
+   title.textContent=group||"TODOS CONTRA TODOS";
+   section.append(title);
+
+   const matches=state.matches.filter(m=>m.group===group);
+   const rounds=[...new Set(matches.map(m=>m.round))];
+
+   rounds.forEach(round=>{
+    const subtitle=document.createElement("p");
+    subtitle.className="muted";
+    subtitle.textContent="Rodada "+round;
+    section.append(subtitle);
+
+    matches.filter(m=>m.round===round)
+     .forEach(m=>section.append(createMatchElement(m)));
+   });
+   target.append(section);
+  });
+ }
+}
+
+function getStandings(teams,matches){
+ const rows=new Map(teams.map(name=>[name,{
+  name,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0
+ }]));
+
+ matches.forEach(m=>{
+  if(!matchFinished(m)||m.a===null||m.b===null)return;
+  const a=rows.get(m.a),b=rows.get(m.b);
+  if(!a||!b)return;
+
+  a.p++;b.p++;
+  a.gf+=m.sa;a.ga+=m.sb;
+  b.gf+=m.sb;b.ga+=m.sa;
+
+  if(m.sa>m.sb){
+   a.w++;b.l++;a.pts+=state.winPoints;
+  }else if(m.sb>m.sa){
+   b.w++;a.l++;b.pts+=state.winPoints;
+  }else{
+   a.d++;b.d++;
+   a.pts+=state.drawPoints;
+   b.pts+=state.drawPoints;
+  }
+ });
+
+ return [...rows.values()].sort((a,b)=>
+  b.pts-a.pts||
+  (b.gf-b.ga)-(a.gf-a.ga)||
+  b.gf-a.gf||
+  a.name.localeCompare(b.name,"pt-BR")
+ );
+}
+
+function standingsTable(rows){
+ const wrapper=document.createElement("div");
+ wrapper.className="table-wrap";
+ const table=document.createElement("table");
+
+ const thead=document.createElement("thead");
+ const header=document.createElement("tr");
+ ["#","Equipe","J","V","E","D","GP","GC","SG","PTS"]
+  .forEach(value=>{
+   const th=document.createElement("th");
+   th.textContent=value;
+   header.append(th);
+  });
+ thead.append(header);
+
+ const tbody=document.createElement("tbody");
+ rows.forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  [
+   i+1,r.name,r.p,r.w,r.d,r.l,
+   r.gf,r.ga,r.gf-r.ga,r.pts
+  ].forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=value;
+   tr.append(td);
+  });
+  tbody.append(tr);
+ });
+
+ table.append(thead,tbody);
+ wrapper.append(table);
+ return wrapper;
+}
+
+function renderStandings(){
+ const target=$("standings");
+ target.replaceChildren();
+
+ if(state.format==="knockout"){
+  const final=state.rounds.at(-1)?.[0];
+  const winner=final?matchWinner(final):null;
+  const p=document.createElement("p");
+  p.className=winner?"orange":"muted";
+  p.textContent=winner
+   ?"🏆 CAMPEÃO: "+winner
+   :"O campeão aparecerá após a conclusão da final.";
+  target.append(p);
+  return;
+ }
+
+ if(state.format==="league"){
+  target.append(standingsTable(
+   getStandings(state.teams,state.matches)
+  ));
+ }else{
+  state.groups.forEach((group,i)=>{
+   const title=document.createElement("h3");
+   title.className="group-title";
+   title.textContent="Grupo "+(i+1);
+   target.append(title);
+   target.append(standingsTable(
+    getStandings(group,state.matches.filter(
+     m=>m.group==="Grupo "+(i+1)
+    ))
+   ));
+  });
+ }
+}
+
+function stat(label,value){
+ const div=document.createElement("div");
+ div.className="stat";
+ const small=document.createElement("small");
+ small.textContent=label;
+ const strong=document.createElement("strong");
+ strong.textContent=value;
+ div.append(small,strong);
+ return div;
+}
+
+function render(){
+ if(!state)return;
+ $("dashboard").hidden=false;
+ $("fixturesPanel").hidden=false;
+ $("standingsPanel").hidden=false;
+ $("championshipName").textContent=state.name;
+
+ if(state.format==="knockout")rebuildKnockout();
+
+ const all=state.format==="knockout"
+  ?state.rounds.flat():state.matches;
+ const done=all.filter(matchFinished).length;
+ const percent=all.length?Math.round(done/all.length*100):0;
+
+ $("stats").replaceChildren(
+  stat("Equipes",state.teams.length),
+  stat("Partidas",all.length),
+  stat("Concluídas",done),
+  stat("Progresso",percent+"%")
+ );
+ $("progress").textContent=
+  `${done} de ${all.length} confrontos concluídos.`;
+
+ renderMatches();
+ renderStandings();
+}
+
+function download(name,content,type){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+$("generate").onclick=()=>{
+ if(state&&!confirm("Substituir o campeonato atual?"))return;
+ createChampionship();
+};
+
+$("shuffle").onclick=()=>{
+ try{
+  $("teams").value=shuffleArray(getTeams()).join("\n");
+  error("");
+ }catch(e){error(e.message)}
+};
+
+$("clear").onclick=()=>{
+ if(!confirm("Apagar o campeonato salvo neste navegador?"))return;
+ state=null;
+ localStorage.removeItem(STORAGE);
+ $("dashboard").hidden=true;
+ $("fixturesPanel").hidden=true;
+ $("standingsPanel").hidden=true;
+ error("");
+};
+
+$("save").onclick=()=>{
+ saveState();
+ alert("Campeonato salvo neste navegador.");
+};
+
+$("export").onclick=()=>{
+ if(!state)return;
+ download("gaming-pro-campeonato.json",
+  JSON.stringify(state,null,2),"application/json");
+};
+
+$("csv").onclick=()=>{
+ if(!state)return;
+ const matches=state.format==="knockout"
+  ?state.rounds.flat():state.matches;
+ const rows=[
+  ["Rodada","Grupo","Equipe A","Placar A","Placar B","Equipe B","Vencedor"],
+  ...matches.map(m=>[
+   m.round,m.group,m.a??"",
+   m.sa??"",m.sb??"",m.b??"",matchWinner(m)??""
+  ])
+ ];
+ const csv="\uFEFF"+rows.map(row=>
+  row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(";")
+ ).join("\r\n");
+ download("gaming-pro-resultados.csv",csv,"text/csv;charset=utf-8");
+};
+
+$("print").onclick=()=>window.print();
+
+$("import").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  if(file.size>2_000_000)throw Error("Arquivo muito grande.");
+  const data=JSON.parse(await file.text());
+  if(data.version!==1||
+     !Array.isArray(data.teams)||
+     data.teams.length<2||data.teams.length>200||
+     !["knockout","league","groups"].includes(data.format)||
+     !Array.isArray(data.matches)||
+     !Array.isArray(data.rounds)||
+     !Array.isArray(data.groups)||
+     !data.teams.every(t=>typeof t==="string"&&t.length<=200)||
+     !Number.isFinite(data.winPoints)||
+     !Number.isFinite(data.drawPoints))
+   throw Error("Backup inválido.");
+
+  const matches=[...data.matches,...data.rounds.flat()];
+  if(matches.length>25000||!matches.every(m=>
+   m&&typeof m.id==="string"&&
+   (m.a===null||data.teams.includes(m.a))&&
+   (m.b===null||data.teams.includes(m.b))&&
+   (m.sa===null||(Number.isInteger(m.sa)&&m.sa>=0&&m.sa<=9999))&&
+   (m.sb===null||(Number.isInteger(m.sb)&&m.sb>=0&&m.sb<=9999))
+  ))throw Error("Dados de partidas inválidos.");
+
+  state=data;
+  saveState();
+  render();
+  error("");
+ }catch(err){error("Não foi possível importar: "+err.message)}
+ e.target.value="";
+};
+
+try{
+ const saved=JSON.parse(localStorage.getItem(STORAGE)||"null");
+ if(saved&&saved.version===1&&Array.isArray(saved.teams)&&
+    Array.isArray(saved.matches)&&Array.isArray(saved.rounds)&&
+    Array.isArray(saved.groups)&&
+    ["knockout","league","groups"].includes(saved.format)){
+  state=saved;
+  render();
+ }
+}catch(e){console.warn("Erro ao restaurar campeonato",e)}
+</script>
+</body>
+</html>
