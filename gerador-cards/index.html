@@ -1,0 +1,598 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0e">
+<title>Gerador de Cards PRO | Gaming Pro</title>
+<style>
+:root{--bg:#0b0b0e;--panel:#18181f;--field:#25252e;--line:#383843;--text:#fff;--muted:#aaaab7;--orange:#ff791b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif}
+header{padding:20px;background:#15151b;border-bottom:1px solid var(--line)}
+header h1{margin:7px 0;font-size:clamp(24px,4vw,38px)}
+.wrap{max-width:1450px;margin:auto;padding:14px}
+.workspace{display:grid;grid-template-columns:minmax(290px,350px) minmax(0,1fr);gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:15px}
+h2{font-size:17px;margin:0 0 15px}
+p{color:var(--muted);line-height:1.5}
+label{display:block;font-size:12px;font-weight:800;margin:12px 0 6px}
+input,select,textarea{width:100%;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:11px;color:white;font:inherit}
+input[type=color]{height:45px;padding:5px;cursor:pointer}
+input[type=range]{padding:0}
+input[type=file]{font-size:12px}
+button{background:var(--orange);border:0;color:#111;padding:11px 13px;border-radius:10px;font-weight:850;cursor:pointer}
+button.secondary{background:var(--field);color:white;border:1px solid var(--line)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.actions button{flex:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stage{position:sticky;top:10px;min-width:0}
+.canvas-wrap{background:#09090c;border:1px solid var(--line);border-radius:15px;padding:12px;display:flex;justify-content:center;align-items:center;overflow:hidden}
+canvas{display:block;max-width:100%;height:auto;touch-action:none;cursor:grab;box-shadow:0 12px 45px #0009}
+canvas:active{cursor:grabbing}
+.help{font-size:12px}
+#status{font-size:12px;color:#ffc08a}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.stage{position:static;grid-row:1}.wrap{padding:10px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <strong style="color:var(--orange)">🎮 GAMING PRO</strong>
+  <h1>🎨 GERADOR DE CARDS PRO</h1>
+  <p>Crie artes para jogadores, equipes, campeonatos e redes sociais.</p>
+ </div>
+</header>
+<main class="wrap workspace">
+ <aside>
+  <section class="panel">
+   <h2>🎨 Modelos e tamanho</h2>
+   <label>Modelo</label>
+   <select id="template">
+    <option value="player">Card de jogador</option>
+    <option value="team">Card de equipe</option>
+    <option value="tournament">Campeonato</option>
+    <option value="mvp">MVP da partida</option>
+    <option value="champion">Campeão</option>
+    <option value="versus">Confronto VS</option>
+   </select>
+   <label>Formato</label>
+   <select id="format">
+    <option value="1080x1080">Quadrado — 1080 × 1080</option>
+    <option value="1080x1920">Story — 1080 × 1920</option>
+    <option value="1920x1080">Banner — 1920 × 1080</option>
+    <option value="1080x1350">Instagram — 1080 × 1350</option>
+    <option value="1280x720">Thumbnail — 1280 × 720</option>
+   </select>
+   <div class="two">
+    <div><label>Cor principal</label><input id="primary" type="color" value="#ff791b"></div>
+    <div><label>Cor de fundo</label><input id="background" type="color" value="#101016"></div>
+   </div>
+   <label>Estilo de fundo</label>
+   <select id="backgroundStyle">
+    <option value="neon">Neon</option>
+    <option value="gradient">Gradiente</option>
+    <option value="solid">Sólido</option>
+    <option value="diagonal">Diagonal gamer</option>
+   </select>
+  </section>
+
+  <section class="panel">
+   <h2>✍️ Personalizar textos</h2>
+   <label>Título principal</label>
+   <input id="title" maxlength="90" value="PLAYER PRO">
+   <label>Subtítulo</label>
+   <input id="subtitle" maxlength="100" value="GAMING PRO ESPORTS">
+   <label>Informação / destaque</label>
+   <input id="detail" maxlength="100" value="KILLS 25  •  MVP">
+   <label>Rodapé</label>
+   <input id="footer" maxlength="100" value="@GAMINGPRO">
+   <div class="two">
+    <div><label>Cor do texto</label><input id="textColor" type="color" value="#ffffff"></div>
+    <div><label>Tamanho do título</label><input id="fontSize" type="range" min="40" max="140" value="84"></div>
+   </div>
+  </section>
+
+  <section class="panel">
+   <h2>📸 Fotos e logotipo</h2>
+   <label>Foto do jogador ou imagem principal</label>
+   <input id="photo" type="file" accept="image/*">
+   <label>Logo da equipe ou campeonato</label>
+   <input id="logo" type="file" accept="image/*">
+   <label>Imagem de fundo personalizada</label>
+   <input id="backgroundImage" type="file" accept="image/*">
+   <div class="actions">
+    <button class="secondary" id="removePhoto">Tirar foto</button>
+    <button class="secondary" id="removeLogo">Tirar logo</button>
+    <button class="secondary" id="removeBg">Tirar fundo</button>
+   </div>
+   <p class="help">Arraste a foto, o logo ou os textos diretamente na prévia para reposicionar. Selecione o elemento para ajustar o tamanho.</p>
+   <label>Elemento selecionado</label>
+   <select id="element">
+    <option value="photo">Foto</option>
+    <option value="logo">Logo</option>
+    <option value="title">Título</option>
+    <option value="subtitle">Subtítulo</option>
+    <option value="detail">Destaque</option>
+    <option value="footer">Rodapé</option>
+   </select>
+   <label>Escala do elemento</label>
+   <input id="scale" type="range" min="20" max="250" value="100">
+   <div class="actions">
+    <button class="secondary" id="center">Centralizar elemento</button>
+    <button class="secondary" id="resetPositions">Restaurar posições</button>
+   </div>
+  </section>
+
+  <section class="panel">
+   <h2>💾 Projeto e exportação</h2>
+   <div class="actions">
+    <button id="png">Baixar PNG</button>
+    <button id="jpg">Baixar JPG</button>
+    <button class="secondary" id="save">Salvar projeto</button>
+    <button class="secondary" id="backup">Exportar JSON</button>
+   </div>
+   <label>Importar projeto JSON</label>
+   <input id="import" type="file" accept=".json,application/json">
+   <div class="actions">
+    <button class="secondary" id="restore">Restaurar salvo</button>
+    <button class="secondary" id="reset">Novo card</button>
+   </div>
+   <p id="status" role="status"></p>
+  </section>
+ </aside>
+
+ <section class="stage">
+  <div class="panel">
+   <h2>🖼️ Prévia em tempo real</h2>
+   <div class="canvas-wrap">
+    <canvas id="canvas" width="1080" height="1080" aria-label="Prévia do card"></canvas>
+   </div>
+   <p class="help">A arte é exportada na resolução selecionada. Funciona no celular e computador.</p>
+  </div>
+ </section>
+</main>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const canvas=$("canvas"),ctx=canvas.getContext("2d");
+const STORAGE="gaming_pro_cards_v1";
+const images={photo:null,logo:null,backgroundImage:null};
+const positions={};
+let selected="photo",dragging=false;
+const keys=["photo","logo","title","subtitle","detail","footer"];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+const templates={
+ player:["PLAYER PRO","GAMING PRO ESPORTS","KILLS 25  •  MVP","@GAMINGPRO"],
+ team:["EQUIPE CAMPEÃ","TEMPORADA 2026","TOP 1  •  VITÓRIA","GAMING PRO"],
+ tournament:["GRANDE CAMPEONATO","INSCRIÇÕES ABERTAS","PREMIAÇÃO • R$ 1.000","GAMING PRO"],
+ mvp:["MVP DA PARTIDA","MELHOR JOGADOR","25 KILLS  •  DESTAQUE","GAMING PRO"],
+ champion:["CAMPEÃO!","PRIMEIRO LUGAR","🏆 VITÓRIA ABSOLUTA","GAMING PRO"],
+ versus:["TIME A  VS  TIME B","GRANDE CONFRONTO","HOJE  •  21:00","GAMING PRO"]
+};
+
+function defaults(){
+ const w=canvas.width,h=canvas.height;
+ Object.assign(positions,{
+  photo:{x:w*.50,y:h*.48,s:1},
+  logo:{x:w*.14,y:h*.13,s:1},
+  title:{x:w*.5,y:h*.77,s:1},
+  subtitle:{x:w*.5,y:h*.86,s:1},
+  detail:{x:w*.5,y:h*.92,s:1},
+  footer:{x:w*.5,y:h*.975,s:1}
+ });
+}
+
+function message(s){$("status").textContent=s}
+
+function imageObject(src){
+ return new Promise((resolve,reject)=>{
+  const img=new Image();
+  img.onload=()=>resolve(img);
+  img.onerror=()=>reject(Error("Imagem inválida."));
+  img.src=src;
+ });
+}
+
+async function loadImageFile(file,key){
+ if(!file)return;
+ if(file.size>12*1024*1024){
+  message("Imagem muito grande. Use até 12 MB.");return;
+ }
+ try{
+  const src=await new Promise((resolve,reject)=>{
+   const reader=new FileReader();
+   reader.onload=()=>resolve(reader.result);
+   reader.onerror=()=>reject(Error("Erro de leitura."));
+   reader.readAsDataURL(file);
+  });
+  const img=await imageObject(src);
+  images[key]={src,img};
+  draw();message("Imagem carregada.");
+ }catch(e){message(e.message)}
+}
+
+function drawCover(img,x,y,w,h){
+ const ratio=Math.max(w/img.width,h/img.height);
+ const sw=w/ratio,sh=h/ratio;
+ ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,x,y,w,h);
+}
+
+function drawBackground(){
+ const w=canvas.width,h=canvas.height;
+ ctx.fillStyle=$("background").value;
+ ctx.fillRect(0,0,w,h);
+
+ if($("backgroundStyle").value!=="solid"){
+  const g=ctx.createLinearGradient(0,0,w,h);
+  g.addColorStop(0,$("background").value);
+  g.addColorStop(.65,"#141420");
+  g.addColorStop(1,$("primary").value);
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ }
+
+ if(images.backgroundImage){
+  ctx.save();
+  ctx.globalAlpha=.55;
+  drawCover(images.backgroundImage.img,0,0,w,h);
+  ctx.restore();
+ }
+
+ if($("backgroundStyle").value==="neon"||
+    $("backgroundStyle").value==="diagonal"){
+  ctx.save();
+  ctx.strokeStyle=$("primary").value;
+  ctx.globalAlpha=.30;
+  ctx.lineWidth=Math.max(3,w*.004);
+  for(let i=-h;i<w+h;i+=Math.max(65,w*.11)){
+   ctx.beginPath();
+   ctx.moveTo(i,0);
+   ctx.lineTo(i+h,h);
+   ctx.stroke();
+  }
+  ctx.restore();
+ }
+
+ const shade=ctx.createLinearGradient(0,0,0,h);
+ shade.addColorStop(0,"#00000020");
+ shade.addColorStop(.5,"#00000000");
+ shade.addColorStop(1,"#000000e8");
+ ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
+}
+
+function drawPhoto(){
+ const entry=images.photo;
+ if(!entry)return;
+ const p=positions.photo,w=canvas.width,h=canvas.height;
+ const boxW=w*.76*p.s,boxH=h*.62*p.s;
+ ctx.save();
+ ctx.shadowColor=$("primary").value;
+ ctx.shadowBlur=w*.035;
+ ctx.beginPath();
+ ctx.roundRect(p.x-boxW/2,p.y-boxH/2,boxW,boxH,Math.min(35,w*.03));
+ ctx.clip();
+ drawCover(entry.img,p.x-boxW/2,p.y-boxH/2,boxW,boxH);
+ ctx.restore();
+}
+
+function drawLogo(){
+ const entry=images.logo;
+ if(!entry)return;
+ const p=positions.logo;
+ const size=canvas.width*.17*p.s;
+ ctx.save();
+ ctx.shadowColor="#000";ctx.shadowBlur=15;
+ const ratio=Math.min(size/entry.img.width,size/entry.img.height);
+ const w=entry.img.width*ratio,h=entry.img.height*ratio;
+ ctx.drawImage(entry.img,p.x-w/2,p.y-h/2,w,h);
+ ctx.restore();
+}
+
+function textMetrics(key){
+ const w=canvas.width;
+ const sizes={
+  title:Number($("fontSize").value),
+  subtitle:Math.max(24,w*.038),
+  detail:Math.max(23,w*.036),
+  footer:Math.max(18,w*.025)
+ };
+ return sizes[key]*w/1080*positions[key].s;
+}
+
+function wrapText(text,maxWidth){
+ const words=text.split(/\s+/),lines=[];
+ let current="";
+ for(const word of words){
+  const test=current?current+" "+word:word;
+  if(ctx.measureText(test).width>maxWidth&&current){
+   lines.push(current);current=word;
+  }else current=test;
+ }
+ if(current)lines.push(current);
+ return lines.slice(0,4);
+}
+
+function drawText(key){
+ const p=positions[key],text=$(key).value.trim();
+ if(!text)return;
+ const size=textMetrics(key);
+ ctx.save();
+ ctx.font=`900 ${size}px system-ui,Arial`;
+ ctx.textAlign="center";
+ ctx.textBaseline="middle";
+ ctx.lineJoin="round";
+ const lines=wrapText(text,canvas.width*.90);
+ const lineHeight=size*1.12;
+ const start=p.y-(lines.length-1)*lineHeight/2;
+ lines.forEach((line,i)=>{
+  ctx.lineWidth=Math.max(3,size*.12);
+  ctx.strokeStyle="#000b";
+  ctx.strokeText(line,p.x,start+i*lineHeight);
+  ctx.fillStyle=key==="detail"?$("primary").value:$("textColor").value;
+  ctx.fillText(line,p.x,start+i*lineHeight);
+ });
+ ctx.restore();
+}
+
+function draw(){
+ const w=canvas.width,h=canvas.height;
+ ctx.clearRect(0,0,w,h);
+ drawBackground();
+
+ ctx.save();
+ ctx.strokeStyle=$("primary").value;
+ ctx.lineWidth=Math.max(5,w*.007);
+ ctx.strokeRect(w*.025,h*.025,w*.95,h*.95);
+ ctx.restore();
+
+ drawPhoto();
+ drawLogo();
+ ["title","subtitle","detail","footer"].forEach(drawText);
+
+ ctx.save();
+ ctx.fillStyle=$("primary").value;
+ ctx.fillRect(w*.07,h*.70,w*.15,Math.max(5,h*.006));
+ ctx.restore();
+}
+
+function elementBounds(key){
+ const p=positions[key],w=canvas.width,h=canvas.height;
+ if(key==="photo")return {x:p.x,y:p.y,w:w*.76*p.s,h:h*.62*p.s};
+ if(key==="logo")return {x:p.x,y:p.y,w:w*.17*p.s,h:w*.17*p.s};
+ const size=textMetrics(key);
+ return {x:p.x,y:p.y,w:w*.92,h:size*3};
+}
+
+function pointerPosition(e){
+ const r=canvas.getBoundingClientRect();
+ return {
+  x:(e.clientX-r.left)*canvas.width/r.width,
+  y:(e.clientY-r.top)*canvas.height/r.height
+ };
+}
+
+function pick(x,y){
+ for(const key of [...keys].reverse()){
+  if((key==="photo"&&!images.photo)||
+     (key==="logo"&&!images.logo)||
+     (!["photo","logo"].includes(key)&&!$(key).value.trim()))continue;
+  const b=elementBounds(key);
+  if(Math.abs(x-b.x)<b.w/2&&Math.abs(y-b.y)<b.h/2)return key;
+ }
+ return null;
+}
+
+let offsetX=0,offsetY=0;
+canvas.addEventListener("pointerdown",e=>{
+ const point=pointerPosition(e);
+ const key=pick(point.x,point.y);
+ if(!key)return;
+ selected=key;
+ $("element").value=key;
+ $("scale").value=Math.round(positions[key].s*100);
+ offsetX=point.x-positions[key].x;
+ offsetY=point.y-positions[key].y;
+ dragging=true;
+ canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener("pointermove",e=>{
+ if(!dragging)return;
+ const p=pointerPosition(e);
+ positions[selected].x=clamp(p.x-offsetX,0,canvas.width);
+ positions[selected].y=clamp(p.y-offsetY,0,canvas.height);
+ draw();
+});
+canvas.addEventListener("pointerup",()=>dragging=false);
+canvas.addEventListener("pointercancel",()=>dragging=false);
+
+$("element").onchange=()=>{
+ selected=$("element").value;
+ $("scale").value=Math.round(positions[selected].s*100);
+};
+$("scale").oninput=()=>{
+ positions[selected].s=Number($("scale").value)/100;
+ draw();
+};
+$("center").onclick=()=>{
+ positions[selected].x=canvas.width/2;
+ draw();
+};
+$("resetPositions").onclick=()=>{
+ defaults();
+ $("scale").value=100;
+ draw();
+};
+
+$("template").onchange=()=>{
+ const t=templates[$("template").value];
+ ["title","subtitle","detail","footer"].forEach((key,i)=>$(key).value=t[i]);
+ draw();
+};
+
+$("format").onchange=()=>{
+ const [w,h]=$("format").value.split("x").map(Number);
+ const oldW=canvas.width,oldH=canvas.height;
+ for(const key of keys){
+  positions[key].x*=w/oldW;
+  positions[key].y*=h/oldH;
+ }
+ canvas.width=w;canvas.height=h;
+ draw();
+};
+
+["primary","background","backgroundStyle","title","subtitle","detail","footer","textColor","fontSize"]
+ .forEach(id=>$(id).addEventListener("input",draw));
+
+for(const key of ["photo","logo","backgroundImage"]){
+ $(key).onchange=async e=>{
+  await loadImageFile(e.target.files[0],key);
+  e.target.value="";
+ };
+}
+
+$("removePhoto").onclick=()=>{images.photo=null;draw()};
+$("removeLogo").onclick=()=>{images.logo=null;draw()};
+$("removeBg").onclick=()=>{images.backgroundImage=null;draw()};
+
+function download(name,blob){
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function exportImage(type){
+ draw();
+ canvas.toBlob(blob=>{
+  if(!blob){message("Falha ao exportar imagem.");return}
+  download("gaming-pro-card."+(type==="image/png"?"png":"jpg"),blob);
+ },type,.95);
+}
+
+$("png").onclick=()=>exportImage("image/png");
+$("jpg").onclick=()=>exportImage("image/jpeg");
+
+function project(){
+ const controls=[
+  "template","format","primary","background","backgroundStyle",
+  "title","subtitle","detail","footer","textColor","fontSize"
+ ];
+ return {
+  version:1,
+  controls:Object.fromEntries(controls.map(id=>[id,$(id).value])),
+  positions:structuredClone(positions),
+  images:Object.fromEntries(Object.entries(images).map(([key,value])=>[
+   key,value?.src||null
+  ]))
+ };
+}
+
+async function applyProject(data){
+ if(!data||data.version!==1||!data.controls||
+    !data.positions||!data.images)throw Error("Projeto inválido.");
+
+ const allowedFormats=["1080x1080","1080x1920","1920x1080","1080x1350","1280x720"];
+ if(!allowedFormats.includes(data.controls.format))
+  throw Error("Formato inválido.");
+
+ const loaded={};
+ for(const key of ["photo","logo","backgroundImage"]){
+  const src=data.images[key];
+  if(src!==null&&src!==undefined){
+   if(typeof src!=="string"||!/^data:image\/(png|jpeg|webp|gif);base64,/i.test(src)||
+      src.length>18000000)throw Error("Imagem inválida.");
+   loaded[key]={src,img:await imageObject(src)};
+  }else loaded[key]=null;
+ }
+
+ for(const id of Object.keys(data.controls)){
+  const el=$(id);
+  if(!el)continue;
+  const value=String(data.controls[id]);
+  if(el.tagName==="SELECT"&&![...el.options].some(o=>o.value===value))
+   continue;
+  if(el.type==="color"&&!/^#[0-9a-f]{6}$/i.test(value))continue;
+  el.value=value.slice(0,150);
+ }
+
+ const [w,h]=$("format").value.split("x").map(Number);
+ canvas.width=w;canvas.height=h;
+ defaults();
+
+ for(const key of keys){
+  const p=data.positions[key];
+  if(p&&[p.x,p.y,p.s].every(Number.isFinite)){
+   positions[key]={
+    x:clamp(p.x,0,w),
+    y:clamp(p.y,0,h),
+    s:clamp(p.s,.2,2.5)
+   };
+  }
+ }
+
+ Object.assign(images,loaded);
+ $("scale").value=Math.round(positions[selected].s*100);
+ draw();
+}
+
+$("save").onclick=()=>{
+ try{
+  localStorage.setItem(STORAGE,JSON.stringify(project()));
+  message("Projeto salvo neste navegador.");
+ }catch{
+  message("Armazenamento cheio. Exporte o JSON para guardar o projeto.");
+ }
+};
+
+$("restore").onclick=async()=>{
+ try{
+  const raw=localStorage.getItem(STORAGE);
+  if(!raw)throw Error("Nenhum projeto salvo.");
+  await applyProject(JSON.parse(raw));
+  message("Projeto restaurado.");
+ }catch(e){message(e.message)}
+};
+
+$("backup").onclick=()=>{
+ download("gaming-pro-card-projeto.json",
+  new Blob([JSON.stringify(project())],{type:"application/json"}));
+};
+
+$("import").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  if(file.size>30000000)throw Error("Arquivo muito grande.");
+  await applyProject(JSON.parse(await file.text()));
+  message("Projeto importado.");
+ }catch(err){message(err.message)}
+ e.target.value="";
+};
+
+$("reset").onclick=()=>{
+ if(!confirm("Criar novo card e descartar alterações não salvas?"))return;
+ for(const key of Object.keys(images))images[key]=null;
+ $("template").value="player";
+ $("format").value="1080x1080";
+ canvas.width=1080;canvas.height=1080;
+ $("primary").value="#ff791b";
+ $("background").value="#101016";
+ $("backgroundStyle").value="neon";
+ $("textColor").value="#ffffff";
+ $("fontSize").value=84;
+ ["title","subtitle","detail","footer"].forEach((key,i)=>
+  $(key).value=templates.player[i]
+ );
+ defaults();draw();message("Novo card criado.");
+};
+
+defaults();
+draw();
+</script>
+</body>
+</html>
