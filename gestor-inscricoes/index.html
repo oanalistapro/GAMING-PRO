@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Gestor de Inscrições PRO | Gaming Pro</title>
+<style>
+:root{
+ --bg:#0b0b0f;--panel:#17171f;--field:#24242e;
+ --line:#393943;--orange:#ff791b;--text:#f8f8fa;
+ --muted:#aaaab8;--green:#6bdf9c;--red:#ff7777
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,Arial}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1350px;margin:auto;padding:14px}
+header{background:#141419;border-bottom:1px solid var(--line);padding:22px 0}
+h1{font-size:clamp(26px,5vw,40px);margin:8px 0}
+h2{font-size:19px;margin:0 0 15px}
+h3{font-size:17px;margin:0 0 9px}
+.muted{color:var(--muted);line-height:1.5}
+.orange{color:var(--orange)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:18px;margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{background:var(--field);color:white;border:1px solid var(--line);border-radius:10px;padding:11px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:85px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{background:var(--orange);color:#111;border:0;border-radius:10px;padding:11px 14px;font-weight:850}
+.btn.alt{background:var(--field);color:white;border:1px solid var(--line)}
+.btn.red{background:#662929;color:white}
+.btn.small{font-size:11px;padding:7px 9px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--field);padding:14px;border-radius:12px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{display:block;color:var(--orange);font-size:24px;margin-top:5px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:15px;min-width:0}
+.card-title{font-size:19px;font-weight:900;overflow-wrap:anywhere}
+.pill{display:inline-block;border-radius:20px;background:#43301d;color:#ffb878;padding:5px 9px;font-size:11px;font-weight:800}
+.info{color:var(--muted);font-size:12px;margin:7px 0;overflow-wrap:anywhere}
+.progress{height:8px;background:#40404a;border-radius:10px;overflow:hidden;margin:10px 0}
+.progress span{height:100%;background:var(--orange);display:block}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:850px}
+td,th{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{color:var(--orange)}
+td{overflow-wrap:anywhere}
+.notice{background:#382516;border:1px solid #885321;color:#ffd4aa;padding:12px;border-radius:10px}
+.hidden{display:none!important}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.empty{padding:18px;color:var(--muted);text-align:center}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ .grid,.cards{grid-template-columns:1fr}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .panel{padding:13px}
+}
+@media print{
+ body{background:white;color:black}
+ header,.editor,.actions,footer,.btn{display:none!important}
+ .panel,.card,.stat{background:white;color:black;border-color:#bbb}
+ .muted,.info{color:#444}
+ .stat strong{color:#111}
+ table{min-width:0}
+ td,th{font-size:9px;padding:5px;color:black}
+ .tablewrap{overflow:visible}
+ @page{size:A4 landscape;margin:10mm}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<strong class="orange">🎮 GAMING PRO</strong>
+<h1>📝 GESTOR DE INSCRIÇÕES PRO</h1>
+<p class="muted">Torneios, equipes, jogadores, aprovação, lista de espera e check-in.</p>
+</div>
+</header>
+
+<main class="wrap">
+
+<section class="panel editor">
+<h2>🏆 Criar campeonato</h2>
+<div class="grid">
+<div class="field">
+<label>Nome do campeonato</label>
+<input id="tName" maxlength="100" placeholder="CAMPEONATO GAMING PRO">
+</div>
+<div class="field">
+<label>Jogo</label>
+<select id="tGame">
+<option>Free Fire</option>
+<option>Valorant</option>
+<option>Counter-Strike 2</option>
+<option>Fortnite</option>
+<option>PUBG</option>
+<option>Call of Duty</option>
+<option>League of Legends</option>
+<option>Mobile Legends</option>
+<option>Rocket League</option>
+<option>EA Sports FC</option>
+<option>eFootball</option>
+<option>Mortal Kombat</option>
+<option>Street Fighter</option>
+<option>Outro</option>
+</select>
+</div>
+<div class="field">
+<label>Outro jogo</label>
+<input id="tCustom" maxlength="70" placeholder="Opcional">
+</div>
+<div class="field">
+<label>Tipo de inscrição</label>
+<select id="tType">
+<option value="Equipe">Equipes</option>
+<option value="Individual">Individual</option>
+</select>
+</div>
+<div class="field">
+<label>Limite de vagas</label>
+<input id="tCapacity" type="number" min="1" max="200" value="12">
+</div>
+<div class="field">
+<label>Jogadores mínimos por equipe</label>
+<input id="tMin" type="number" min="1" max="50" value="4">
+</div>
+<div class="field">
+<label>Jogadores máximos por equipe</label>
+<input id="tMax" type="number" min="1" max="50" value="8">
+</div>
+<div class="field">
+<label>Data do campeonato</label>
+<input id="tDate" type="date">
+</div>
+<div class="field">
+<label>Encerramento das inscrições</label>
+<input id="tDeadline" type="date">
+</div>
+<div class="field">
+<label>Política de aprovação</label>
+<select id="tApproval">
+<option value="manual">Aprovação manual</option>
+<option value="auto">Aprovação automática</option>
+</select>
+</div>
+<div class="field">
+<label>Lista de espera</label>
+<select id="tWaitlist">
+<option value="yes">Ativada</option>
+<option value="no">Desativada</option>
+</select>
+</div>
+<div class="field">
+<label>Estado das inscrições</label>
+<select id="tOpen">
+<option value="yes">Abertas</option>
+<option value="no">Fechadas</option>
+</select>
+</div>
+</div>
+<div class="field" style="margin-top:12px">
+<label>Regras e observações</label>
+<textarea id="tRules" maxlength="3000" placeholder="Regras do campeonato, premiação e informações importantes"></textarea>
+</div>
+<div class="actions">
+<button class="btn" id="saveTournament">➕ Criar campeonato</button>
+<button class="btn alt hidden" id="cancelTournament">Cancelar edição</button>
+</div>
+<p id="notice" class="notice hidden" role="status"></p>
+</section>
+
+<section class="panel">
+<h2>📊 Resumo geral</h2>
+<div class="stats" id="stats"></div>
+</section>
+
+<section class="panel">
+<h2>🎮 Campeonatos cadastrados</h2>
+<div class="cards" id="tournaments"></div>
+</section>
+
+<section class="panel editor">
+<h2>📝 Nova inscrição</h2>
+<div class="grid">
+<div class="field">
+<label>Campeonato</label>
+<select id="eventSelect"></select>
+</div>
+<div class="field">
+<label>Nome do jogador / equipe</label>
+<input id="pName" maxlength="80" placeholder="Nome do participante">
+</div>
+<div class="field">
+<label>TAG / ID no jogo</label>
+<input id="pTag" maxlength="60" placeholder="ID ou TAG">
+</div>
+<div class="field">
+<label>Responsável / Capitão</label>
+<input id="pCaptain" maxlength="80">
+</div>
+<div class="field">
+<label>Contato</label>
+<input id="pContact" maxlength="120" placeholder="WhatsApp ou e-mail">
+</div>
+<div class="field">
+<label>Região / Servidor</label>
+<input id="pRegion" maxlength="70" placeholder="BR">
+</div>
+<div class="field">
+<label>Jogadores titulares</label>
+<textarea id="pRoster" maxlength="4000" placeholder="Um jogador por linha"></textarea>
+</div>
+<div class="field">
+<label>Reservas</label>
+<textarea id="pReserves" maxlength="2000" placeholder="Um reserva por linha"></textarea>
+</div>
+</div>
+<div class="actions">
+<button class="btn" id="saveRegistration">➕ Inscrever</button>
+<button class="btn alt hidden" id="cancelRegistration">Cancelar edição</button>
+</div>
+<p class="muted">Para equipes, informe o elenco. Para inscrições individuais, basta nome e ID. O contato é opcional e deve ser coletado somente quando necessário.</p>
+</section>
+
+<section class="panel editor">
+<h2>🔎 Filtrar inscrições</h2>
+<div class="grid">
+<div class="field">
+<label>Pesquisar</label>
+<input id="search" type="search" placeholder="Equipe, jogador, TAG ou ID">
+</div>
+<div class="field">
+<label>Campeonato</label>
+<select id="filterEvent"><option value="">Todos</option></select>
+</div>
+<div class="field">
+<label>Situação</label>
+<select id="filterStatus">
+<option value="">Todas</option>
+<option value="Pendente">Pendente</option>
+<option value="Aprovado">Aprovado</option>
+<option value="Lista de espera">Lista de espera</option>
+<option value="Rejeitado">Rejeitado</option>
+</select>
+</div>
+<div class="field">
+<label>Check-in</label>
+<select id="filterCheck">
+<option value="">Todos</option>
+<option value="yes">Confirmado</option>
+<option value="no">Pendente</option>
+</select>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>👥 Inscrições e participantes</h2>
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Campeonato</th>
+<th>Equipe / Jogador</th>
+<th>TAG / ID</th>
+<th>Elenco</th>
+<th>Situação</th>
+<th>Check-in</th>
+<th>Inscrição</th>
+<th class="editor">Ações</th>
+</tr>
+</thead>
+<tbody id="registrations"></tbody>
+</table>
+</div>
+<p id="counter" class="muted"></p>
+</section>
+
+<section class="panel">
+<h2>📥 Exportar e salvar</h2>
+<div class="actions">
+<button class="btn" id="csv">📊 Exportar CSV</button>
+<button class="btn alt" id="backup">💾 Backup JSON</button>
+<button class="btn alt" id="print">🖨️ PDF / Imprimir</button>
+<button class="btn alt" id="copy">📋 Copiar aprovados</button>
+</div>
+<div class="field editor" style="margin-top:14px">
+<label>Restaurar backup JSON</label>
+<input id="import" type="file" accept=".json,application/json">
+</div>
+<p class="muted">Os dados são salvos neste navegador. Não existe sincronização entre aparelhos nesta versão.</p>
+</section>
+
+</main>
+<footer>🎮 GAMING PRO · GESTOR DE INSCRIÇÕES PRO</footer>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_inscricoes_v1";
+const uid=()=>crypto.randomUUID
+ ?crypto.randomUUID()
+ :Date.now()+"-"+Math.random().toString(36).slice(2);
+const today=()=>{
+ const d=new Date();
+ return d.getFullYear()+"-"+
+  String(d.getMonth()+1).padStart(2,"0")+"-"+
+  String(d.getDate()).padStart(2,"0");
+};
+
+let db={version:1,tournaments:[],registrations:[]};
+let editingTournament=null;
+let editingRegistration=null;
+
+function notify(s){
+ $("notice").textContent=s;
+ $("notice").classList.toggle("hidden",!s);
+}
+function save(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(db));
+ }catch{
+  notify("Armazenamento cheio. Exporte um backup JSON.");
+ }
+}
+function option(el,value,label){
+ const o=document.createElement("option");
+ o.value=value;o.textContent=label;
+ el.append(o);
+}
+function button(label,fn,style="alt"){
+ const b=document.createElement("button");
+ b.className="btn "+style+" small";
+ b.textContent=label;
+ b.onclick=fn;
+ return b;
+}
+function cell(tr,value){
+ const td=document.createElement("td");
+ td.textContent=value;
+ tr.append(td);
+ return td;
+}
+function lines(s){
+ return s.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+}
+function eventById(id){
+ return db.tournaments.find(t=>t.id===id);
+}
+function registrationsFor(id){
+ return db.registrations.filter(r=>r.tournamentId===id);
+}
+function approvedFor(id){
+ return registrationsFor(id).filter(r=>r.status==="Aprovado");
+}
+function full(t){
+ return approvedFor(t.id).length>=t.capacity;
+}
+function validDate(s){
+ return typeof s==="string"&&
+  /^\d{4}-\d{2}-\d{2}$/.test(s)&&
+  !Number.isNaN(new Date(s+"T12:00").getTime());
+}
+function resetTournament(){
+ editingTournament=null;
+ ["tName","tCustom","tRules"].forEach(id=>$(id).value="");
+ $("tGame").value="Free Fire";
+ $("tType").value="Equipe";
+ $("tCapacity").value=12;
+ $("tMin").value=4;
+ $("tMax").value=8;
+ $("tDate").value=today();
+ $("tDeadline").value=today();
+ $("tApproval").value="manual";
+ $("tWaitlist").value="yes";
+ $("tOpen").value="yes";
+ $("saveTournament").textContent="➕ Criar campeonato";
+ $("cancelTournament").classList.add("hidden");
+}
+function resetRegistration(){
+ editingRegistration=null;
+ ["pName","pTag","pCaptain","pContact","pRegion","pRoster","pReserves"]
+  .forEach(id=>$(id).value="");
+ $("saveRegistration").textContent="➕ Inscrever";
+ $("cancelRegistration").classList.add("hidden");
+}
+function tournamentForm(){
+ const game=$("tGame").value==="Outro"
+  ?$("tCustom").value.trim():$("tGame").value;
+ const data={
+  id:editingTournament||uid(),
+  name:$("tName").value.trim(),
+  game,
+  type:$("tType").value,
+  capacity:Number($("tCapacity").value),
+  min:Number($("tMin").value),
+  max:Number($("tMax").value),
+  date:$("tDate").value,
+  deadline:$("tDeadline").value,
+  approval:$("tApproval").value,
+  waitlist:$("tWaitlist").value,
+  open:$("tOpen").value,
+  rules:$("tRules").value.trim(),
+  createdAt:new Date().toISOString()
+ };
+ if(!data.name||!data.game)
+  throw Error("Informe nome e modalidade.");
+ if(!Number.isInteger(data.capacity)||data.capacity<1||data.capacity>200)
+  throw Error("O limite deve ser de 1 a 200 vagas.");
+ if(!Number.isInteger(data.min)||!Number.isInteger(data.max)||
+    data.min<1||data.max>50||data.min>data.max)
+  throw Error("Limites do elenco inválidos.");
+ if(!validDate(data.date)||!validDate(data.deadline))
+  throw Error("Datas inválidas.");
+ if(data.deadline>data.date)
+  throw Error("Encerramento das inscrições após o campeonato.");
+ return data;
+}
+
+$("saveTournament").onclick=()=>{
+ try{
+  const t=tournamentForm();
+  const old=eventById(editingTournament);
+  if(old){
+   t.createdAt=old.createdAt;
+   if(approvedFor(t.id).length>t.capacity)
+    throw Error("Há mais aprovados que o novo limite de vagas.");
+   db.tournaments=db.tournaments.map(x=>x.id===t.id?t:x);
+  }else{
+   if(db.tournaments.length>=500)
+    throw Error("Limite de 500 campeonatos.");
+   db.tournaments.push(t);
+  }
+  resetTournament();
+  save();render();
+  notify("Campeonato salvo.");
+ }catch(err){
+  notify(err.message);
+ }
+};
+
+function editTournament(id){
+ const t=eventById(id);
+ if(!t)return;
+ editingTournament=id;
+ const known=[...$("tGame").options].some(o=>o.value===t.game);
+ $("tGame").value=known?t.game:"Outro";
+ $("tCustom").value=known?"":t.game;
+ const values={
+  tName:t.name,tType:t.type,tCapacity:t.capacity,
+  tMin:t.min,tMax:t.max,tDate:t.date,
+  tDeadline:t.deadline,tApproval:t.approval,
+  tWaitlist:t.waitlist,tOpen:t.open,tRules:t.rules
+ };
+ Object.entries(values).forEach(([id,v])=>$(id).value=v);
+ $("saveTournament").textContent="💾 Salvar campeonato";
+ $("cancelTournament").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+$("cancelTournament").onclick=resetTournament;
+
+function deleteTournament(id){
+ const t=eventById(id);
+ if(!t)return;
+ if(!confirm("Excluir "+t.name+" e todas as inscrições?"))return;
+ db.tournaments=db.tournaments.filter(x=>x.id!==id);
+ db.registrations=db.registrations.filter(x=>x.tournamentId!==id);
+ if(editingTournament===id)resetTournament();
+ save();render();
+}
+
+function registrationForm(){
+ const t=eventById($("eventSelect").value);
+ if(!t)throw Error("Selecione um campeonato.");
+ const data={
+  id:editingRegistration||uid(),
+  tournamentId:t.id,
+  name:$("pName").value.trim(),
+  tag:$("pTag").value.trim(),
+  captain:$("pCaptain").value.trim(),
+  contact:$("pContact").value.trim(),
+  region:$("pRegion").value.trim(),
+  roster:lines($("pRoster").value),
+  reserves:lines($("pReserves").value),
+  status:"Pendente",
+  checkin:false,
+  createdAt:new Date().toISOString()
+ };
+ if(!data.name)throw Error("Informe o nome.");
+ if(t.type==="Equipe"){
+  const total=data.roster.length+data.reserves.length;
+  if(data.roster.length<t.min||total>t.max)
+   throw Error("A equipe precisa de "+t.min+
+    " titulares no mínimo e até "+t.max+" integrantes no total.");
+  if(new Set([...data.roster,...data.reserves].map(x=>x.toLowerCase())).size!==total)
+   throw Error("Há jogadores repetidos no elenco.");
+ }
+ if(db.registrations.some(r=>
+  r.id!==editingRegistration&&
+  r.tournamentId===t.id&&
+  r.status!=="Rejeitado"&&
+  (r.name.toLowerCase()===data.name.toLowerCase()||
+   (data.tag&&r.tag&&r.tag.toLowerCase()===data.tag.toLowerCase()))
+ ))throw Error("Inscrição duplicada neste campeonato.");
+ return data;
+}
+function nextStatus(t){
+ if(!full(t)){
+  return t.approval==="auto"?"Aprovado":"Pendente";
+ }
+ return t.waitlist==="yes"?"Lista de espera":null;
+}
+
+$("saveRegistration").onclick=()=>{
+ try{
+  const r=registrationForm();
+  const t=eventById(r.tournamentId);
+  const old=db.registrations.find(x=>x.id===editingRegistration);
+
+  if(old){
+   r.status=old.status;
+   r.checkin=old.checkin;
+   r.createdAt=old.createdAt;
+   if(old.tournamentId!==t.id){
+    r.status=nextStatus(t);
+    r.checkin=false;
+    if(!r.status)throw Error("Campeonato lotado.");
+   }
+   db.registrations=db.registrations.map(x=>x.id===r.id?r:x);
+  }else{
+   if(t.open!=="yes"||t.deadline<today())
+    throw Error("Inscrições encerradas.");
+   if(db.registrations.length>=20000)
+    throw Error("Limite de inscrições atingido.");
+   r.status=nextStatus(t);
+   if(!r.status)throw Error("Vagas esgotadas e lista de espera desativada.");
+   db.registrations.push(r);
+  }
+  resetRegistration();
+  save();render();
+  notify("Inscrição salva: "+r.status);
+ }catch(err){
+  notify(err.message);
+ }
+};
+
+function editRegistration(id){
+ const r=db.registrations.find(x=>x.id===id);
+ if(!r)return;
+ editingRegistration=id;
+ $("eventSelect").value=r.tournamentId;
+ const values={
+  pName:r.name,pTag:r.tag,pCaptain:r.captain,
+  pContact:r.contact,pRegion:r.region,
+  pRoster:r.roster.join("\n"),
+  pReserves:r.reserves.join("\n")
+ };
+ Object.entries(values).forEach(([id,v])=>$(id).value=v);
+ $("saveRegistration").textContent="💾 Salvar inscrição";
+ $("cancelRegistration").classList.remove("hidden");
+ $("saveRegistration").scrollIntoView({behavior:"smooth",block:"center"});
+}
+$("cancelRegistration").onclick=resetRegistration;
+
+function setStatus(id,status){
+ const r=db.registrations.find(x=>x.id===id);
+ if(!r)return;
+ const t=eventById(r.tournamentId);
+ if(status==="Aprovado"&&r.status!=="Aprovado"&&full(t))
+  return notify("Sem vagas. Libere uma vaga antes de aprovar.");
+ if(r.status==="Rejeitado"&&status==="Lista de espera"&&t.waitlist!=="yes")
+  return notify("Lista de espera desativada.");
+ r.status=status;
+ if(status!=="Aprovado")r.checkin=false;
+ save();render();
+ notify("Situação atualizada.");
+}
+function checkin(id){
+ const r=db.registrations.find(x=>x.id===id);
+ if(!r||r.status!=="Aprovado")
+  return notify("Apenas inscrições aprovadas podem fazer check-in.");
+ r.checkin=!r.checkin;
+ save();render();
+}
+function removeRegistration(id){
+ const r=db.registrations.find(x=>x.id===id);
+ if(!r)return;
+ if(!confirm("Excluir inscrição de "+r.name+"?"))return;
+ db.registrations=db.registrations.filter(x=>x.id!==id);
+ if(editingRegistration===id)resetRegistration();
+ save();render();
+}
+function promoteWaitlist(id){
+ const t=eventById(id);
+ if(!t||full(t))return notify("Não há vagas livres.");
+ const r=registrationsFor(id)
+  .filter(x=>x.status==="Lista de espera")
+  .sort((a,b)=>a.createdAt.localeCompare(b.createdAt))[0];
+ if(!r)return notify("Lista de espera vazia.");
+ r.status="Aprovado";
+ save();render();notify(r.name+" foi aprovado.");
+}
+
+function renderStats(){
+ const count=status=>db.registrations.filter(r=>r.status===status).length;
+ const values=[
+  ["Campeonatos",db.tournaments.length],
+  ["Inscrições",db.registrations.length],
+  ["Aprovados",count("Aprovado")],
+  ["Lista de espera",count("Lista de espera")]
+ ];
+ const root=$("stats");root.replaceChildren();
+ values.forEach(([label,value])=>{
+  const box=document.createElement("div");box.className="stat";
+  const small=document.createElement("small");small.textContent=label;
+  const strong=document.createElement("strong");strong.textContent=value;
+  box.append(small,strong);root.append(box);
+ });
+}
+
+function renderTournaments(){
+ const root=$("tournaments");root.replaceChildren();
+ if(!db.tournaments.length){
+  const p=document.createElement("p");p.className="empty";
+  p.textContent="Nenhum campeonato cadastrado.";
+  root.append(p);
+ }
+ db.tournaments.forEach(t=>{
+  const card=document.createElement("article");card.className="card";
+  const title=document.createElement("div");
+  title.className="card-title";title.textContent=t.name;
+  const pill=document.createElement("span");
+  pill.className="pill";
+  pill.textContent=t.open==="yes"?"INSCRIÇÕES ABERTAS":"INSCRIÇÕES FECHADAS";
+  card.append(title,pill);
+
+  const approved=approvedFor(t.id).length;
+  const details=[
+   "🎮 "+t.game+" · "+t.type,
+   "📅 "+t.date.split("-").reverse().join("/"),
+   "👥 "+approved+" / "+t.capacity+" vagas ocupadas",
+   "⏳ "+registrationsFor(t.id).filter(r=>r.status==="Pendente").length+" pendentes",
+   "📋 "+registrationsFor(t.id).filter(r=>r.status==="Lista de espera").length+" na espera",
+   "🛡️ Aprovação "+(t.approval==="auto"?"automática":"manual")
+  ];
+  details.forEach(value=>{
+   const p=document.createElement("p");p.className="info";
+   p.textContent=value;card.append(p);
+  });
+
+  const progress=document.createElement("div");progress.className="progress";
+  const bar=document.createElement("span");
+  bar.style.width=(approved/t.capacity*100)+"%";
+  progress.append(bar);card.append(progress);
+
+  const actions=document.createElement("div");actions.className="actions editor";
+  actions.append(
+   button("✏️ Editar",()=>editTournament(t.id)),
+   button("⬆️ Promover espera",()=>promoteWaitlist(t.id)),
+   button("🗑️ Excluir",()=>deleteTournament(t.id),"red")
+  );
+  card.append(actions);root.append(card);
+ });
+}
+
+function renderSelects(){
+ const e=$("eventSelect"),old=e.value;
+ e.replaceChildren();
+ db.tournaments.forEach(t=>option(e,t.id,t.name));
+ if(db.tournaments.some(t=>t.id===old))e.value=old;
+
+ const filter=$("filterEvent"),current=filter.value;
+ filter.replaceChildren();option(filter,"","Todos");
+ db.tournaments.forEach(t=>option(filter,t.id,t.name));
+ filter.value=current;
+}
+
+function filtered(){
+ const q=$("search").value.toLowerCase();
+ const event=$("filterEvent").value;
+ const status=$("filterStatus").value;
+ const check=$("filterCheck").value;
+
+ return db.registrations.filter(r=>{
+  const t=eventById(r.tournamentId);
+  if(!t)return false;
+  if(event&&r.tournamentId!==event)return false;
+  if(status&&r.status!==status)return false;
+  if(check==="yes"&&!r.checkin)return false;
+  if(check==="no"&&r.checkin)return false;
+  const haystack=[
+   r.name,r.tag,r.captain,r.region,
+   ...r.roster,...r.reserves,t.name
+  ].join(" ").toLowerCase();
+  return haystack.includes(q);
+ }).sort((a,b)=>a.createdAt.localeCompare(b.createdAt));
+}
+
+function renderRegistrations(){
+ const root=$("registrations");root.replaceChildren();
+ const list=filtered();
+ $("counter").textContent=list.length+" inscrições exibidas.";
+
+ list.forEach((r,i)=>{
+  const t=eventById(r.tournamentId);
+  const tr=document.createElement("tr");
+
+  [
+   i+1,t?.name||"—",r.name,r.tag||"—",
+   t?.type==="Equipe"?
+    r.roster.length+" titulares + "+r.reserves.length+" reservas":
+    "Individual",
+   r.status,r.checkin?"Confirmado":"Pendente",
+   new Date(r.createdAt).toLocaleDateString("pt-BR")
+  ].forEach(v=>cell(tr,v));
+
+  const td=document.createElement("td");
+  td.className="editor";
+  const actions=document.createElement("div");actions.className="actions";
+  actions.style.margin="0";
+
+  actions.append(button("✏️",()=>editRegistration(r.id)));
+
+  if(r.status!=="Aprovado")
+   actions.append(button("Aprovar",()=>setStatus(r.id,"Aprovado")));
+
+  if(r.status!=="Rejeitado")
+   actions.append(button("Rejeitar",()=>setStatus(r.id,"Rejeitado"),"red"));
+
+  if(r.status==="Aprovado")
+   actions.append(button(r.checkin?"Desfazer check-in":"Check-in",()=>checkin(r.id)));
+
+  if(r.status==="Pendente"&&t?.waitlist==="yes")
+   actions.append(button("Espera",()=>setStatus(r.id,"Lista de espera")));
+
+  actions.append(button("Excluir",()=>removeRegistration(r.id),"red"));
+  td.append(actions);tr.append(td);root.append(tr);
+ });
+}
+
+function render(){
+ renderStats();
+ renderTournaments();
+ renderSelects();
+ renderRegistrations();
+}
+
+["search","filterEvent","filterStatus","filterCheck"].forEach(id=>{
+ $(id).addEventListener("input",renderRegistrations);
+});
+
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+const csvCell=v=>'"'+String(v??"").replaceAll('"','""')+'"';
+
+$("csv").onclick=()=>{
+ const rows=[[
+  "Campeonato","Jogo","Participante","TAG","Capitão",
+  "Contato","Região","Titulares","Reservas","Status","Check-in"
+ ]];
+
+ filtered().forEach(r=>{
+  const t=eventById(r.tournamentId);
+  rows.push([
+   t?.name,t?.game,r.name,r.tag,r.captain,
+   r.contact,r.region,r.roster.join(" | "),
+   r.reserves.join(" | "),r.status,
+   r.checkin?"Sim":"Não"
+  ]);
+ });
+
+ download(
+  "gaming-pro-inscricoes.csv",
+  "\uFEFF"+rows.map(row=>row.map(csvCell).join(";")).join("\r\n"),
+  "text/csv;charset=utf-8"
+ );
+};
+
+$("backup").onclick=()=>download(
+ "gaming-pro-inscricoes-backup.json",
+ JSON.stringify(db,null,2),
+ "application/json"
+);
+
+$("print").onclick=()=>window.print();
+
+$("copy").onclick=async()=>{
+ const text=db.tournaments.map(t=>[
+  t.name+" — "+t.game,
+  ...approvedFor(t.id).map((r,i)=>
+   (i+1)+". "+r.name+" ["+r.tag+"]"+
+   (r.checkin?" ✓ CHECK-IN":"")
+  ),""
+ ].join("\n")).join("\n");
+
+ try{
+  await navigator.clipboard.writeText(text);
+  notify("Lista de aprovados copiada.");
+ }catch{
+  notify("Não foi possível copiar.");
+ }
+};
+
+function validate(data){
+ if(!data||data.version!==1||
+  !Array.isArray(data.tournaments)||
+  !Array.isArray(data.registrations)||
+  data.tournaments.length>500||
+  data.registrations.length>20000)
+  throw Error("Backup inválido.");
+
+ const ids=new Set();
+ for(const t of data.tournaments){
+  if(!t||typeof t.id!=="string"||!t.id||ids.has(t.id)||
+   typeof t.name!=="string"||!t.name.trim()||t.name.length>100||
+   typeof t.game!=="string"||!t.game.trim()||t.game.length>70||
+   !["Equipe","Individual"].includes(t.type)||
+   !Number.isInteger(t.capacity)||t.capacity<1||t.capacity>200||
+   !Number.isInteger(t.min)||!Number.isInteger(t.max)||
+   t.min<1||t.max>50||t.min>t.max||
+   !validDate(t.date)||!validDate(t.deadline)||
+   !["manual","auto"].includes(t.approval)||
+   !["yes","no"].includes(t.waitlist)||
+   !["yes","no"].includes(t.open)||
+   typeof t.rules!=="string"||t.rules.length>3000||
+   typeof t.createdAt!=="string")
+   throw Error("Campeonato inválido.");
+  ids.add(t.id);
+ }
+
+ const regIds=new Set();
+ for(const r of data.registrations){
+  if(!r||typeof r.id!=="string"||!r.id||regIds.has(r.id)||
+   !ids.has(r.tournamentId)||
+   typeof r.name!=="string"||!r.name.trim()||r.name.length>80||
+   typeof r.tag!=="string"||r.tag.length>60||
+   typeof r.captain!=="string"||r.captain.length>80||
+   typeof r.contact!=="string"||r.contact.length>120||
+   typeof r.region!=="string"||r.region.length>70||
+   !Array.isArray(r.roster)||!Array.isArray(r.reserves)||
+   r.roster.length>50||r.reserves.length>50||
+   [...r.roster,...r.reserves].some(x=>typeof x!=="string"||x.length>80)||
+   !["Pendente","Aprovado","Lista de espera","Rejeitado"].includes(r.status)||
+   typeof r.checkin!=="boolean"||
+   (r.checkin&&r.status!=="Aprovado")||
+   typeof r.createdAt!=="string")
+   throw Error("Inscrição inválida.");
+  regIds.add(r.id);
+ }
+
+ for(const t of data.tournaments){
+  if(data.registrations.filter(r=>
+   r.tournamentId===t.id&&r.status==="Aprovado"
+  ).length>t.capacity)
+   throw Error("Capacidade excedida.");
+ }
+
+ return data;
+}
+
+$("import").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  if(file.size>15000000)
+   throw Error("Arquivo muito grande.");
+  const data=validate(JSON.parse(await file.text()));
+  if(!confirm("Substituir todos os dados pelo backup?"))return;
+  db=data;
+  resetTournament();
+  resetRegistration();
+  save();render();
+  notify("Backup restaurado.");
+ }catch(err){
+  notify(err.message);
+ }finally{
+  e.target.value="";
+ }
+};
+
+try{
+ const raw=localStorage.getItem(KEY);
+ if(raw)db=validate(JSON.parse(raw));
+}catch(err){
+ console.warn(err);
+ notify("Dados locais inválidos. Verifique seu backup.");
+}
+
+resetTournament();
+render();
+</script>
+</body>
+</html>
