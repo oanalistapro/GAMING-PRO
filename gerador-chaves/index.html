@@ -1,0 +1,693 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<title>Gerador de Chaves PRO | Gaming Pro</title>
+<style>
+:root{
+ --bg:#0b0b0f;--panel:#17171e;--panel2:#24242e;
+ --line:#383844;--text:#fafafa;--muted:#aaaab8;
+ --orange:#ff791b;--green:#83e8a7
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:system-ui,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.wrap{width:min(1400px,calc(100% - 24px));margin:auto}
+header{background:#141419;border-bottom:1px solid var(--line);padding:24px 0}
+h1{font-size:clamp(26px,5vw,42px);margin:8px 0}
+h2{font-size:21px;margin:0 0 15px}
+h3{font-size:16px;color:var(--orange)}
+.orange{color:var(--orange)}
+.muted{color:var(--muted);line-height:1.6}
+.panel{background:var(--panel);border:1px solid var(--line);
+ border-radius:18px;padding:20px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.field{display:grid;gap:7px}
+label{font-size:12px;font-weight:800}
+input,select,textarea{width:100%;min-width:0;background:var(--panel2);
+ color:var(--text);border:1px solid var(--line);border-radius:11px;padding:12px}
+textarea{min-height:190px;resize:vertical;line-height:1.6}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange)}
+.btn{background:var(--orange);color:#111;border:0;
+ border-radius:11px;padding:12px 15px;font-weight:850}
+.btn.alt{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.notice{padding:12px;background:#382316;border:1px solid #7a451d;
+ border-radius:11px;color:#ffd0a5}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--panel2);border-radius:12px;padding:13px}
+.stat small{display:block;color:var(--muted)}
+.stat strong{display:block;color:var(--orange);font-size:24px}
+.bracket{display:flex;gap:16px;overflow:auto;padding:12px 3px 24px}
+.bracket-column{min-width:245px;max-width:245px;flex-shrink:0}
+.bracket-column h3{text-align:center;position:sticky;left:0}
+.match{border:1px solid var(--line);border-radius:13px;
+ background:var(--panel2);padding:10px;margin:13px 0}
+.match.finished{border-color:#467956}
+.match small{display:block;color:var(--muted);margin-bottom:8px}
+.team{width:100%;border:1px solid transparent;background:transparent;
+ color:var(--text);padding:10px 7px;border-radius:8px;
+ text-align:left;font-weight:750;display:flex;
+ align-items:center;justify-content:space-between;gap:7px;
+ overflow-wrap:anywhere}
+.team:hover:not(:disabled){background:#ffffff10}
+.team.winner{color:var(--green);background:#24463255}
+.team .seed{font-size:10px;color:var(--muted);flex-shrink:0}
+.match .vs{text-align:center;color:var(--orange);font-size:11px}
+.match-note{font-size:11px;color:var(--muted);margin-top:8px}
+.round-robin{overflow:auto}
+.round-robin table{width:100%;border-collapse:collapse;min-width:570px}
+th,td{padding:11px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--orange);font-size:12px}
+.score{width:65px;text-align:center;padding:8px}
+.rr-match{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+ padding:11px;border-bottom:1px solid var(--line)}
+.rr-match span{min-width:110px;flex:1}
+.champion{text-align:center;font-size:24px;color:var(--orange);
+ font-weight:900;padding:20px;border:1px solid #995017;
+ background:#3b220f;border-radius:15px}
+footer{text-align:center;color:var(--muted);padding:30px}
+@media(max-width:750px){
+ .grid{grid-template-columns:1fr 1fr}
+ .stats{grid-template-columns:1fr 1fr}
+ .panel{padding:14px}
+ .bracket-column{min-width:220px;max-width:220px}
+}
+@media(max-width:450px){.grid{grid-template-columns:1fr}}
+@media print{
+ body{background:white;color:black}
+ header,.settings,.actions,footer,.notice{display:none!important}
+ .panel,.match{background:white;color:black;border-color:#bbb}
+ .bracket{overflow:visible}
+ .team{color:black}
+ .team.winner{color:#17672f}
+ .bracket-column{min-width:180px;max-width:180px}
+ .round-robin{overflow:visible}
+ th{color:black}
+ @page{size:A3 landscape;margin:10mm}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <strong class="orange">🎮 GAMING PRO</strong>
+  <h1>🗂️ GERADOR DE CHAVES PRO</h1>
+  <p class="muted">Até 200 participantes · Chaves automáticas · Resultados · Exportação</p>
+ </div>
+</header>
+
+<main class="wrap">
+<section class="panel settings">
+ <h2>⚙️ Configurar torneio</h2>
+ <div class="grid">
+  <div class="field">
+   <label>Nome do torneio</label>
+   <input id="title" value="TORNEIO GAMING PRO" maxlength="100">
+  </div>
+  <div class="field">
+   <label>Formato</label>
+   <select id="format">
+    <option value="single">Eliminação simples</option>
+    <option value="roundrobin">Todos contra todos</option>
+   </select>
+  </div>
+  <div class="field">
+   <label>Distribuição dos participantes</label>
+   <select id="seeding">
+    <option value="rank">Cabeças de chave (ordem da lista)</option>
+    <option value="random">Sorteio aleatório</option>
+   </select>
+  </div>
+ </div>
+
+ <div class="field" style="margin-top:16px">
+  <label>Equipes ou jogadores (um por linha, até 200)</label>
+  <textarea id="participants" spellcheck="false">EQUIPE ALPHA
+EQUIPE BRAVO
+EQUIPE CHARLIE
+EQUIPE DELTA
+EQUIPE ECHO
+EQUIPE FOXTROT
+EQUIPE GAMMA
+EQUIPE OMEGA</textarea>
+ </div>
+ <p class="muted">
+  Na eliminação simples, participantes mais bem classificados
+  recebem cabeças de chave. Folgas são atribuídas automaticamente.
+ </p>
+ <div class="actions">
+  <button class="btn" id="generate">⚡ Gerar chaves</button>
+  <button class="btn alt" id="shuffle">🔀 Embaralhar lista</button>
+  <button class="btn alt" id="new">🗑️ Novo torneio</button>
+ </div>
+ <p class="notice" id="error" hidden></p>
+</section>
+
+<section class="panel" id="dashboard" hidden>
+ <h2 id="tournamentName"></h2>
+ <div class="stats" id="stats"></div>
+ <div class="actions">
+  <button class="btn alt" id="save">💾 Salvar</button>
+  <button class="btn alt" id="backup">📦 Backup JSON</button>
+  <button class="btn alt" id="csv">📊 Baixar CSV</button>
+  <button class="btn alt" id="print">🖨️ Imprimir / PDF</button>
+ </div>
+</section>
+
+<section class="panel" id="bracketPanel" hidden>
+ <h2>🏆 Chave do torneio</h2>
+ <p class="muted" id="instructions"></p>
+ <div id="champion"></div>
+ <div id="bracket"></div>
+</section>
+
+<section class="panel settings">
+ <h2>📂 Restaurar backup</h2>
+ <p class="muted">O torneio é salvo automaticamente neste navegador.</p>
+ <input type="file" id="import" accept=".json,application/json">
+</section>
+</main>
+
+<footer>🎮 GAMING PRO · GERADOR DE CHAVES PRO</footer>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const KEY="gaming_pro_chaves_v1";
+let state=null;
+
+function warn(message){
+ $("error").textContent=message;
+ $("error").hidden=!message;
+}
+
+function shuffle(arr){
+ const result=[...arr];
+ for(let i=result.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [result[i],result[j]]=[result[j],result[i]];
+ }
+ return result;
+}
+
+function readTeams(){
+ const names=$("participants").value
+  .split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+
+ if(names.length<2||names.length>200)
+  throw Error("Informe entre 2 e 200 participantes.");
+
+ if(names.some(n=>n.length>100))
+  throw Error("Cada nome deve ter no máximo 100 caracteres.");
+
+ if(new Set(names.map(n=>n.toLocaleLowerCase("pt-BR"))).size!==names.length)
+  throw Error("Existem nomes repetidos.");
+
+ return names;
+}
+
+// Gera posições de chave padrão para que os melhores
+// cabeças de chave se encontrem nas rodadas finais.
+function seedPositions(size){
+ let positions=[1,2];
+ while(positions.length<size){
+  const nextSize=positions.length*2;
+  positions=positions.flatMap(seed=>[
+   seed,nextSize+1-seed
+  ]);
+ }
+ return positions;
+}
+
+function buildSingle(names){
+ const size=2**Math.ceil(Math.log2(names.length));
+ const order=seedPositions(size);
+ const slots=order.map(seed=>names[seed-1]??null);
+
+ return [{
+  matches:Array.from({length:size/2},(_,i)=>({
+   id:"r0m"+i,
+   a:slots[i*2],
+   b:slots[i*2+1],
+   winner:null
+  }))
+ }];
+}
+
+function buildRoundRobin(names){
+ const list=[...names];
+ if(list.length%2)list.push(null);
+ const rounds=[];
+
+ for(let r=0;r<list.length-1;r++){
+  const matches=[];
+  for(let i=0;i<list.length/2;i++){
+   const a=list[i],b=list[list.length-1-i];
+   if(a!==null&&b!==null){
+    matches.push({
+     id:"rr"+r+"m"+i,a,b,sa:null,sb:null
+    });
+   }
+  }
+  rounds.push({matches});
+  list.splice(1,0,list.pop());
+ }
+ return rounds;
+}
+
+function generate(){
+ try{
+  const names=readTeams();
+  const format=$("format").value;
+  const seeded=$("seeding").value==="random"
+   ?shuffle(names):names;
+
+  state={
+   version:1,
+   title:$("title").value.trim()||"TORNEIO GAMING PRO",
+   format,
+   teams:seeded,
+   rounds:format==="single"
+    ?buildSingle(seeded):buildRoundRobin(seeded),
+   createdAt:new Date().toISOString()
+  };
+
+  if(format==="single")rebuild();
+  save();
+  warn("");
+  render();
+ }catch(e){warn(e.message)}
+}
+
+function winnerOf(m){
+ if(m.a===null&&m.b===null)return null;
+ if(m.a===null)return m.b;
+ if(m.b===null)return m.a;
+ return m.winner===m.a||m.winner===m.b?m.winner:null;
+}
+
+function rebuild(){
+ if(!state||state.format!=="single")return;
+ const old=state.rounds;
+ const rounds=[old[0]];
+ let previous=old[0].matches;
+ let level=1;
+
+ while(previous.length>1){
+  const next=[];
+
+  for(let i=0;i<previous.length;i+=2){
+   const a=winnerOf(previous[i]);
+   const b=winnerOf(previous[i+1]);
+   const id="r"+level+"m"+(i/2);
+   const existing=old[level]?.matches.find(m=>m.id===id);
+
+   next.push({
+    id,a,b,
+    winner:existing&&existing.a===a&&existing.b===b
+     ?existing.winner:null
+   });
+  }
+
+  rounds.push({matches:next});
+  previous=next;
+  level++;
+ }
+
+ state.rounds=rounds;
+}
+
+function chooseWinner(id,name){
+ if(!state||state.format!=="single")return;
+ const match=state.rounds.flatMap(r=>r.matches)
+  .find(m=>m.id===id);
+
+ if(!match||!match.a||!match.b)return;
+ if(name!==match.a&&name!==match.b)return;
+
+ match.winner=match.winner===name?null:name;
+ rebuild();
+ save();
+ render();
+}
+
+function matchCompleted(m){
+ if(state.format==="single"){
+  return !!winnerOf(m);
+ }
+ return Number.isInteger(m.sa)&&Number.isInteger(m.sb);
+}
+
+function updateScore(id,side,value){
+ const m=state.rounds.flatMap(r=>r.matches)
+  .find(x=>x.id===id);
+ if(!m)return;
+
+ if(value===""){
+  m[side]=null;
+ }else{
+  const n=Number(value);
+  if(!Number.isInteger(n)||n<0||n>9999)return;
+  m[side]=n;
+ }
+ save();
+ render();
+}
+
+function makeTeam(name,match){
+ const btn=document.createElement("button");
+ btn.className="team";
+ btn.disabled=!name||!match.a||!match.b;
+ btn.textContent=name||"A DEFINIR";
+
+ if(name&&winnerOf(match)===name){
+  btn.classList.add("winner");
+  const mark=document.createElement("span");
+  mark.textContent="✓";
+  btn.append(mark);
+ }
+
+ btn.onclick=()=>chooseWinner(match.id,name);
+ return btn;
+}
+
+function renderSingle(){
+ const container=document.createElement("div");
+ container.className="bracket";
+
+ state.rounds.forEach((round,i)=>{
+  const column=document.createElement("div");
+  column.className="bracket-column";
+
+  const title=document.createElement("h3");
+  title.textContent=i===state.rounds.length-1
+   ?"🏆 FINAL":"RODADA "+(i+1);
+  column.append(title);
+
+  round.matches.forEach((m,j)=>{
+   const card=document.createElement("div");
+   card.className="match"+(matchCompleted(m)?" finished":"");
+
+   const small=document.createElement("small");
+   small.textContent="Confronto "+(j+1);
+   card.append(small,makeTeam(m.a,m));
+
+   const vs=document.createElement("div");
+   vs.className="vs";
+   vs.textContent="VS";
+   card.append(vs,makeTeam(m.b,m));
+
+   if((m.a===null)!==(m.b===null)){
+    const note=document.createElement("div");
+    note.className="match-note";
+    note.textContent="Folga automática";
+    card.append(note);
+   }
+   column.append(card);
+  });
+  container.append(column);
+ });
+
+ $("bracket").append(container);
+
+ const final=state.rounds.at(-1).matches[0];
+ const champion=winnerOf(final);
+ if(champion){
+  const banner=document.createElement("div");
+  banner.className="champion";
+  banner.textContent="🏆 CAMPEÃO: "+champion;
+  $("champion").append(banner);
+ }
+}
+
+function standings(){
+ const rows=new Map(state.teams.map(name=>[name,{
+  name,j:0,v:0,e:0,d:0,gp:0,gc:0,pts:0
+ }]));
+
+ state.rounds.forEach(round=>round.matches.forEach(m=>{
+  if(!matchCompleted(m))return;
+  const a=rows.get(m.a),b=rows.get(m.b);
+  a.j++;b.j++;
+  a.gp+=m.sa;a.gc+=m.sb;
+  b.gp+=m.sb;b.gc+=m.sa;
+
+  if(m.sa>m.sb){a.v++;b.d++;a.pts+=3}
+  else if(m.sb>m.sa){b.v++;a.d++;b.pts+=3}
+  else{a.e++;b.e++;a.pts++;b.pts++}
+ }));
+
+ return [...rows.values()].sort((a,b)=>
+  b.pts-a.pts||
+  (b.gp-b.gc)-(a.gp-a.gc)||
+  b.gp-a.gp||
+  a.name.localeCompare(b.name,"pt-BR")
+ );
+}
+
+function renderRoundRobin(){
+ const container=document.createElement("div");
+ container.className="round-robin";
+
+ state.rounds.forEach((round,i)=>{
+  const heading=document.createElement("h3");
+  heading.textContent="RODADA "+(i+1);
+  container.append(heading);
+
+  round.matches.forEach(m=>{
+   const row=document.createElement("div");
+   row.className="rr-match";
+
+   const a=document.createElement("span");
+   a.textContent=m.a;
+   const b=document.createElement("span");
+   b.textContent=m.b;
+
+   const sa=document.createElement("input");
+   const sb=document.createElement("input");
+
+   for(const [input,side] of [[sa,"sa"],[sb,"sb"]]){
+    input.className="score";
+    input.type="number";
+    input.min="0";input.max="9999";
+    input.placeholder="-";
+    input.value=m[side]??"";
+    input.setAttribute("aria-label","Placar "+(side==="sa"?m.a:m.b));
+    input.onchange=()=>updateScore(m.id,side,input.value);
+   }
+
+   const vs=document.createElement("b");
+   vs.textContent="×";
+   row.append(a,sa,vs,sb,b);
+   container.append(row);
+  });
+ });
+
+ $("bracket").append(container);
+
+ const heading=document.createElement("h3");
+ heading.textContent="📊 CLASSIFICAÇÃO";
+ $("bracket").append(heading);
+
+ const table=document.createElement("table");
+ const head=document.createElement("tr");
+
+ ["#","Equipe","J","V","E","D","GP","GC","SG","PTS"]
+  .forEach(text=>{
+   const th=document.createElement("th");
+   th.textContent=text;head.append(th);
+  });
+ table.append(head);
+
+ standings().forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  [
+   i+1,r.name,r.j,r.v,r.e,r.d,
+   r.gp,r.gc,r.gp-r.gc,r.pts
+  ].forEach(value=>{
+   const td=document.createElement("td");
+   td.textContent=value;tr.append(td);
+  });
+  table.append(tr);
+ });
+
+ const scroll=document.createElement("div");
+ scroll.className="round-robin";
+ scroll.append(table);
+ $("bracket").append(scroll);
+}
+
+function stat(label,value){
+ const div=document.createElement("div");
+ div.className="stat";
+ const small=document.createElement("small");
+ small.textContent=label;
+ const strong=document.createElement("strong");
+ strong.textContent=value;
+ div.append(small,strong);
+ return div;
+}
+
+function render(){
+ if(!state)return;
+
+ $("dashboard").hidden=false;
+ $("bracketPanel").hidden=false;
+ $("tournamentName").textContent=state.title;
+ $("bracket").replaceChildren();
+ $("champion").replaceChildren();
+
+ const matches=state.rounds.flatMap(r=>r.matches);
+ const done=matches.filter(matchCompleted).length;
+
+ $("stats").replaceChildren(
+  stat("Participantes",state.teams.length),
+  stat("Confrontos",matches.length),
+  stat("Concluídos",done),
+  stat("Progresso",Math.round(done/matches.length*100)+"%")
+ );
+
+ $("instructions").textContent=state.format==="single"
+  ?"Clique na equipe vencedora para avançá-la. Clique novamente para desfazer. Os resultados das fases seguintes são atualizados automaticamente."
+  :"Preencha os placares para atualizar a classificação. Vitória vale 3 pontos, empate vale 1.";
+
+ if(state.format==="single")renderSingle();
+ else renderRoundRobin();
+}
+
+function save(){
+ try{localStorage.setItem(KEY,JSON.stringify(state))}
+ catch(e){console.warn("Não foi possível salvar",e)}
+}
+
+function download(filename,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");
+ a.href=url;a.download=filename;
+ document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+$("generate").onclick=()=>{
+ if(state&&!confirm("Substituir o torneio atual?"))return;
+ generate();
+};
+
+$("shuffle").onclick=()=>{
+ try{
+  $("participants").value=shuffle(readTeams()).join("\n");
+  warn("");
+ }catch(e){warn(e.message)}
+};
+
+$("new").onclick=()=>{
+ if(!confirm("Apagar o torneio salvo neste navegador?"))return;
+ state=null;
+ localStorage.removeItem(KEY);
+ $("dashboard").hidden=true;
+ $("bracketPanel").hidden=true;
+ warn("");
+};
+
+$("save").onclick=()=>{
+ save();alert("Torneio salvo neste navegador.");
+};
+
+$("backup").onclick=()=>{
+ if(!state)return;
+ download("gaming-pro-chaves.json",
+  JSON.stringify(state,null,2),"application/json");
+};
+
+$("csv").onclick=()=>{
+ if(!state)return;
+
+ const rows=[
+  ["Rodada","Equipe A","Equipe B","Vencedor","Placar A","Placar B"]
+ ];
+
+ state.rounds.forEach((round,i)=>{
+  round.matches.forEach(m=>{
+   rows.push([
+    i+1,m.a??"",m.b??"",
+    state.format==="single"?winnerOf(m)??"": "",
+    m.sa??"",m.sb??""
+   ]);
+  });
+ });
+
+ const csv="\uFEFF"+rows.map(row=>
+  row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(";")
+ ).join("\r\n");
+
+ download("gaming-pro-chaves.csv",csv,"text/csv;charset=utf-8");
+};
+
+$("print").onclick=()=>window.print();
+
+function validateBackup(data){
+ if(!data||data.version!==1||
+    !["single","roundrobin"].includes(data.format)||
+    !Array.isArray(data.teams)||
+    data.teams.length<2||data.teams.length>200||
+    !data.teams.every(t=>typeof t==="string"&&t.length<=100)||
+    new Set(data.teams).size!==data.teams.length||
+    !Array.isArray(data.rounds)||
+    data.rounds.length<1||data.rounds.length>200)
+  throw Error("Backup inválido.");
+
+ const all=data.rounds.flatMap(r=>{
+  if(!Array.isArray(r.matches))throw Error("Rodada inválida.");
+  return r.matches;
+ });
+
+ if(all.length>20000||!all.every(m=>
+  m&&typeof m.id==="string"&&
+  (m.a===null||data.teams.includes(m.a))&&
+  (m.b===null||data.teams.includes(m.b))&&
+  (m.winner===undefined||m.winner===null||
+   m.winner===m.a||m.winner===m.b)&&
+  (m.sa===undefined||m.sa===null||
+   Number.isInteger(m.sa)&&m.sa>=0&&m.sa<=9999)&&
+  (m.sb===undefined||m.sb===null||
+   Number.isInteger(m.sb)&&m.sb>=0&&m.sb<=9999)
+ ))throw Error("Partidas inválidas.");
+
+ return data;
+}
+
+$("import").onchange=async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  if(file.size>3000000)throw Error("Arquivo muito grande.");
+  const data=validateBackup(JSON.parse(await file.text()));
+  state=data;
+  if(state.format==="single")rebuild();
+  save();
+  render();
+  warn("");
+ }catch(err){warn("Erro ao importar: "+err.message)}
+ e.target.value="";
+};
+
+try{
+ const saved=JSON.parse(localStorage.getItem(KEY)||"null");
+ if(saved){
+  state=validateBackup(saved);
+  if(state.format==="single")rebuild();
+  render();
+ }
+}catch(e){console.warn("Backup local inválido",e)}
+</script>
+</body>
+</html>
